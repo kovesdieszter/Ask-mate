@@ -9,42 +9,30 @@
 
 
         <table>
-        {#<tr>
-            <td><strong><center>Id</center></strong></td>
-            <td><strong><center>Story Title</center></strong></td>
-            <td><strong><center>User Story</center></strong></td>
-            <td><strong><center>Acceptance Criteria</center></strong></td>
-            <td><strong><center>Business value</center></strong></td>
-            <td><strong><center>Estimation</center></strong></td>
-            <td><strong><center>Status</center></strong></td>
+            <tr>
 
-        </tr>#}
-            <td>
-                <p>
 
-                <td>
                     <form id="header">
                 {% for item in header %}
-                    <p class="capitalize"><strong>{{ item }}</strong></p>
+                    <th><strong> {{ item }} </strong></th>
                 {% endfor %}
                     </form>
-                </td>
-                </p>
-            </td>
 
-        <form id="questions">
-            {% for item in questions %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td>>{{ item.submission_time }}</td>
-            <td>{{ item.view_number}}</td>
-            <td>{{ item.vote_number }}</td>
-            <td>{{ item.title }} </td>
-            <td>{{ item.message }}</td>
-            <td>{{ item.image }}</td>
-        </tr>
-        {% endfor %}
-        </form>
-    </table>
+            </tr>
+
+            <form id="questions">
+                {% for item in questions %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.submission_time }}</td>
+                <td>{{ item.view_number}}</td>
+                <td>{{ item.vote_number }}</td>
+                <td>{{ item.title }} </td>
+                <td>{{ item.message }}</td>
+                <td>{{ item.image }}</td>
+            </tr>
+            {% endfor %}
+            </form>
+        </table>
     </body>
 </html>

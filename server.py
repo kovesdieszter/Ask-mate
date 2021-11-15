@@ -12,7 +12,7 @@ app = Flask(__name__)
 def main_page():
     header = data_manager.get_header()
     questions = data_manager.get_data()
-    return render_template('list.html', header=header, data=questions)
+    return render_template('list.html', header=header, questions=questions)
 
 
 # Eszter
