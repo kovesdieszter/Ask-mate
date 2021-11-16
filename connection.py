@@ -26,6 +26,19 @@ def get_all_user_story(datatype_file):
 #  Dia
 
 #  Eniko
+def change_vote(question, changer):
+    data = get_all_user_story(DATA_FILE_PATH)
+    with open(DATA_FILE_PATH, 'w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        writer.writeheader()
+        for question_data in data:
+            if question_data['id'] == question['id']:
+                question_data['vote_number'] = int(question_data.get('vote_number', 0)) + changer
+                writer.writerow(question_data)
+            else:
+                writer.writerow(question_data)
+
+
 def write_new_question(new_question):
     new_question = new_question.to_dict()
     data = get_all_user_story(DATA_FILE_PATH)

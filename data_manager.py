@@ -21,6 +21,9 @@ def get_data(data):
 #  Dia
 
 #  Eniko
+def change_vote(question, changer):
+    return connection.change_vote(question, changer)
+
 def write_new_question(new_question):
     return connection.write_new_question(new_question)
 

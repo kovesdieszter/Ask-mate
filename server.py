@@ -38,6 +38,26 @@ def display_question(question_id):
 #  Dia
 
 #  Eniko
+@app.route('/question/<question_id>/vote_up')
+def vote_up(question_id):
+    questions = data_manager.get_data('questions')
+    for q in questions:
+        if q['id'] == question_id:
+            question = q
+            data_manager.change_vote(question, 1)
+    return redirect('/')
+
+
+@app.route('/question/<question_id>/vote_down')
+def vote_down(question_id):
+    questions = data_manager.get_data('questions')
+    for q in questions:
+        if q['id'] == question_id:
+            question = q
+            data_manager.change_vote(question, -1)
+    return redirect('/')
+
+
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'POST':
