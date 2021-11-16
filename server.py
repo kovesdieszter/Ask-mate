@@ -38,9 +38,10 @@ def display_question(question_id):
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
-def post_answer():
+def post_answer(question_id):
     if request.method == 'POST':
-        message = request.form["message"]
+        message = data_manager.write_new_answer(request.form, question_id)
+        return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html')
 #  Dia
 

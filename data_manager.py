@@ -18,6 +18,8 @@ def get_data(data):
 #  Bea
 
 #  Dia
+def write_new_answer(new_answer, question_id):
+    return connection.write_new_answer(new_answer, question_id)
 #  Dia
 
 #  Eniko
