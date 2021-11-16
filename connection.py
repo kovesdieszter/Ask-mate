@@ -28,7 +28,7 @@ def get_all_user_story(datatype_file):
 #  Eniko
 def write_new_question(new_question):
     new_question = new_question.to_dict()
-    data = get_all_user_story()
+    data = get_all_user_story(DATA_FILE_PATH)
     new_id = str(int(data[-1]['id']) + 1)
     submission_time = str(int(time.time()))
     new_question['id'] = new_id
@@ -40,6 +40,21 @@ def write_new_question(new_question):
             writer.writerow(question_data)
         writer.writerow(new_question)
     return new_id
+
+def write_edited_q(id, edited_question):
+    data = get_all_user_story(DATA_FILE_PATH)
+    edited_question = edited_question.to_dict()
+    with open(DATA_FILE_PATH, 'w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        writer.writeheader()
+        for item in data:
+            if item['id'] == id:
+                edited_question['id'] = id
+                edited_question['submission_time'] = item['submission_time']
+                writer.writerow(edited_question)
+            else:
+                writer.writerow(item)
+    return id
 #  Eniko
 
 

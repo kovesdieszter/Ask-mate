@@ -23,5 +23,8 @@ def get_data(data):
 #  Eniko
 def write_new_question(new_question):
     return connection.write_new_question(new_question)
+
+def write_edited_q(question_id, edited_question):
+    return connection.write_edited_q(question_id, edited_question)
 #  Eniko
 
