@@ -2,10 +2,13 @@
 import connection
 
 def get_header():
-    return connection.get_header()
+    return connection.DATA_HEADER
 
-def get_data():
-    return connection.get_all_user_story()
+def get_data(data):
+    if data == "questions":
+        return connection.get_all_user_story(connection.DATA_FILE_PATH)
+    elif data == "answers":
+        return connection.get_all_user_story(connection.ANSWER_FILE_PATH)
 
 
 def delete_question(question_id):

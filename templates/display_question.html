@@ -5,15 +5,20 @@
     <title>Display Question</title>
 </head>
 <body>
+    <a href="/">Main page</a>
+    <a href="{{ url_for('edit_question',question_id=question.id) }}">Edit</a>
+    <a href="{{ url_for('delete_question',question_id=question.id) }}">Delete</a>
     <h2>{{ question['title'] }}</h2>
     <p>{{ question['message'] }}</p>
     <p><img src="{{ question['image'] }}" width="200" height="200" ></p>
 
     <h3>Answers:</h3>
         <ol>{% for answer in answer_texts %}
-            <li>{{ answer }}</li>
+            <li>{{ answer }}</li><br>
         {% endfor %}
         </ol>
+
+<a href="{{ url_for('post_answer',question_id=question.id) }}">Post an answer</a>
 
 </body>
 </html>
