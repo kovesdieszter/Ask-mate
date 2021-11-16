@@ -6,10 +6,6 @@ DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ e
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 
-def get_header():
-    return DATA_HEADER
-
-
 def get_all_user_story():
     data = []
     with open(DATA_FILE_PATH, mode="r") as csv_file:
