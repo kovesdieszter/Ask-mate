@@ -32,6 +32,7 @@ def write_new_answer(new_answer, question_id):
     new_answer['question_id'] = question_id
     new_answer['id'] = new_id
     new_answer['submission_time'] = submission_time
+    new_answer['vote_number'] = 0  # initial vote number
     del new_answer['title']
     with open(ANSWER_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
