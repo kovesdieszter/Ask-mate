@@ -35,6 +35,13 @@ def display_question(question_id):
             answer_texts.append(a['message'])
 
     return render_template('display_question.html', question=question, answer_texts=answer_texts)
+
+
+@app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
+def post_answer():
+    if request.method == 'POST':
+        message = request.form["message"]
+    return render_template('post_answer.html')
 #  Dia
 
 #  Eniko
