@@ -21,6 +21,14 @@ def main_page():
 #  Bea
 
 #  Dia
+@app.route('/question/<question_id>')
+def display_question(question_id):
+    questions = data_manager.get_data()
+    for q in questions:
+        if q['id'] == question_id:
+            question = q
+            break
+    return render_template('display_question.html', question=question)
 #  Dia
 
 #  Eniko
