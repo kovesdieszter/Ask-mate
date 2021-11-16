@@ -28,7 +28,7 @@ def get_all_user_story(datatype_file):
 #  Eniko
 def write_new_question(new_question):
     new_question = new_question.to_dict()
-    data = get_all_user_story()
+    data = get_all_user_story(DATA_FILE_PATH)
     new_id = str(int(data[-1]['id']) + 1)
     submission_time = str(int(time.time()))
     new_question['id'] = new_id
