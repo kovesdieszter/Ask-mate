@@ -32,8 +32,11 @@ def display_question(question_id):
 #  Dia
 
 #  Eniko
-@app.route('/add-question')
+@app.route('/add-question', methods=['GET', 'POST'])
 def new_question():
+    if request.method == 'POST':
+        question_id = data_manager.write_new_question(request.form)
+        return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 #  Eniko
 

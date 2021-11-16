@@ -17,5 +17,7 @@ def get_data():
 #  Dia
 
 #  Eniko
+def write_new_question(new_question):
+    return connection.write_new_question(new_question)
 #  Eniko
 
