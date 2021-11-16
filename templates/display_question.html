@@ -14,9 +14,11 @@
 
     <h3>Answers:</h3>
         <ol>{% for answer in answer_texts %}
-            <li>{{ answer }}</li>
+            <li>{{ answer }}</li><br>
         {% endfor %}
         </ol>
+
+<a href="{{ url_for('post_answer',question_id=question.id) }}">Post an answer</a>
 
 </body>
 </html>

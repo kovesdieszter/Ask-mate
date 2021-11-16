@@ -20,6 +20,8 @@
                 {% for item in header %}
                     <th><strong> {{ item }} </strong></th>
                 {% endfor %}
+                    <th><strong>Vote up</strong></th>
+                    <th><strong>Vote down</strong></th>
                     </form>
 
             </tr>
@@ -35,6 +37,8 @@
                 <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
+                <td><a href={{ url_for('vote_up', question_id=item.id) }}>Up</a> </td>
+                <td><a href={{ url_for('vote_down', question_id=item.id) }}>Down</a></td>
             </tr>
             {% endfor %}
             </form>
