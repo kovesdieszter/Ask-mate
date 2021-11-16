@@ -24,6 +24,9 @@ def main_page():
 #  Dia
 
 #  Eniko
+@app.route('/add-question')
+def new_question():
+    return render_template('add_question_child.html')
 #  Eniko
 
 # Eszter
