@@ -7,7 +7,28 @@
     <body>
         <h1>Questions</h1>
         <a href={{ url_for('new_question') }}>New question</a>
-
+        <form (action="list?order_by="+x+"&order_direction="+y method="post">
+            <p>Sort</p>
+            <select name="order_by">
+                <option value="submission_time" selected>by most recent</option>
+                <option value="title">by title</option>
+                <option value="message">by message</option>
+                <option value="'view_number'">by views</option>
+                <option value="vote_number">by votes</option>
+            </select>
+            <select name="order_direction">
+                <option selected>descending</option>
+                <option>ascending</option>
+            </select>
+            <br>
+            <input type="submit" name="submit"  >
+            <script>
+                function myFunction() {
+                    var x = document.getElementById("order_by").value;
+                    var y = document.getElementById("order_direction").value;
+                }
+            </script>
+        </form>
 
         <table border="1">
             <tr>
@@ -28,7 +49,8 @@
                 <td>{{ item.submission_time }}</td>
                 <td>{{ item.view_number}}</td>
                 <td>{{ item.vote_number }}</td>
-                <td>{{ item.title }} </td>
+                <td>
+                <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
             </tr>
