@@ -12,6 +12,12 @@ app = Flask(__name__)
 def main_page():
     header = data_manager.get_header()
     questions = data_manager.get_data()
+    order_by = request.args.get("order_by")
+    order_direction = request.args.get("order_direction")
+    if order_by == "submission_time":
+        questions = sorted(questions, key=lambda d: d['' + order_by])
+    if order_direction == "des":
+        questions = reversed(questions)
     return render_template('list.html', header=header, questions=questions)
 
 
