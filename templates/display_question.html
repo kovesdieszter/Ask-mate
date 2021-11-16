@@ -5,6 +5,8 @@
     <title>Display Question</title>
 </head>
 <body>
+    <a href="/">Main page</a>
+    <a href={{ url_for('edit_question',question_id=question.id) }}>Edit</a>
     <h2>{{ question['title'] }}</h2>
     <p>{{ question['message'] }}</p>
 </body>
