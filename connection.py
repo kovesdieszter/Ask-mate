@@ -42,7 +42,7 @@ def write_new_question(new_question):
     return new_id
 
 def write_edited_q(id, edited_question):
-    data = get_all_user_story()
+    data = get_all_user_story(DATA_FILE_PATH)
     edited_question = edited_question.to_dict()
     with open(DATA_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)

@@ -43,7 +43,7 @@ def edit_question(question_id):
     if request.method == 'POST':
         edited_question_id = data_manager.write_edited_q(question_id, request.form)
         return redirect(url_for('display_question', question_id=edited_question_id))
-    questions = data_manager.get_data()
+    questions = data_manager.get_data('questions')
     for q in questions:
         if q['id'] == question_id:
             question = q
