@@ -22,7 +22,7 @@ def main_page():
 @app.route('/list', methods=["POST", "GET"])
 def sort_list():
     header = data_manager.get_header()
-    questions = data_manager.get_data()
+    questions = data_manager.get_data("questions")
     order_by = request.args.get("order_by")
     order_direction = request.args.get("order_direction")
     questions = sorted(questions, key=itemgetter(str(order_by)))

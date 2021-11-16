@@ -6,14 +6,14 @@
     </head>
     <body>
         <h1>Questions</h1>
-        <a href={{ url_for('new_question') }}>New question</a>
-        <form (action="list?order_by="+x+"&order_direction="+y method="post">
+        <a href="{{ url_for('new_question') }}">New question</a>
+        <form action="list?order_by="+x+"&order_direction="+y method="post">
             <p>Sort</p>
             <select name="order_by">
                 <option value="submission_time" selected>by most recent</option>
                 <option value="title">by title</option>
                 <option value="message">by message</option>
-                <option value="'view_number'">by views</option>
+                <option value="view_number">by views</option>
                 <option value="vote_number">by votes</option>
             </select>
             <select name="order_direction">
@@ -29,6 +29,10 @@
                 }
             </script>
         </form>
+        <p>
+
+
+        </p>
 
         <table border="1">
             <tr>
