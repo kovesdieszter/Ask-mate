@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def main_page():
     header = data_manager.get_header()
-    questions = data_manager.get_data()
+    questions = data_manager.get_data("questions")
     return render_template('list.html', header=header, questions=questions)
 
 
@@ -23,12 +23,18 @@ def main_page():
 #  Dia
 @app.route('/question/<question_id>')
 def display_question(question_id):
-    questions = data_manager.get_data()
+    questions = data_manager.get_data("questions")
+    answers = data_manager.get_data("answers")
+    answer_texts = []
     for q in questions:
         if q['id'] == question_id:
             question = q
             break
-    return render_template('display_question.html', question=question)
+    for a in answers:
+        if a['question_id'] == question_id:
+            answer_texts.append(a['message'])
+
+    return render_template('display_question.html', question=question, answer_texts=answer_texts)
 #  Dia
 
 #  Eniko
