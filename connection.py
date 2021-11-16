@@ -16,6 +16,20 @@ def get_all_user_story(datatype_file):
             data.append(row)
     return data
 
+
+def delete_q(id):
+    print(id)
+    data = get_all_user_story(DATA_FILE_PATH)
+    with open(DATA_FILE_PATH, mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        writer.writeheader()
+        for item in data:
+            if item['id'] == id:
+                data.remove(item)
+            else:
+                writer.writerow(item)
+
+
 #Eszter
 
 

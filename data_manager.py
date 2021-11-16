@@ -11,6 +11,8 @@ def get_data(data):
         return connection.get_all_user_story(connection.ANSWER_FILE_PATH)
 
 
+def delete_question(question_id):
+    return connection.delete_q(question_id)
 #  Eszter
 
 
