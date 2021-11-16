@@ -28,7 +28,8 @@
                 <td>{{ item.submission_time }}</td>
                 <td>{{ item.view_number}}</td>
                 <td>{{ item.vote_number }}</td>
-                <td>{{ item.title }} </td>
+                <td>
+                <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
             </tr>
