@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 
+from operator import itemgetter
 import data_manager
 
 app = Flask(__name__)
@@ -18,6 +19,16 @@ def main_page():
 # Eszter
 
 #  Bea
+@app.route('/list', methods=["POST", "GET"])
+def sort_list():
+    header = data_manager.get_header()
+    questions = data_manager.get_data("questions")
+    order_by = request.args.get("order_by")
+    order_direction = request.args.get("order_direction")
+    questions = sorted(questions, key=itemgetter(str(order_by)))
+    if order_direction == "descending":
+        questions = reversed(questions)
+    return render_template('list.html', header=header, questions=questions)
 #  Bea
 
 #  Dia

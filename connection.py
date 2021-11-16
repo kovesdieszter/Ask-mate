@@ -66,6 +66,8 @@ def change_vote(question, changer):
         for question_data in data:
             if question_data['id'] == question['id']:
                 question_data['vote_number'] = int(question_data.get('vote_number', 0)) + changer
+                while len(str(question_data['vote_number'])) != 3:
+                    question_data['vote_number'] = "0" + str(question_data['vote_number'])
                 writer.writerow(question_data)
             else:
                 writer.writerow(question_data)
@@ -78,6 +80,8 @@ def write_new_question(new_question):
     submission_time = str(int(time.time()))
     new_question['id'] = new_id
     new_question['submission_time'] = submission_time
+    new_question['view_number'] = '0000'
+    new_question['vote_number'] = '000'
     with open(DATA_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
         writer.writeheader()
