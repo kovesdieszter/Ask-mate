@@ -12,7 +12,7 @@ app = Flask(__name__)
 def main_page():
     header = data_manager.get_header()
     questions = data_manager.get_data()
-    return render_template('list.html', header=header, data=questions)
+    return render_template('list.html', header=header, questions=questions)
 
 
 # Eszter
@@ -24,6 +24,9 @@ def main_page():
 #  Dia
 
 #  Eniko
+@app.route('/add-question')
+def new_question():
+    return render_template('add_question_child.html')
 #  Eniko
 
 # Eszter
