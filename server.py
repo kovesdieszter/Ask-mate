@@ -105,18 +105,10 @@ def new_question():
 
 # Eszter
 
-@app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
+@app.route('/question/<question_id>/delete')
 def delete_question(question_id):
-    if request.method == 'POST':
-        deleted_question_id = data_manager.delete_question(question_id)
-        return redirect('/')
-    questions = data_manager.get_data('questions')
-    question = None
-    for q in questions:
-        if q['id'] == question_id:
-            question = q
-    return render_template('delete_child.html', question=question)
-
+    data_manager.delete_question(question_id)
+    return redirect(url_for("main_page"))
 
 if __name__ == '__main__':
     app.run(
