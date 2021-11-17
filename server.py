@@ -111,8 +111,8 @@ def delete_question(question_id):
     return redirect(url_for("main_page"))
 
 @app.route('/answer/<answer_id>/delete')
-def delete_answer(question_id, answer_id):
-    data_manager.delete_question(question_id)
+def delete_answer(answer_id):
+    data_manager.delete_answer(answer_id)
     return redirect(url_for("display_question"))
 
 if __name__ == '__main__':
