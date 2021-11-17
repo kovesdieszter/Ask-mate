@@ -19,7 +19,6 @@ def get_all_user_story(datatype_file):
 
 
 def delete_q(id):
-    print(id)
     data = get_all_user_story(DATA_FILE_PATH)
     with open(DATA_FILE_PATH, mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
@@ -30,6 +29,17 @@ def delete_q(id):
             else:
                 writer.writerow(item)
 
+
+def delete_a(id):
+    data= get_all_user_story(ANSWER_FILE_PATH)
+    with open(DATA_FILE_PATH, mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        writer.writeheader()
+        for item in data:
+            if item['id'] == id:
+                data.remove(item)
+            else:
+                writer.writerow(item)
 
 #Eszter
 
@@ -58,10 +68,13 @@ def write_new_answer(new_answer, question_id):
 #  Dia
 
 #  Eniko
-def change_vote(question, changer):
-    data = get_all_user_story(DATA_FILE_PATH)
-    with open(DATA_FILE_PATH, 'w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+def change_vote(question, changer, datatype_file):
+    data = get_all_user_story(datatype_file)
+    with open(datatype_file, 'w', newline='') as file:
+        if datatype_file == DATA_FILE_PATH:
+            writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        elif datatype_file == ANSWER_FILE_PATH:
+            writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
         writer.writeheader()
         for question_data in data:
             if question_data['id'] == question['id']:
@@ -90,9 +103,11 @@ def write_new_question(new_question):
         writer.writerow(new_question)
     return new_id
 
-def write_edited_q(id, edited_question):
+
+def write_edited_q(id, edited_question, view=False):
     data = get_all_user_story(DATA_FILE_PATH)
-    edited_question = edited_question.to_dict()
+    if view is False:
+        edited_question = edited_question.to_dict()
     with open(DATA_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
         writer.writeheader()
@@ -100,6 +115,13 @@ def write_edited_q(id, edited_question):
             if item['id'] == id:
                 edited_question['id'] = id
                 edited_question['submission_time'] = item['submission_time']
+                edited_question['vote_number'] = item['vote_number']
+                if view is True:
+                    edited_question['view_number'] = int(edited_question.get('view_number')) + 1
+                    while len(str(edited_question['view_number'])) != 4:
+                        edited_question['view_number'] = "0" + str(edited_question['view_number'])
+                else:
+                    edited_question['view_number'] = item['view_number']
                 writer.writerow(edited_question)
             else:
                 writer.writerow(item)

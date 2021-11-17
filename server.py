@@ -33,20 +33,25 @@ def sort_list():
 
 #  Dia
 @app.route('/question/<question_id>')
-def display_question(question_id):
+def display_question(question_id, view=True):
     questions = data_manager.get_data("questions")
     answers = data_manager.get_data("answers")
     answer_texts = []
     question = None
+    if request.args.get('view') == 'False':
+        view_counter = request.args.get('view')
+    else:
+        view_counter = view
     for q in questions:
         if q['id'] == question_id:
             question = q
+            data_manager.write_edited_q(question_id, question, view_counter)
             break
     for a in answers:
         if a['question_id'] == question_id:
             answer_texts.append(a['message'])
 
-    return render_template('display_question.html', question=question, answer_texts=answer_texts)
+    return render_template('display_question.html', question=question, answer_texts=answer_texts, answers=answers)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -60,6 +65,28 @@ def post_answer(question_id):
         message = data_manager.write_new_answer(request.form, question_id)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
+
+
+@app.route('/answer/<answer_id>/vote_up')
+def vote_answer_up(answer_id):
+    answers = data_manager.get_data('answers')
+    for a in answers:
+        if a['id'] == answer_id:
+            answer = a
+            data_manager.change_vote(answer, 1, "answers")
+    return redirect(url_for("display_question", question_id=answer['question_id']))
+
+
+@app.route('/answer/<answer_id>/vote_down')
+def vote_answer_down(answer_id):
+    answers = data_manager.get_data('answers')
+    for a in answers:
+        if a['id'] == answer_id:
+            answer = a
+            data_manager.change_vote(answer, -1, "answers")
+    return redirect(url_for("display_question", question_id=answer['question_id']))
+
+
 #  Dia
 
 #  Eniko
@@ -69,7 +96,7 @@ def vote_up(question_id):
     for q in questions:
         if q['id'] == question_id:
             question = q
-            data_manager.change_vote(question, 1)
+            data_manager.change_vote(question, 1, "questions")
     return redirect('/')
 
 
@@ -79,7 +106,7 @@ def vote_down(question_id):
     for q in questions:
         if q['id'] == question_id:
             question = q
-            data_manager.change_vote(question, -1)
+            data_manager.change_vote(question, -1, "questions")
     return redirect('/')
 
 
@@ -87,7 +114,7 @@ def vote_down(question_id):
 def edit_question(question_id):
     if request.method == 'POST':
         edited_question_id = data_manager.write_edited_q(question_id, request.form)
-        return redirect(url_for('display_question', question_id=edited_question_id))
+        return redirect(url_for('display_question', question_id=edited_question_id, view=False))
     questions = data_manager.get_data('questions')
     for q in questions:
         if q['id'] == question_id:
@@ -109,6 +136,11 @@ def new_question():
 def delete_question(question_id):
     data_manager.delete_question(question_id)
     return redirect(url_for("main_page"))
+
+@app.route('/answer/<answer_id>/delete')
+def delete_answer(answer_id):
+    data_manager.delete_answer(answer_id)
+    return redirect(url_for("display_question"))
 
 if __name__ == '__main__':
     app.run(
