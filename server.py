@@ -77,14 +77,14 @@ def vote_answer_up(answer_id):
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
-# @app.route('/question/<question_id>/vote_down')
-# def vote_down(question_id):
-#     questions = data_manager.get_data('questions')
-#     for q in questions:
-#         if q['id'] == question_id:
-#             question = q
-#             data_manager.change_vote(question, -1)
-#     return redirect('/')
+@app.route('/answer/<answer_id>/vote_down')
+def vote_answer_down(answer_id):
+    answers = data_manager.get_data('answers')
+    for a in answers:
+        if a['id'] == answer_id:
+            answer = a
+            data_manager.change_vote(answer, -1, "answers")
+    return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 #  Dia
