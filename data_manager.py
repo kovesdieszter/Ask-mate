@@ -31,7 +31,7 @@ def change_vote(question, changer):
 def write_new_question(new_question):
     return connection.write_new_question(new_question)
 
-def write_edited_q(question_id, edited_question):
-    return connection.write_edited_q(question_id, edited_question)
+def write_edited_q(question_id, edited_question, view=False):
+    return connection.write_edited_q(question_id, edited_question, view=view)
 #  Eniko
 

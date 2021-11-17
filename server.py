@@ -33,14 +33,19 @@ def sort_list():
 
 #  Dia
 @app.route('/question/<question_id>')
-def display_question(question_id):
+def display_question(question_id, view=True):
     questions = data_manager.get_data("questions")
     answers = data_manager.get_data("answers")
     answer_texts = []
     question = None
+    if request.args.get('view') == 'False':
+        view_counter = request.args.get('view')
+    else:
+        view_counter = view
     for q in questions:
         if q['id'] == question_id:
             question = q
+            data_manager.write_edited_q(question_id, question, view_counter)
             break
     for a in answers:
         if a['question_id'] == question_id:
@@ -87,7 +92,7 @@ def vote_down(question_id):
 def edit_question(question_id):
     if request.method == 'POST':
         edited_question_id = data_manager.write_edited_q(question_id, request.form)
-        return redirect(url_for('display_question', question_id=edited_question_id))
+        return redirect(url_for('display_question', question_id=edited_question_id, view=False))
     questions = data_manager.get_data('questions')
     for q in questions:
         if q['id'] == question_id:

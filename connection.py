@@ -90,9 +90,11 @@ def write_new_question(new_question):
         writer.writerow(new_question)
     return new_id
 
-def write_edited_q(id, edited_question):
+
+def write_edited_q(id, edited_question, view=False):
     data = get_all_user_story(DATA_FILE_PATH)
-    edited_question = edited_question.to_dict()
+    if view is False:
+        edited_question = edited_question.to_dict()
     with open(DATA_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
         writer.writeheader()
@@ -100,6 +102,13 @@ def write_edited_q(id, edited_question):
             if item['id'] == id:
                 edited_question['id'] = id
                 edited_question['submission_time'] = item['submission_time']
+                edited_question['vote_number'] = item['vote_number']
+                if view is True:
+                    edited_question['view_number'] = int(edited_question.get('view_number')) + 1
+                    while len(str(edited_question['view_number'])) != 4:
+                        edited_question['view_number'] = "0" + str(edited_question['view_number'])
+                else:
+                    edited_question['view_number'] = item['view_number']
                 writer.writerow(edited_question)
             else:
                 writer.writerow(item)
