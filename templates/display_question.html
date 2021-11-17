@@ -13,8 +13,15 @@
     <p><img src="{{ question['image'] }}" width="200" height="200" ></p>
 
     <h3>Answers:</h3>
+<<<<<<< HEAD
         <ol>{% for answer in answer_texts %}
             <li>{{ answer }} <a href="{{ url_for('delete_answer', answer_id=answer.id) }}">Delete</a></li><br>
+=======
+        <ol>{% for answer in answers %}
+            <li>{{ answer['message'] }}</li>{{ answer['vote_number'] }}<br>
+            <a href="{{ url_for("vote_answer_up", answer_id=answer['id']) }}">Vote up</a>
+{#            <a href="{{ url_for("vote_answer_down", answer_id=answer['id']) }}">Vote down</a>#}
+>>>>>>> d085c0cc63c629b5e69e36aaefbd30628edf7880
         {% endfor %}
         </ol>
 
