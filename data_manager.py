@@ -25,8 +25,11 @@ def write_new_answer(new_answer, question_id):
 #  Dia
 
 #  Eniko
-def change_vote(question, changer):
-    return connection.change_vote(question, changer)
+def change_vote(question, changer, datatype):
+    if datatype == "questions":
+        return connection.change_vote(question, changer, connection.DATA_FILE_PATH)
+    elif datatype == "answers":
+        return connection.change_vote(question, changer, connection.ANSWER_FILE_PATH)
 
 def write_new_question(new_question):
     return connection.write_new_question(new_question)

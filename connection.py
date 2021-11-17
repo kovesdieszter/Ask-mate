@@ -58,10 +58,13 @@ def write_new_answer(new_answer, question_id):
 #  Dia
 
 #  Eniko
-def change_vote(question, changer):
-    data = get_all_user_story(DATA_FILE_PATH)
-    with open(DATA_FILE_PATH, 'w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+def change_vote(question, changer, datatype_file):
+    data = get_all_user_story(datatype_file)
+    with open(datatype_file, 'w', newline='') as file:
+        if datatype_file == DATA_FILE_PATH:
+            writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        elif datatype_file == ANSWER_FILE_PATH:
+            writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
         writer.writeheader()
         for question_data in data:
             if question_data['id'] == question['id']:
