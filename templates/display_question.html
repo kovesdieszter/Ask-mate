@@ -14,7 +14,7 @@
 
     <h3>Answers:</h3>
         <ol>{% for answer in answer_texts %}
-            <li>{{ answer }}</li><br>
+            <li>{{ answer }} <a href="{{ url_for('delete_answer',answer_id=answer.id) }}">Delete</a></li><br>
         {% endfor %}
         </ol>
 

@@ -1,8 +1,10 @@
 #  Eszter
 import connection
 
+
 def get_header():
     return connection.DATA_HEADER
+
 
 def get_data(data):
     if data == "questions":
@@ -13,6 +15,10 @@ def get_data(data):
 
 def delete_question(question_id):
     return connection.delete_q(question_id)
+
+
+def delete_answer(question_id, answer_id):
+    return connection.delete_a(question_id, answer_id)
 #  Eszter
 
 
