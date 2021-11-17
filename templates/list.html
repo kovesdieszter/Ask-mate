@@ -3,10 +3,66 @@
     <head>
             <meta charset="utf-8">
             <title>Questions and answers</title>
+        <style>
+            body {
+                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');
+                background-repeat: repeat-y;
+                background-size: cover;
+                }
+            tr td{
+                background-color: #e54fe5;
+                border-style: solid;
+                border-color: #b73fb7;
+            }
+            table{
+                background-color: #af28af;
+                margin-right: 200px;
+                float: left;
+                position: relative;
+            }
+            form{
+                position: absolute;
+                right: 10px;
+                top: 118px;
+                font-size: large;
+                background-color: rgba(55, 147, 255, 0.50);
+                border-style: solid;
+                border-width: thick;
+                border-color: #3793ff;
+                text-align: center;
+            }
+            select{
+                width: 180px;
+                appearance: none;
+                background: lavender;
+                border-style: none;
+            }
+            input{
+                width: 180px;
+                appearance: none;
+                border: none;
+            }
+            p{
+                font-weight: bolder;
+            }
+            h1{
+                text-align: center;
+                background-color: rgba(55, 147, 255, 0.8);
+                border-style: groove;
+                border-color: #322fe5;
+                border-width: medium;
+            }
+            .new{
+                background-color: #da47a6;
+                border-color: #da47a6;
+                border-width: 10px;
+                border-style: solid;
+            }
+        </style>
     </head>
     <body>
         <h1>Questions</h1>
-        <a href="{{ url_for('new_question') }}">New question</a>
+        <a class="new" href="{{ url_for('new_question') }}">New question</a>
         <form action="list?order_by="+x+"&order_direction="+y method="post">
             <p>Sort</p>
             <select name="order_by">
@@ -15,13 +71,13 @@
                 <option value="message">by message</option>
                 <option value="view_number">by views</option>
                 <option value="vote_number">by votes</option>
-            </select>
+            </select><br>
             <select name="order_direction">
                 <option selected>descending</option>
                 <option>ascending</option>
             </select>
             <br>
-            <input type="submit" name="submit"  >
+            <input type="submit" name="submit">
             <script>
                 function myFunction() {
                     var x = document.getElementById("order_by").value;
@@ -34,8 +90,8 @@
 
         </p>
 
-        <table border="1">
-            <tr>
+        <table>
+        <tr>
 
 
                     <form id="header">
