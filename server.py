@@ -74,7 +74,7 @@ def vote_answer_up(answer_id):
         if a['id'] == answer_id:
             answer = a
             data_manager.change_vote(answer, 1, "answers")
-    return redirect(url_for("display_question", question_id=['question_id']))
+    return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 # @app.route('/question/<question_id>/vote_down')
@@ -132,15 +132,18 @@ def new_question():
 
 # Eszter
 
+
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
     data_manager.delete_question(question_id)
     return redirect(url_for("main_page"))
 
+
 @app.route('/answer/<answer_id>/delete')
 def delete_answer(answer_id):
-    data_manager.delete_answer(answer_id)
-    return redirect(url_for("display_question"))
+    deleted_id = data_manager.delete_answer(answer_id)
+    return redirect(url_for("display_question", question_id=deleted_id))
+
 
 if __name__ == '__main__':
     app.run(
