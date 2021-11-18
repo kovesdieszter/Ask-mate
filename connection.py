@@ -29,7 +29,6 @@ def delete_q(id):
 
 
 def delete_a(id):
-    print(id)
     data = get_all_user_story(ANSWER_FILE_PATH)
     with open(ANSWER_FILE_PATH, mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
@@ -125,6 +124,17 @@ def write_edited_q(id, edited_question, view=False):
             else:
                 writer.writerow(item)
     return id
+
+
+def delete_all_answers(question_id):
+    answer_data = get_all_user_story(ANSWER_FILE_PATH)
+    with open(ANSWER_FILE_PATH, mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
+        writer.writeheader()
+        for answer in answer_data:
+            if answer['question_id'] != question_id:
+                writer.writerow(answer)
+
 #  Eniko
 
 
