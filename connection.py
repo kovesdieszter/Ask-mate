@@ -76,7 +76,10 @@ def change_vote(question, changer, datatype_file):
         writer.writeheader()
         for question_data in data:
             if question_data['id'] == question['id']:
-                question_data['vote_number'] = int(question_data.get('vote_number', 0)) + changer
+                if int(question_data.get('vote_number')) == 0 and changer == -1:
+                    question_data['vote_number'] = 0  # Do not -1 from vote number if it is already zero
+                else:
+                    question_data['vote_number'] = int(question_data.get('vote_number', 0)) + changer
                 while len(str(question_data['vote_number'])) != 3:
                     question_data['vote_number'] = "0" + str(question_data['vote_number'])
                 writer.writerow(question_data)
