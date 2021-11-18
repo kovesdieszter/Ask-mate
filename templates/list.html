@@ -96,7 +96,7 @@
 
                     <form id="header">
                 {% for item in header %}
-                    <th><strong> {{ item }} </strong></th>
+                    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
                 {% endfor %}
                     <th><strong>Vote up</strong></th>
                     <th><strong>Vote down</strong></th>
