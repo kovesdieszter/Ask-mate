@@ -136,6 +136,7 @@ def new_question():
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
     data_manager.delete_question(question_id)
+    data_manager.delete_all_answers(question_id)
     return redirect(url_for("main_page"))
 
 
