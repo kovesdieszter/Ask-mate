@@ -3,28 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Display Question</title>
+    <style>
+        body {
+                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');
+                background-repeat: repeat-y;
+                background-size: cover;
+                }
+        h3{
+                text-align: center;
+                background-color: rgba(55, 147, 255, 0.8);
+                border-style: groove;
+                border-color: #322fe5;
+                border-width: medium;
+            }
+        h2{
+                background-color: rgba(205, 118, 255, 0.8);
+                border-style: solid;
+                border-color: #d92fe5;
+                border-width: medium;
+                text-align: center;
+            }
+        .med{
+                background-color: #f862c3;
+                border-color: #f36ec0;
+                border-width: 10px;
+                border-style: solid;
+            }
+        ol{
+            float: left;
+        }
+        .div1{
+            background-color: #f165ff;
+            border-style: solid;
+            border-color: transparent;
+            border-width: 20px;
+        }
+        .post {
+            float: right;
+            background-color: cyan;
+            border-style: solid;
+            border-width: 10px;
+            border-color: transparent;
+        }
+        .qu{
+            background-color: rgba(0, 255, 255, 0.5);
+            border-style: solid;
+            border-color: #d92fe5;
+            border-width: medium;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <a href="/">Main page</a>
-    <a href="{{ url_for('edit_question',question_id=question.id) }}">Edit</a>
-    <a href="{{ url_for('delete_question',question_id=question.id) }}">Delete</a>
+    <a class="med" href="/">Main page</a>
+    <a class="med" href="{{ url_for('edit_question',question_id=question.id) }}">Edit</a>
+    <a class="med" href="{{ url_for('delete_question',question_id=question.id) }}">Delete</a>
     <h2>{{ question['title'] }}</h2>
-    <p>{{ question['message'] }}</p>
-    <p><img src="{{ question['image'] }}" width="200" height="200" ></p>
-
+    <div class="qu">
+        <p>{{ question['message'] }}</p><br>
+        <p><img src="{{ question['image'] }}" width="200" height="200" ></p>
+    </div>
     <h3>Answers:</h3>
 
         <ol>{% for answer in answers %}
             {% if answer.question_id == question.id %}
-            <li>{{ answer['message'] }} <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}">Delete</a> </li>{{ answer['vote_number'] }}<br>
+            <div class="div1">
+            <li class="new">{{ answer['message'] }} <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}">Delete</a> </li>{{ answer['vote_number'] }}<br>
             <a href="{{ url_for('vote_answer_up', answer_id=answer['id']) }}">Vote up</a>
                 <a href="{{ url_for('vote_answer_down', answer_id=answer['id']) }}">Vote down</a>
+            </div><br>
             {% endif %}
 
             {% endfor %}
         </ol>
 
-<a href="{{ url_for('post_answer',question_id=question.id) }}">Post an answer</a>
+<a class="post" href="{{ url_for('post_answer',question_id=question.id) }}">Post an answer</a>
 
 </body>
 </html>
