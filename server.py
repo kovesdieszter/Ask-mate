@@ -132,15 +132,18 @@ def new_question():
 
 # Eszter
 
+
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
     data_manager.delete_question(question_id)
     return redirect(url_for("main_page"))
 
+
 @app.route('/answer/<answer_id>/delete')
 def delete_answer(answer_id):
-    data_manager.delete_answer(answer_id)
-    return redirect(url_for("display_question"))
+    deleted_id = data_manager.delete_answer(answer_id)
+    return redirect(url_for("display_question", question_id=deleted_id))
+
 
 if __name__ == '__main__':
     app.run(
