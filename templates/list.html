@@ -101,6 +101,7 @@
                     <th><strong>Vote number</strong></th>
                     <th><strong>Title</strong></th>
                     <th><strong>Message</strong></th>
+                    <th><strong>Image</strong></th>
                     <th><strong>Vote up</strong></th>
                     <th><strong>Vote down</strong></th>
                     </form>
@@ -118,8 +119,12 @@
                 <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
-                <td><a href={{ url_for('vote_up', question_id=item.id) }}>Up</a> </td>
-                <td><a href={{ url_for('vote_down', question_id=item.id) }}>Down</a></td>
+                <td><a href={{ url_for('vote_up', question_id=item.id) }}>
+                    <img src="../static/up.png" width="20" alt="Vote Up">
+                </a> </td>
+                <td><a href={{ url_for('vote_down', question_id=item.id) }}>
+                    <img src="../static/down.png" width="20" alt="Vote Down">
+                </a></td>
             </tr>
             {% endfor %}
             </form>
