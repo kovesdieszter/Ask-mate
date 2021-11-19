@@ -88,7 +88,7 @@ def change_vote(question, changer, datatype_file):
                 writer.writerow(question_data)
 
 
-def write_new_question(new_question):
+def write_new_question(new_question, file_name):
     new_question = new_question.to_dict()
     data = get_all_user_story(DATA_FILE_PATH)
     new_id = str(int(data[-1]['id']) + 1)
@@ -97,6 +97,7 @@ def write_new_question(new_question):
     new_question['submission_time'] = submission_time
     new_question['view_number'] = '0000'
     new_question['vote_number'] = '000'
+    new_question['image'] = file_name
     with open(DATA_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
         writer.writeheader()
