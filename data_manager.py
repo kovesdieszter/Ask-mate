@@ -37,8 +37,8 @@ def change_vote(question, changer, datatype):
     elif datatype == "answers":
         return connection.change_vote(question, changer, connection.ANSWER_FILE_PATH)
 
-def write_new_question(new_question):
-    return connection.write_new_question(new_question)
+def write_new_question(new_question, file_name):
+    return connection.write_new_question(new_question, file_name)
 
 def write_edited_q(question_id, edited_question, view=False):
     return connection.write_edited_q(question_id, edited_question, view=view)

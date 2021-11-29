@@ -66,7 +66,7 @@
     <div class="qu">
         <p>{{ question['message'] }}</p><br>
         {% if question['image'] %}
-        <p><img src="{{ question['image'] }}" width="200" height="200" ></p>
+        <p><img src="../static/{{ question['image'] }}" width="200" height="200" ></p>
         {% endif %}
     </div>
     <h3>Answers:</h3>

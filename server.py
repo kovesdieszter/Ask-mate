@@ -2,8 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for
 
 from operator import itemgetter
 import data_manager
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = "./static"
 
 
 #Eszter
@@ -125,7 +128,10 @@ def edit_question(question_id):
 @app.route('/add-question', methods=['GET', 'POST'])
 def new_question():
     if request.method == 'POST':
-        question_id = data_manager.write_new_question(request.form)
+        file = request.files['image']
+        name = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], name))
+        question_id = data_manager.write_new_question(request.form, name)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 #  Eniko

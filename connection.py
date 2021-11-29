@@ -77,7 +77,10 @@ def change_vote(question, changer, datatype_file):
         writer.writeheader()
         for question_data in data:
             if question_data['id'] == question['id']:
-                question_data['vote_number'] = int(question_data.get('vote_number', 0)) + changer
+                if int(question_data.get('vote_number')) == 0 and changer == -1:
+                    question_data['vote_number'] = 0  # Do not -1 from vote number if it is already zero
+                else:
+                    question_data['vote_number'] = int(question_data.get('vote_number', 0)) + changer
                 while len(str(question_data['vote_number'])) != 3:
                     question_data['vote_number'] = "0" + str(question_data['vote_number'])
                 writer.writerow(question_data)
@@ -85,7 +88,7 @@ def change_vote(question, changer, datatype_file):
                 writer.writerow(question_data)
 
 
-def write_new_question(new_question):
+def write_new_question(new_question, file_name):
     new_question = new_question.to_dict()
     data = get_all_user_story(DATA_FILE_PATH)
     new_id = str(int(data[-1]['id']) + 1)
@@ -94,6 +97,7 @@ def write_new_question(new_question):
     new_question['submission_time'] = submission_time
     new_question['view_number'] = '0000'
     new_question['vote_number'] = '000'
+    new_question['image'] = file_name
     with open(DATA_FILE_PATH, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
         writer.writeheader()
