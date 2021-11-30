@@ -1,3 +1,15 @@
+### Enikő
+
+from psycopg2 import sql
+import datetime
+from psycopg2.extras import RealDictCursor
+
+import psycopg2
+import psycopg2.extras
+### Enikő
+
+
+
 #  Eszter
 import connection
 
@@ -37,8 +49,21 @@ def change_vote(question, changer, datatype):
     elif datatype == "answers":
         return connection.change_vote(question, changer, connection.ANSWER_FILE_PATH)
 
-def write_new_question(new_question, file_name):
-    return connection.write_new_question(new_question, file_name)
+
+@connection.connection_handler
+def write_new_question(cursor, new_question):
+    dt = datetime.datetime.now()
+    submission_time = dt.date()
+    query = """
+        INSERT INTO question (submission_time, title, message)
+        VALUES (%s, %s, %s)
+        returning question"""
+    cursor.execute(query, (submission_time, new_question['title'], new_question['message'],))
+    query = """
+        SELECT max(id) 
+        FROM question"""
+    cursor.execute(query)
+    return cursor.fetchone()
 
 def write_edited_q(question_id, edited_question, view=False):
     return connection.write_edited_q(question_id, edited_question, view=view)
