@@ -17,49 +17,30 @@ def get_all_user_story(cursor):
     return cursor.fetchall()
 
 
-def delete_q(cursor, id):
-    data = get_all_user_story(DATA_FILE_PATH)
-    with open(DATA_FILE_PATH, mode='w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
-        writer.writeheader()
-        for item in data:
-            if item['id'] != id:
-                writer.writerow(item)
+@connection.connection_handler
+def delete_question(cursor, question_id):
+    query = """
+    DELETE *
+    FROM question
+    WHERE id = %(val)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val': question_id})
+    return cursor.fetchall()
 
 
-def delete_a(id):
-    print(id)
-    data = get_all_user_story(ANSWER_FILE_PATH)
-    with open(ANSWER_FILE_PATH, mode='w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
-        writer.writeheader()
-        for item in data:
-            if item['id'] != id:
-                writer.writerow(item)
-            else:
-                question_id = item['question_id']
-    return question_id
+@connection.connection_handler
+def delete_answer(cursor, answer_id):
+    query = """
+    DELETE *
+    FROM answer
+    WHERE id = %(val)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val': answer_id})
+    return cursor.fetchall()
 
 
-
-
-def get_header():
-    return connection.DATA_HEADER
-
-
-def get_data(data):
-    if data == "questions":
-        return connection.get_all_user_story(connection.DATA_FILE_PATH)
-    elif data == "answers":
-        return connection.get_all_user_story(connection.ANSWER_FILE_PATH)
-
-
-def delete_question(question_id):
-    return connection.delete_q(question_id)
-
-
-def delete_answer(answer_id):
-    return connection.delete_a(answer_id)
 #  Eszter
 
 
