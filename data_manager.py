@@ -55,7 +55,8 @@ def write_new_answer(new_answer, question_id):
 
 @connection.connection_handler
 def write_new_answer(cursor, question_id, message, image):
-    submission_time = datetime.datetime.now()
+    dt = datetime.datetime.now()
+    submission_time = dt.date()
     vote_number = 0  # initial vote number
 
     query = '''

@@ -61,7 +61,7 @@ def display_question(question_id, view=True):
 def post_answer(question_id):
     questions = data_manager.get_all_user_story()
     for q in questions:
-        if q['id'] == question_id:
+        if q['id'] == int(question_id):
             question_title = q['title']
             break
     if request.method == 'POST':
