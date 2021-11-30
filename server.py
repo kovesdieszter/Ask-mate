@@ -98,11 +98,11 @@ def vote_answer_down(answer_id):
 #  Eniko
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
-    questions = data_manager.get_data('questions')
+    """questions = data_manager.get_all_user_story()
     for q in questions:
         if q['id'] == question_id:
-            question = q
-            data_manager.change_vote(question, 1, "questions")
+            question = q"""
+    data_manager.change_vote(question_id, 1)
     return redirect('/')
 
 

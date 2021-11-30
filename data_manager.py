@@ -105,7 +105,7 @@ def write_new_question(cursor, new_question):
     dt = datetime.datetime.now()
     submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
-        INSERT INTO question (submission_time, title, message)
+        INSERT INTO question (submission_time, view_number, vote_number, title, message)
         VALUES (%s, %s, %s, %s, %s)
         returning question"""
     cursor.execute(query, (submission_time, 0000, 0000, new_question['title'], new_question['message'],))
@@ -127,13 +127,13 @@ def write_edited_q(cursor, question_id, edited_question):
 #  Eniko
 
 @connection.connection_handler
-def change_vote(cursor, question, changer, datatype):
+def change_vote(cursor, question_id, changer):
     query = """
-        UPDATE %s
+        UPDATE question
         SET vote_number = vote_number + %s
         WHERE id = %s
-        returning %s"""
-    cursor.execute(query, (datatype, changer, question))
+        returning question"""
+    cursor.execute(query, (changer, question_id,))
 
 
 @connection.connection_handler
