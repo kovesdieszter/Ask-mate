@@ -5,7 +5,20 @@ from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 import datetime
 import connection
+import sys
 #Eszter
+
+@connection.connection_handler
+def get_question_header(cursor):
+    query = """
+    SELECT coloumn_name,*
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'question'
+    ORDER BY ORDINAL_POSITION
+    """
+    cursor.execute(query)
+    return cursor.fetchone()
+
 
 
 @connection.connection_handler
@@ -16,6 +29,15 @@ def get_all_user_story(cursor):
         ORDER BY submission_time """
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_answer(cursor):
+    query = """
+        SELECT *
+        FROM answer
+        ORDER BY submission_time """
+    cursor.execute(query)
 
 
 @connection.connection_handler
