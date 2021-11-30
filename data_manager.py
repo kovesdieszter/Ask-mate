@@ -64,7 +64,7 @@ def change_vote(question, changer, datatype):
 @connection.connection_handler
 def write_new_question(cursor, new_question):
     dt = datetime.datetime.now()
-    submission_time = dt.date()
+    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
         INSERT INTO question (submission_time, title, message)
         VALUES (%s, %s, %s)
