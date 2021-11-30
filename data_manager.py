@@ -1,5 +1,46 @@
-#  Eszter
+from typing import List, Dict
+
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
+
 import connection
+#Eszter
+
+
+@connection.connection_handler
+def get_all_user_story(cursor):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+def delete_q(cursor, id):
+    data = get_all_user_story(DATA_FILE_PATH)
+    with open(DATA_FILE_PATH, mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
+        writer.writeheader()
+        for item in data:
+            if item['id'] != id:
+                writer.writerow(item)
+
+
+def delete_a(id):
+    print(id)
+    data = get_all_user_story(ANSWER_FILE_PATH)
+    with open(ANSWER_FILE_PATH, mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
+        writer.writeheader()
+        for item in data:
+            if item['id'] != id:
+                writer.writerow(item)
+            else:
+                question_id = item['question_id']
+    return question_id
+
+
 
 
 def get_header():

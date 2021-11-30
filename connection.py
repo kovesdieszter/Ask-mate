@@ -1,7 +1,4 @@
 # Eszter
-import csv
-import os
-import time
 
 ####################################
 # Creates a decorator to handle the database connection/cursor opening/closing.
@@ -59,47 +56,6 @@ def connection_handler(function):
 
 #####################################
 
-
-
-
-DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data/question.csv'
-ANSWER_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data/answer.csv'
-DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-
-
-def get_all_user_story(datatype_file):
-    data = []
-    with open(datatype_file, mode="r") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            data.append(row)
-    return data
-
-
-def delete_q(id):
-    data = get_all_user_story(DATA_FILE_PATH)
-    with open(DATA_FILE_PATH, mode='w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=DATA_HEADER)
-        writer.writeheader()
-        for item in data:
-            if item['id'] != id:
-                writer.writerow(item)
-
-
-def delete_a(id):
-    print(id)
-    data = get_all_user_story(ANSWER_FILE_PATH)
-    with open(ANSWER_FILE_PATH, mode='w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=ANSWER_HEADER)
-        writer.writeheader()
-        for item in data:
-            if item['id'] != id:
-                writer.writerow(item)
-            else:
-                question_id = item['question_id']
-    return question_id
-#Eszter
 
 
 #  Bea
