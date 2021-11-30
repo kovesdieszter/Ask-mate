@@ -1,36 +1,47 @@
-### Enikő
+#  Eszter
+from typing import List, Dict
 
 from psycopg2 import sql
-import datetime
 from psycopg2.extras import RealDictCursor
-
-import psycopg2
-import psycopg2.extras
-### Enikő
-
-
-
-#  Eszter
+import datetime
 import connection
+#Eszter
 
 
-def get_header():
-    return connection.DATA_HEADER
+@connection.connection_handler
+def get_all_user_story(cursor):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
-def get_data(data):
-    if data == "questions":
-        return connection.get_all_user_story(connection.DATA_FILE_PATH)
-    elif data == "answers":
-        return connection.get_all_user_story(connection.ANSWER_FILE_PATH)
+@connection.connection_handler
+def delete_question(cursor, question_id):
+    query = """
+    DELETE *
+    FROM question
+    WHERE id = %(val)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val': question_id})
+    return cursor.fetchall()
 
 
-def delete_question(question_id):
-    return connection.delete_q(question_id)
+@connection.connection_handler
+def delete_answer(cursor, answer_id):
+    query = """
+    DELETE *
+    FROM answer
+    WHERE id = %(val)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val': answer_id})
+    return cursor.fetchall()
 
 
-def delete_answer(answer_id):
-    return connection.delete_a(answer_id)
 #  Eszter
 
 
