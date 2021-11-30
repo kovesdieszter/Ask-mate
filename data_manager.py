@@ -9,17 +9,6 @@ import sys
 #Eszter
 
 
-@connection.connection_handler
-def get_question_header(cursor):
-    query = """
-    SELECT *
-    FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'question'
-    ORDER BY ORDINAL_POSITION
-    """
-    cursor.execute(query)
-    return cursor.fetchone()
-
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
@@ -41,6 +30,7 @@ def get_all_answer(cursor):
         FROM answer
         ORDER BY submission_time """
     cursor.execute(query)
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -124,6 +114,8 @@ def write_edited_q(cursor, question_id, edited_question):
         WHERE id = %s 
         returning question"""
     cursor.execute(query, (edited_question['title'], edited_question['message'], question_id),)
+# def write_edited_q(question_id, edited_question, view=False):
+#     return connection.write_edited_q(question_id, edited_question, view=view)
 #  Eniko
 
 @connection.connection_handler
