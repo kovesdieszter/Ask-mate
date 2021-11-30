@@ -14,9 +14,9 @@ app.config['UPLOAD_FOLDER'] = "./static"
 
 @app.route('/')
 def main_page():
-    header = data_manager.get_header()
-    questions = data_manager.get_data("questions")
-    return render_template('list.html', header=header, questions=questions)
+   # header = data_manager.get_header()
+    questions = data_manager.get_all_user_story()
+    return render_template('list.html', questions=questions)
 
 
 # Eszter
@@ -37,8 +37,8 @@ def sort_list():
 #  Dia
 @app.route('/question/<question_id>')
 def display_question(question_id, view=True):
-    questions = data_manager.get_data("questions")
-    answers = data_manager.get_data("answers")
+    questions = data_manager.get_all_user_story()
+   # answers = data_manager.get_data("answers")
     answer_texts = []
     question = None
     if request.args.get('view') == 'False':
@@ -130,10 +130,10 @@ def edit_question(question_id):
 @app.route('/add-question', methods=['GET', 'POST'])
 def new_question():
     if request.method == 'POST':
-        file = request.files['image']
+        """file = request.files['image']
         name = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], name))
-        question_id = data_manager.write_new_question(request.form, name)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], name))"""
+        question_id = data_manager.write_new_question(request.form)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 #  Eniko

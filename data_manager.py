@@ -1,25 +1,47 @@
 #  Eszter
-import connection
+from typing import List, Dict
+
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
 import datetime
+import connection
+#Eszter
 
 
-def get_header():
-    return connection.DATA_HEADER
+@connection.connection_handler
+def get_all_user_story(cursor):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
-def get_data(data):
-    if data == "questions":
-        return connection.get_all_user_story(connection.DATA_FILE_PATH)
-    elif data == "answers":
-        return connection.get_all_user_story(connection.ANSWER_FILE_PATH)
+@connection.connection_handler
+def delete_question(cursor, question_id):
+    query = """
+    DELETE *
+    FROM question
+    WHERE id = %(val)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val': question_id})
+    return cursor.fetchall()
 
 
-def delete_question(question_id):
-    return connection.delete_q(question_id)
+@connection.connection_handler
+def delete_answer(cursor, answer_id):
+    query = """
+    DELETE *
+    FROM answer
+    WHERE id = %(val)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val': answer_id})
+    return cursor.fetchall()
 
 
-def delete_answer(answer_id):
-    return connection.delete_a(answer_id)
 #  Eszter
 
 
@@ -55,8 +77,21 @@ def change_vote(question, changer, datatype):
     elif datatype == "answers":
         return connection.change_vote(question, changer, connection.ANSWER_FILE_PATH)
 
-def write_new_question(new_question, file_name):
-    return connection.write_new_question(new_question, file_name)
+
+@connection.connection_handler
+def write_new_question(cursor, new_question):
+    dt = datetime.datetime.now()
+    submission_time = dt.date()
+    query = """
+        INSERT INTO question (submission_time, title, message)
+        VALUES (%s, %s, %s)
+        returning question"""
+    cursor.execute(query, (submission_time, new_question['title'], new_question['message'],))
+    query = """
+        SELECT max(id) 
+        FROM question"""
+    cursor.execute(query)
+    return cursor.fetchone()
 
 def write_edited_q(question_id, edited_question, view=False):
     return connection.write_edited_q(question_id, edited_question, view=view)
