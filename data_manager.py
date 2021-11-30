@@ -8,17 +8,9 @@ import connection
 import sys
 #Eszter
 
-@connection.connection_handler
-def get_question_header(cursor):
-    query = """
-    SELECT coloumn_name,*
-    FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'question'
-    ORDER BY ORDINAL_POSITION
-    """
-    cursor.execute(query)
-    return cursor.fetchone()
 
+QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 @connection.connection_handler
