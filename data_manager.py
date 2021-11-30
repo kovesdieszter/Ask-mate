@@ -30,6 +30,7 @@ def get_all_answer(cursor):
         FROM answer
         ORDER BY submission_time """
     cursor.execute(query)
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -108,7 +109,7 @@ def write_new_question(cursor, new_question):
     cursor.execute(query)
     return cursor.fetchone()
 
-def write_edited_q(question_id, edited_question, view=False):
-    return connection.write_edited_q(question_id, edited_question, view=view)
+# def write_edited_q(question_id, edited_question, view=False):
+#     return connection.write_edited_q(question_id, edited_question, view=view)
 #  Eniko
 

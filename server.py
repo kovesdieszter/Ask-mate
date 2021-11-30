@@ -39,6 +39,7 @@ def sort_list():
 def display_question(question_id, view=True):
     questions = data_manager.get_all_user_story()
     answers = data_manager.get_all_answer()
+    question_id = int(question_id)
 
     answer_texts = []
     question = None
@@ -51,11 +52,11 @@ def display_question(question_id, view=True):
             question = q
             data_manager.write_edited_q(question_id, question, view_counter)
             break
-    for a in answers:
-        if a['question_id'] == question_id:
-            answer_texts.append(a['message'])
+    # for a in answers:
+    #     if a['question_id'] == int(question_id)+1:
+    #         answer_texts.append(a['message'])
 
-    return render_template('display_question.html', question=question, answer_texts=answer_texts, answers=answers)
+    return render_template('display_question.html', question=question, answers=answers)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
