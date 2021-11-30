@@ -37,24 +37,12 @@ def sort_list():
 #  Dia
 @app.route('/question/<question_id>')
 def display_question(question_id, view=True):
-    questions = data_manager.get_all_user_story()
+    question = data_manager.get_question_data_by_id(question_id)
     answers = data_manager.get_all_answer()
-    question_id = int(question_id)
-
-    answer_texts = []
-    question = None
     if request.args.get('view') == 'False':
         view_counter = request.args.get('view')
     else:
         view_counter = view
-    for q in questions:
-        if q['id'] == question_id:
-            question = q
-            data_manager.write_edited_q(question_id, question, view_counter)
-            break
-    # for a in answers:
-    #     if a['question_id'] == int(question_id)+1:
-    #         answer_texts.append(a['message'])
 
     return render_template('display_question.html', question=question, answers=answers)
 
@@ -146,6 +134,7 @@ def new_question():
 
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
+    print(question_id)
     data_manager.delete_question(question_id)
     return redirect(url_for("main_page"))
 

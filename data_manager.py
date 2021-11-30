@@ -36,7 +36,7 @@ def get_all_answer(cursor):
 @connection.connection_handler
 def delete_question(cursor, question_id):
     query = """
-    DELETE *
+    DELETE
     FROM question
     WHERE id = %(val)s
     RETURNING *
@@ -48,7 +48,7 @@ def delete_question(cursor, question_id):
 @connection.connection_handler
 def delete_answer(cursor, answer_id):
     query = """
-    DELETE *
+    DELETE
     FROM answer
     WHERE id = %(val)s
     RETURNING *
@@ -131,7 +131,7 @@ def change_vote(cursor, question_id, changer):
 @connection.connection_handler
 def get_question_data_by_id(cursor, question_id):
     query = """
-        SELECT title, message
+        SELECT *
         FROM question
         WHERE id = %s"""
     cursor.execute(query, (question_id,))
