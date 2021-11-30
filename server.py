@@ -59,13 +59,15 @@ def display_question(question_id, view=True):
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def post_answer(question_id):
-    questions = data_manager.get_data("questions")
+    questions = data_manager.get_all_user_story()
     for q in questions:
         if q['id'] == question_id:
             question_title = q['title']
             break
     if request.method == 'POST':
-        message = data_manager.write_new_answer(request.form, question_id)
+        image = request.args.get('image')
+        message = request.args.get('message')
+        data_manager.write_new_answer(question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
 
