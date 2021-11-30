@@ -14,9 +14,9 @@ app.config['UPLOAD_FOLDER'] = "./static"
 
 @app.route('/')
 def main_page():
-    #header = data_manager.get_header()
+    header = data_manager.get_question_header()
     questions = data_manager.get_all_user_story()
-    return render_template('list.html', questions=questions)
+    return render_template('list.html', header=header, questions=questions)
 
 
 # Eszter
