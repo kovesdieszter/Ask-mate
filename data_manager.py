@@ -87,29 +87,52 @@ def write_new_answer(cursor, question_id, message, image):
 #  Dia
 
 #  Eniko
-def change_vote(question, changer, datatype):
-    if datatype == "questions":
-        return connection.change_vote(question, changer, connection.DATA_FILE_PATH)
-    elif datatype == "answers":
-        return connection.change_vote(question, changer, connection.ANSWER_FILE_PATH)
+
 
 
 @connection.connection_handler
 def write_new_question(cursor, new_question):
     dt = datetime.datetime.now()
-    submission_time = dt.date()
+    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
         INSERT INTO question (submission_time, title, message)
-        VALUES (%s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s)
         returning question"""
-    cursor.execute(query, (submission_time, new_question['title'], new_question['message'],))
+    cursor.execute(query, (submission_time, 0000, 0000, new_question['title'], new_question['message'],))
     query = """
         SELECT max(id) 
         FROM question"""
     cursor.execute(query)
     return cursor.fetchone()
 
+
+@connection.connection_handler
+def write_edited_q(cursor, question_id, edited_question):
+    query = """
+        UPDATE question
+        SET title = %s, message = %s
+        WHERE id = %s 
+        returning question"""
+    cursor.execute(query, (edited_question['title'], edited_question['message'], question_id),)
 # def write_edited_q(question_id, edited_question, view=False):
 #     return connection.write_edited_q(question_id, edited_question, view=view)
 #  Eniko
 
+@connection.connection_handler
+def change_vote(cursor, question, changer, datatype):
+    query = """
+        UPDATE %s
+        SET vote_number = vote_number + %s
+        WHERE id = %s
+        returning %s"""
+    cursor.execute(query, (datatype, changer, question))
+
+
+@connection.connection_handler
+def get_question_data_by_id(cursor, question_id):
+    query = """
+        SELECT title, message
+        FROM question
+        WHERE id = %s"""
+    cursor.execute(query, (question_id,))
+    return cursor.fetchone()

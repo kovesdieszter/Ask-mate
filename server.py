@@ -122,10 +122,11 @@ def edit_question(question_id):
     if request.method == 'POST':
         edited_question_id = data_manager.write_edited_q(question_id, request.form)
         return redirect(url_for('display_question', question_id=edited_question_id, view=False))
-    questions = data_manager.get_data('questions')
+    """questions = data_manager.get_all_user_story()
     for q in questions:
         if q['id'] == question_id:
-            question = q
+            question = q"""
+    question = data_manager.get_question_data_by_id(question_id)
     return render_template('edit_child.html', question=question)
 
 
@@ -135,7 +136,7 @@ def new_question():
         """file = request.files['image']
         name = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], name))"""
-        question_id = data_manager.write_new_question(request.form)
+        question_id = data_manager.write_new_question(request.form)['max']
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 #  Eniko
