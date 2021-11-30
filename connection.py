@@ -105,7 +105,7 @@ def change_vote(question, changer, datatype_file):
             else:
                 writer.writerow(question_data)
 
-
+"""
 def write_new_question(new_question, file_name):
     new_question = new_question.to_dict()
     data = get_all_user_story(DATA_FILE_PATH)
@@ -122,7 +122,7 @@ def write_new_question(new_question, file_name):
         for question_data in data:
             writer.writerow(question_data)
         writer.writerow(new_question)
-    return new_id
+    return new_id"""
 
 
 def write_edited_q(id, edited_question, view=False):
