@@ -8,17 +8,9 @@ import connection
 import sys
 #Eszter
 
-@connection.connection_handler
-def get_question_header(cursor):
-    query = """
-    SELECT coloumn_name,*
-    FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'question'
-    ORDER BY ORDINAL_POSITION
-    """
-    cursor.execute(query)
-    return cursor.fetchone()
 
+QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 @connection.connection_handler
@@ -73,6 +65,24 @@ def delete_answer(cursor, answer_id):
 #  Dia
 def write_new_answer(new_answer, question_id):
     return connection.write_new_answer(new_answer, question_id)
+
+
+@connection.connection_handler
+def write_new_answer(cursor, question_id, message, image):
+    dt = datetime.datetime.now()
+    submission_time = dt.date()
+    vote_number = 0  # initial vote number
+
+    query = '''
+                INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+                VALUES (%(s_time)s, %(vt_nr)s, %(q_id)s, %(m_sage)s, %(im_g)s)
+                RETURNING *
+                '''
+
+    cursor.execute(query, {'s_time': submission_time, 'vt_nr': vote_number, 'q_id': question_id, 'm_sage': message, 'im_g': image})
+    return cursor.fetchall()
+
+
 #  Dia
 
 #  Eniko

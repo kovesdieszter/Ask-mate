@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = "./static"
 
 @app.route('/')
 def main_page():
-    header = data_manager.get_question_header()
+    header = data_manager.QUESTION_HEADER
     questions = data_manager.get_all_user_story()
     return render_template('list.html', header=header, questions=questions)
 
@@ -38,7 +38,8 @@ def sort_list():
 @app.route('/question/<question_id>')
 def display_question(question_id, view=True):
     questions = data_manager.get_all_user_story()
-   # answers = data_manager.get_data("answers")
+    answers = data_manager.get_all_answer()
+
     answer_texts = []
     question = None
     if request.args.get('view') == 'False':
@@ -59,13 +60,15 @@ def display_question(question_id, view=True):
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def post_answer(question_id):
-    questions = data_manager.get_data("questions")
+    questions = data_manager.get_all_user_story()
     for q in questions:
-        if q['id'] == question_id:
+        if q['id'] == int(question_id):
             question_title = q['title']
             break
     if request.method == 'POST':
-        message = data_manager.write_new_answer(request.form, question_id)
+        image = request.args.get('image')
+        message = request.args.get('message')
+        data_manager.write_new_answer(question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
 
