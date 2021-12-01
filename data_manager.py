@@ -14,11 +14,11 @@ ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message
 
 
 @connection.connection_handler
-def get_all_user_story(cursor):
-    query = """
+def get_all_user_story(cursor, order='submission_time', direction='ASC'):
+    query = f"""
         SELECT *
         FROM question
-        ORDER BY submission_time """
+        ORDER BY {order} {direction}"""
     cursor.execute(query)
     return cursor.fetchall()
 

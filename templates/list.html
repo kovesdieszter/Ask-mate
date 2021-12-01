@@ -63,18 +63,18 @@
     <body>
         <h1>Questions</h1>
         <a class="new" href="{{ url_for('new_question') }}">New question</a>
-        <form action="list?order_by="+x+"&order_direction="+y method="post">
+        <form action="list">
             <p>Sort</p>
             <select name="order_by">
-                <option value="submission_time" selected>by most recent</option>
+                <option value="submission_time">by most recent</option>
                 <option value="title">by title</option>
                 <option value="message">by message</option>
                 <option value="view_number">by views</option>
                 <option value="vote_number">by votes</option>
             </select><br>
             <select name="order_direction">
-                <option selected>descending</option>
-                <option>ascending</option>
+                <option value="DESC">descending</option>
+                <option value="ASC">ascending</option>
             </select>
             <br>
             <button type="submit">Submit</button>

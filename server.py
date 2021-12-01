@@ -24,13 +24,10 @@ def main_page():
 #  Bea
 @app.route('/list', methods=["POST", "GET"])
 def sort_list():
-    header = data_manager.get_header()
-    questions = data_manager.get_data("questions")
-    order_by = request.args.get("order_by")
     order_direction = request.args.get("order_direction")
-    questions = sorted(questions, key=itemgetter(str(order_by)))
-    if order_direction == "descending":
-        questions = reversed(questions)
+    order_by = request.args.get("order_by")
+    header = data_manager.QUESTION_HEADER
+    questions = data_manager.get_all_user_story(order_by, order_direction)
     return render_template('list.html', header=header, questions=questions)
 #  Bea
 
