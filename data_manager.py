@@ -132,14 +132,25 @@ def write_edited_q(cursor, question_id, edited_question):
 #     return connection.write_edited_q(question_id, edited_question, view=view)
 #  Eniko
 
+
 @connection.connection_handler
-def change_vote(cursor, question_id, changer):
+def change_vote_q(cursor, question_id, changer):
     query = """
         UPDATE question
         SET vote_number = vote_number + %s
         WHERE id = %s
         returning question"""
     cursor.execute(query, (changer, question_id,))
+
+
+@connection.connection_handler
+def change_vote_a(cursor, answer_id, changer):
+    query = """
+        UPDATE answer
+        SET vote_number = vote_number + %s
+        WHERE id = %s
+        returning answer"""
+    cursor.execute(query, (changer, answer_id,))
 
 
 @connection.connection_handler
@@ -150,3 +161,24 @@ def get_question_data_by_id(cursor, question_id):
         WHERE id = %s"""
     cursor.execute(query, (question_id,))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_answer_by_question_id(cursor, question_id):
+    query = """
+        SELECT *
+        FROM answer
+        WHERE question_id = %s"""
+    cursor.execute(query, question_id)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_id_by_answer(cursor, answer_id):
+    query = """
+        SELECT question_id
+        FROM answer
+        WHERE id = %s"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchone()
+# Enikő
