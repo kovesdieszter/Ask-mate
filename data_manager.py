@@ -127,6 +127,15 @@ def change_vote(cursor, question_id, changer):
         returning question"""
     cursor.execute(query, (changer, question_id,))
 
+@connection.connection_handler
+def change_vote(cursor, answer_id, changer):
+    query = """
+        UPDATE answer
+        SET vote_number = vote_number + %s
+        WHERE id = %s
+        returning answer"""
+    cursor.execute(query, (changer, answer_id,))
+
 
 @connection.connection_handler
 def get_question_data_by_id(cursor, question_id):
@@ -136,3 +145,13 @@ def get_question_data_by_id(cursor, question_id):
         WHERE id = %s"""
     cursor.execute(query, (question_id,))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_answer_by_question_id(cursor, question_id):
+    query = """
+        SELECT *
+        FROM answer
+        WHERE question_id = %s"""
+    cursor.execute(query, question_id)
+    return cursor.fetchall()

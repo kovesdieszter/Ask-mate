@@ -36,14 +36,9 @@ def sort_list():
 
 #  Dia
 @app.route('/question/<question_id>')
-def display_question(question_id, view=True):
+def display_question(question_id):
     question = data_manager.get_question_data_by_id(question_id)
-    answers = data_manager.get_all_answer()
-    if request.args.get('view') == 'False':
-        view_counter = request.args.get('view')
-    else:
-        view_counter = view
-
+    answers = data_manager.get_answer_by_question_id(question_id)
     return render_template('display_question.html', question=question, answers=answers)
 
 
@@ -64,21 +59,13 @@ def post_answer(question_id):
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_answer_up(answer_id):
-    answers = data_manager.get_data('answers')
-    for a in answers:
-        if a['id'] == answer_id:
-            answer = a
-            data_manager.change_vote(answer, 1, "answers")
+    answer = data_manager.change_vote(answer_id, 1)
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_answer_down(answer_id):
-    answers = data_manager.get_data('answers')
-    for a in answers:
-        if a['id'] == answer_id:
-            answer = a
-            data_manager.change_vote(answer, -1, "answers")
+    answer = data_manager.change_vote(answer_id, -1)
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
