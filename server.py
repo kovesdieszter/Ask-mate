@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = "./static"
 @app.route('/')
 def main_page():
     header = data_manager.QUESTION_HEADER
-    questions = data_manager.get_all_user_story()
+    questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
     return render_template('list.html', header=header, questions=questions)
 
 
@@ -24,13 +24,13 @@ def main_page():
 #  Bea
 @app.route('/list', methods=["POST", "GET"])
 def sort_list():
-    header = data_manager.get_header()
-    questions = data_manager.get_data("questions")
-    order_by = request.args.get("order_by")
     order_direction = request.args.get("order_direction")
-    questions = sorted(questions, key=itemgetter(str(order_by)))
-    if order_direction == "descending":
-        questions = reversed(questions)
+    order_by = request.args.get("order_by")
+    header = data_manager.QUESTION_HEADER
+    if order_direction and order_by:
+        questions = data_manager.get_all_user_story(order_by, order_direction)
+    else:
+        questions = data_manager.get_all_user_story("submission_time", "DESC")
     return render_template('list.html', header=header, questions=questions)
 #  Bea
 
