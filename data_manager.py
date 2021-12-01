@@ -168,7 +168,8 @@ def get_answer_by_question_id(cursor, question_id):
     query = """
         SELECT *
         FROM answer
-        WHERE question_id = %s"""
+        WHERE question_id = %s
+        ORDER BY submission_time"""
     cursor.execute(query, question_id)
     return cursor.fetchall()
 
