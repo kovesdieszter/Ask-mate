@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = "./static"
 @app.route('/')
 def main_page():
     header = data_manager.QUESTION_HEADER
-    questions = data_manager.get_all_user_story()
+    questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
     return render_template('list.html', header=header, questions=questions)
 
 
