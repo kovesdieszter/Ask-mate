@@ -50,13 +50,18 @@ def get_all_answer(cursor):
 @connection.connection_handler
 def delete_question(cursor, question_id):
     query = """
+        DELETE 
+        FROM answer
+        WHERE question_id = %(val)s"""
+    cursor.execute(query, {'val': question_id})
+    query = """
     DELETE
     FROM question
     WHERE id = %(val)s
     RETURNING *
     """
     cursor.execute(query, {'val': question_id})
-    return cursor.fetchall()
+
 
 
 @connection.connection_handler
@@ -192,7 +197,7 @@ def get_answer_by_question_id(cursor, question_id):
         FROM answer
         WHERE question_id = %s
         ORDER BY id"""
-    cursor.execute(query, question_id)
+    cursor.execute(query, (question_id,))
     return cursor.fetchall()
 
 
