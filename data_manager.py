@@ -25,6 +25,19 @@ def get_all_user_story(cursor, order_by='submission_time', direction='ASC', limi
 
 
 @connection.connection_handler
+def get_searched_questions(cursor, q):
+    query = f"""
+            SELECT *
+            FROM question
+            WHERE UPPER(title) LIKE UPPER({"'%"}{ q }{"%'"}) 
+            OR UPPER(message) LIKE UPPER({"'%"}{ q }{"%'"})
+            ORDER BY vote_number DESC 
+            """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_all_answer(cursor):
     query = """
         SELECT *

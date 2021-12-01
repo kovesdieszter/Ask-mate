@@ -16,7 +16,7 @@ app.config['UPLOAD_FOLDER'] = "./static"
 def main_page():
     header = data_manager.QUESTION_HEADER
     questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
-    return render_template('list.html', header=header, questions=questions)
+    return render_template('main.html', header=header, questions=questions)
 
 
 # Eszter
@@ -32,6 +32,15 @@ def sort_list():
     else:
         questions = data_manager.get_all_user_story("submission_time", "DESC")
     return render_template('list.html', header=header, questions=questions)
+
+
+@app.route('/search', methods=["POST", "GET"])
+def question():
+    header = data_manager.QUESTION_HEADER
+    q = request.args.get("q")
+    questions = data_manager.get_searched_questions(q)
+    return render_template('main.html', header=header, questions=questions)
+
 #  Bea
 
 #  Dia
