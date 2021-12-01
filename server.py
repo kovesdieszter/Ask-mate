@@ -133,6 +133,15 @@ def delete_answer(answer_id):
     return redirect(url_for("display_question", question_id=deleted_id))
 
 
+@app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
+def add_question_comment(question_id):
+    if request.method == "POST":
+        comment = data_manager.add_comment_to_question(question_id, request.form)
+        return redirect(url_for("display_question", question_id=question_id, question=comment))
+    question = data_manager.get_question_data_by_id(question_id)
+    return render_template('comment_child.html', question=question)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

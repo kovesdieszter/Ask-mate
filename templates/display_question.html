@@ -3,60 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Display Question</title>
-    <style>
-        body {
-                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');
-                background-repeat: repeat-y;
-                background-size: cover;
-                }
-        h3{
-                text-align: center;
-                background-color: rgba(55, 147, 255, 0.8);
-                border-style: groove;
-                border-color: #322fe5;
-                border-width: medium;
-            }
-        h2{
-                background-color: rgba(205, 118, 255, 0.8);
-                border-style: solid;
-                border-color: #d92fe5;
-                border-width: medium;
-                text-align: center;
-            }
-        .me{
-                background-color: #f862c3;
-                border-color: #f36ec0;
-                border-width: 10px;
-                border-style: solid;
-            }
-        ol{
-            float: left;
-            background-color: #f165ff;
-            border-style: solid;
-            border-color: transparent;
-            border-width: 20px;
-        }
-        .div1{
-            background-color: #f165ff;
-            border-style: solid;
-            border-color: transparent;
-            border-width: 10px;
-        }
-        .post {
-            float: right;
-            background-color: cyan;
-            border-style: solid;
-            border-width: 10px;
-            border-color: transparent;
-        }
-        .qu{
-            background-color: rgba(0, 255, 255, 0.5);
-            border-style: solid;
-            border-color: #d92fe5;
-            border-width: medium;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/style.css">
+{#        body {#}
+{#                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');#}
+{#                background-repeat: repeat-y;#}
+{#                background-size: cover;#}
+{#                }#}
+{#        h3{#}
+{#                text-align: center;#}
+{#                background-color: rgba(55, 147, 255, 0.8);#}
+{#                border-style: groove;#}
+{#                border-color: #322fe5;#}
+{#                border-width: medium;#}
+{#            }#}
+{#        h2{#}
+{#                background-color: rgba(205, 118, 255, 0.8);#}
+{#                border-style: solid;#}
+{#                border-color: #d92fe5;#}
+{#                border-width: medium;#}
+{#                text-align: center;#}
+{#            }#}
+{#        .me{#}
+{#                background-color: #f862c3;#}
+{#                border-color: #f36ec0;#}
+{#                border-width: 10px;#}
+{#                border-style: solid;#}
+{#            }#}
+{#        ol{#}
+{#            float: left;#}
+{#            background-color: #f165ff;#}
+{#            border-style: solid;#}
+{#            border-color: transparent;#}
+{#            border-width: 20px;#}
+{#        }#}
+{#        .div1{#}
+{#            background-color: #f165ff;#}
+{#            border-style: solid;#}
+{#            border-color: transparent;#}
+{#            border-width: 10px;#}
+{#        }#}
+{#        .post {#}
+{#            float: right;#}
+{#            background-color: cyan;#}
+{#            border-style: solid;#}
+{#            border-width: 10px;#}
+{#            border-color: transparent;#}
+{#        }#}
+{#        .qu{#}
+{#            background-color: rgba(0, 255, 255, 0.5);#}
+{#            border-style: solid;#}
+{#            border-color: #d92fe5;#}
+{#            border-width: medium;#}
+{#            font-weight: bold;#}
+{#        }#}
+{#    </style>#}
 </head>
 <body>
     <a class="me" href="/">Main page</a>
@@ -68,6 +68,7 @@
         {% if question['image'] %}
         <p><img src="../static/{{ question['image'] }}" width="200" height="200" ></p>
         {% endif %}
+    <a href="{{ url_for('add_question_comment',question_id=question.id) }}">Add comment</a>
     </div>
     <h3>Answers:</h3>
             <ol>{% for answer in answers %}

@@ -57,6 +57,20 @@ def delete_answer(cursor, answer_id):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def add_comment_to_question(cursor, question_id, message):
+    query = """
+    INSERT INTO 
+    comment (message)
+    VALUES %(val2)s
+    WHERE question_id = %(val1)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val1': question_id, 'val2': message})
+    return cursor.fetchall()
+
+
+
 #  Eszter
 
 
