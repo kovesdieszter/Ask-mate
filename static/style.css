@@ -61,3 +61,11 @@ table, th, tr, td {
     border: 1px solid black;
     text-align: center;
 }
+
+#search{
+    font-size: medium;
+    font-weight: lighter;
+    text-align: center;
+}
+#search_input{
+}
