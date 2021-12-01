@@ -59,14 +59,16 @@ def post_answer(question_id):
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_answer_up(answer_id):
-    answer = data_manager.change_vote(answer_id, 1)
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    data_manager.change_vote_a(answer_id, 1)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for("display_question", question_id=question_id['question_id']))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_answer_down(answer_id):
-    answer = data_manager.change_vote(answer_id, -1)
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    data_manager.change_vote_a(answer_id, -1)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for("display_question", question_id=question_id['question_id']))
 
 
 #  Dia
@@ -74,13 +76,13 @@ def vote_answer_down(answer_id):
 #  Eniko
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
-    data_manager.change_vote(question_id, 1)
+    data_manager.change_vote_q(question_id, 1)
     return redirect('/')
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down(question_id):
-    data_manager.change_vote(question_id, -1)
+    data_manager.change_vote_q(question_id, -1)
     return redirect('/')
 
 
