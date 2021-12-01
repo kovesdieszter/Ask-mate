@@ -57,6 +57,20 @@ def delete_answer(cursor, answer_id):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def add_comment_to_question(cursor, question_id, message):
+    query = """
+    INSERT INTO 
+    comment (message)
+    VALUES %(val2)s
+    WHERE question_id = %(val1)s
+    RETURNING *
+    """
+    cursor.execute(query, {'val1': question_id, 'val2': message})
+    return cursor.fetchall()
+
+
+
 #  Eszter
 
 
@@ -118,8 +132,9 @@ def write_edited_q(cursor, question_id, edited_question):
 #     return connection.write_edited_q(question_id, edited_question, view=view)
 #  Eniko
 
+
 @connection.connection_handler
-def change_vote(cursor, question_id, changer):
+def change_vote_q(cursor, question_id, changer):
     query = """
         UPDATE question
         SET vote_number = vote_number + %s
@@ -127,8 +142,9 @@ def change_vote(cursor, question_id, changer):
         returning question"""
     cursor.execute(query, (changer, question_id,))
 
+
 @connection.connection_handler
-def change_vote(cursor, answer_id, changer):
+def change_vote_a(cursor, answer_id, changer):
     query = """
         UPDATE answer
         SET vote_number = vote_number + %s
@@ -155,3 +171,14 @@ def get_answer_by_question_id(cursor, question_id):
         WHERE question_id = %s"""
     cursor.execute(query, question_id)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_id_by_answer(cursor, answer_id):
+    query = """
+        SELECT question_id
+        FROM answer
+        WHERE id = %s"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchone()
+# Enikő

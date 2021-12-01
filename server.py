@@ -56,14 +56,16 @@ def post_answer(question_id):
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_answer_up(answer_id):
-    answer = data_manager.change_vote(answer_id, 1)
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    data_manager.change_vote_a(answer_id, 1)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for("display_question", question_id=question_id['question_id']))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_answer_down(answer_id):
-    answer = data_manager.change_vote(answer_id, -1)
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    data_manager.change_vote_a(answer_id, -1)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for("display_question", question_id=question_id['question_id']))
 
 
 #  Dia
@@ -71,13 +73,13 @@ def vote_answer_down(answer_id):
 #  Eniko
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
-    data_manager.change_vote(question_id, 1)
+    data_manager.change_vote_q(question_id, 1)
     return redirect('/')
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down(question_id):
-    data_manager.change_vote(question_id, -1)
+    data_manager.change_vote_q(question_id, -1)
     return redirect('/')
 
 
@@ -115,6 +117,15 @@ def delete_question(question_id):
 def delete_answer(answer_id):
     deleted_id = data_manager.delete_answer(answer_id)
     return redirect(url_for("display_question", question_id=deleted_id))
+
+
+@app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
+def add_question_comment(question_id):
+    if request.method == "POST":
+        comment = data_manager.add_comment_to_question(question_id, request.form)
+        return redirect(url_for("display_question", question_id=question_id, question=comment))
+    question = data_manager.get_question_data_by_id(question_id)
+    return render_template('comment_child.html', question=question)
 
 
 if __name__ == '__main__':
