@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}New question{% endblock %}
 {% block headline %}What is your question?{% endblock %}
+{% block question_title %}
+    <p>Title:<br>
+            <textarea name="title" rows="2" cols="100"></textarea>{% endblock %}
 {% block image %}You can upload an image, if you insert its link:{% endblock %}
 {% block question_submit %}Ask{% endblock %}
