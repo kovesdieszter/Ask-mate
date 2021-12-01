@@ -74,7 +74,8 @@
             <ol>{% for answer in answers %}
                 {% if answer.question_id == question.id %}
                 <div class="div1">
-                <li>{{ answer['message'] }} <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}"><img src="../static/trashcan.png" width="20" alt="Delete"></a> </li>{{ answer['vote_number'] }}<br>
+                <li>{{ answer['message'] }} <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}"><img src="../static/trashcan.png" width="20" alt="Delete"></a> </li>{{ answer['vote_number'] }}
+                    <a href="{{ url_for('edit_answer', answer_id=answer['id']) }}">Edit</a><br>
                 <a href="{{ url_for('vote_answer_up', answer_id=answer['id']) }}">
                     <img src="../static/up.png" width="20" alt="Vote Up">
                 </a>

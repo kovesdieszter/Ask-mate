@@ -8,8 +8,7 @@
 <body>
     <h1>{% block headline %}{% endblock %}</h1>
     <form action="" method="post" enctype="multipart/form-data">
-        <p>Title:<br>
-            <textarea name="title" rows="2" cols="100">{% block question_title %}{% endblock %}</textarea>
+        {% block question_title %}{% endblock %}
         </p>
         <p>Message:<br>
             <textarea name="message" rows="20" cols="100" required>{% block question_message %}{% endblock %}</textarea>

@@ -59,8 +59,8 @@ def post_answer(question_id):
             question_title = q['title']
             break
     if request.method == 'POST':
-        image = request.args.get('image')
-        message = request.args.get('message')
+        image = request.form.get('image')
+        message = request.form.get('message')
         data_manager.write_new_answer(question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
@@ -98,8 +98,8 @@ def vote_down(question_id):
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'POST':
-        edited_question_id = data_manager.write_edited_q(question_id, request.form)
-        return redirect(url_for('display_question', question_id=edited_question_id, view=False))
+        data_manager.write_edited_q(question_id, request.form)
+        return redirect(url_for('display_question', question_id=question_id))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('edit_child.html', question=question)
 
@@ -113,6 +113,16 @@ def new_question():
         question_id = data_manager.write_new_question(request.form)['max']
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
+
+
+@app.route('/answer/<answer_id>', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        data_manager.write_edited_a(answer_id, request.form)
+        question_id = data_manager.get_question_id_by_answer(answer_id)
+        return redirect(url_for('display_question', question_id=question_id['question_id']))
+    answer = data_manager.get_answer_data_by_id(answer_id)
+    return render_template('edit_answer.html', answer=answer)
 #  Eniko
 
 # Eszter
@@ -120,15 +130,15 @@ def new_question():
 
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
-    print(question_id)
     data_manager.delete_question(question_id)
     return redirect(url_for("main_page"))
 
 
 @app.route('/answer/<answer_id>/delete')
 def delete_answer(answer_id):
-    deleted_id = data_manager.delete_answer(answer_id)
-    return redirect(url_for("display_question", question_id=deleted_id))
+    deleted_answer = data_manager.delete_answer(answer_id)
+    print(deleted_answer)
+    return redirect(url_for("display_question", question_id=deleted_answer['question_id']))
 
 
 @app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
