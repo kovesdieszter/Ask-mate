@@ -82,13 +82,15 @@ def add_comment_to_question(cursor, question_id, message):
     cursor.execute(query, {'val1': question_id, 'val2': message})
     return cursor.fetchone()
 
+
 @connection.connection_handler
-def get_all_answer(cursor):
+def get_comment_by_question_id(cursor, question_id):
     query = """
         SELECT *
-        FROM answer
+        FROM comment
+        WHERE question_id = %(val1)s
         ORDER BY submission_time """
-    cursor.execute(query)
+    cursor.execute(query, {'val1': question_id})
     return cursor.fetchall()
 
 

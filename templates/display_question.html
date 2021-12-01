@@ -69,9 +69,14 @@
         <p><img src="../static/{{ question['image'] }}" width="200" height="200" ></p>
         {% endif %}
         <p> Comments:
-            {% for comment in comments %}
-            {{ comment.message }}</p>
-    <a href="{{ url_for('add_question_comment',question_id=question.id) }}">Add comment</a>
+            <ol> {%  for comment in comments %}
+            {% if comment.question_id == question.id %}
+                {{ comment.message }}<br>
+            {% endif %}
+            {% endfor %}
+            </ol>
+        </p>
+    <a href="{{ url_for('add_question_comment',question_id=question.id) }}">Add new comment</a>
     </div>
     <h3>Answers:</h3>
             <ol>{% for answer in answers %}

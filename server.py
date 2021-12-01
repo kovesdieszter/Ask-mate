@@ -48,8 +48,8 @@ def question():
 def display_question(question_id):
     question = data_manager.get_question_data_by_id(question_id)
     answers = data_manager.get_answer_by_question_id(question_id)
-    #comments = data_manager.get_comment_by_question_id(question_id)
-    return render_template('display_question.html', question=question, answers=answers)
+    comments = data_manager.get_comment_by_question_id(question_id)
+    return render_template('display_question.html', question=question, answers=answers, comments=comments)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
