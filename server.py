@@ -39,6 +39,7 @@ def sort_list():
 def display_question(question_id):
     question = data_manager.get_question_data_by_id(question_id)
     answers = data_manager.get_answer_by_question_id(question_id)
+    #comments = data_manager.get_comment_by_question_id(question_id)
     return render_template('display_question.html', question=question, answers=answers)
 
 
@@ -125,7 +126,10 @@ def delete_answer(answer_id):
 @app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
 def add_question_comment(question_id):
     if request.method == "POST":
+        print(request.form['message'])
+        print(question_id)
         comment = data_manager.add_comment_to_question(question_id, request.form['message'])
+        print(comment)
         return redirect(url_for("display_question", question_id=question_id, comment=comment))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('comment_child.html', question=question)

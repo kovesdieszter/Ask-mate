@@ -68,6 +68,9 @@
         {% if question['image'] %}
         <p><img src="../static/{{ question['image'] }}" width="200" height="200" ></p>
         {% endif %}
+        <p> Comments:
+            {% for comment in comments %}
+            {{ comment.message }}</p>
     <a href="{{ url_for('add_question_comment',question_id=question.id) }}">Add comment</a>
     </div>
     <h3>Answers:</h3>

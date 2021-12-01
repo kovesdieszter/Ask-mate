@@ -62,12 +62,20 @@ def delete_answer(cursor, answer_id):
 def add_comment_to_question(cursor, question_id, message):
     query = """
     INSERT INTO 
-    comment (message)
-    VALUES %(val2)s
-    WHERE question_id = %(val1)s
+    comment (question_id, message)
+    VALUES (%(val1)s, %(val2)s)
     RETURNING *
     """
     cursor.execute(query, {'val1': question_id, 'val2': message})
+    return cursor.fetchone()
+
+@connection.connection_handler
+def get_all_answer(cursor):
+    query = """
+        SELECT *
+        FROM answer
+        ORDER BY submission_time """
+    cursor.execute(query)
     return cursor.fetchall()
 
 
