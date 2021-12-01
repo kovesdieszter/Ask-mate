@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = "./static"
 @app.route('/')
 def main_page():
     header = data_manager.QUESTION_HEADER
-    questions = data_manager.get_all_user_story()
+    questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
     return render_template('list.html', header=header, questions=questions)
 
 
@@ -24,13 +24,13 @@ def main_page():
 #  Bea
 @app.route('/list', methods=["POST", "GET"])
 def sort_list():
-    header = data_manager.get_header()
-    questions = data_manager.get_data("questions")
-    order_by = request.args.get("order_by")
     order_direction = request.args.get("order_direction")
-    questions = sorted(questions, key=itemgetter(str(order_by)))
-    if order_direction == "descending":
-        questions = reversed(questions)
+    order_by = request.args.get("order_by")
+    header = data_manager.QUESTION_HEADER
+    if order_direction and order_by:
+        questions = data_manager.get_all_user_story(order_by, order_direction)
+    else:
+        questions = data_manager.get_all_user_story("submission_time", "DESC")
     return render_template('list.html', header=header, questions=questions)
 #  Bea
 
@@ -59,14 +59,16 @@ def post_answer(question_id):
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_answer_up(answer_id):
-    answer = data_manager.change_vote(answer_id, 1)
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    data_manager.change_vote_a(answer_id, 1)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for("display_question", question_id=question_id['question_id']))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_answer_down(answer_id):
-    answer = data_manager.change_vote(answer_id, -1)
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    data_manager.change_vote_a(answer_id, -1)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for("display_question", question_id=question_id['question_id']))
 
 
 #  Dia
@@ -74,13 +76,13 @@ def vote_answer_down(answer_id):
 #  Eniko
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
-    data_manager.change_vote(question_id, 1)
+    data_manager.change_vote_q(question_id, 1)
     return redirect('/')
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down(question_id):
-    data_manager.change_vote(question_id, -1)
+    data_manager.change_vote_q(question_id, -1)
     return redirect('/')
 
 
@@ -118,6 +120,15 @@ def delete_question(question_id):
 def delete_answer(answer_id):
     deleted_id = data_manager.delete_answer(answer_id)
     return redirect(url_for("display_question", question_id=deleted_id))
+
+
+@app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
+def add_question_comment(question_id):
+    if request.method == "POST":
+        comment = data_manager.add_comment_to_question(question_id, request.form['message'])
+        return redirect(url_for("display_question", question_id=question_id, comment=comment))
+    question = data_manager.get_question_data_by_id(question_id)
+    return render_template('comment_child.html', question=question)
 
 
 if __name__ == '__main__':
