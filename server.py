@@ -27,7 +27,10 @@ def sort_list():
     order_direction = request.args.get("order_direction")
     order_by = request.args.get("order_by")
     header = data_manager.QUESTION_HEADER
-    questions = data_manager.get_all_user_story(order_by, order_direction)
+    if order_direction and order_by:
+        questions = data_manager.get_all_user_story(order_by, order_direction)
+    else:
+        questions = data_manager.get_all_user_story("submission_time", "DESC")
     return render_template('list.html', header=header, questions=questions)
 #  Bea
 
