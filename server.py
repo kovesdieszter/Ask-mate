@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = "./static"
 @app.route('/')
 def main_page():
     header = data_manager.QUESTION_HEADER
-    questions = data_manager.get_all_user_story()
+    questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
     return render_template('list.html', header=header, questions=questions)
 
 
@@ -27,7 +27,10 @@ def sort_list():
     order_direction = request.args.get("order_direction")
     order_by = request.args.get("order_by")
     header = data_manager.QUESTION_HEADER
-    questions = data_manager.get_all_user_story(order_by, order_direction)
+    if order_direction and order_by:
+        questions = data_manager.get_all_user_story(order_by, order_direction)
+    else:
+        questions = data_manager.get_all_user_story("submission_time", "DESC")
     return render_template('list.html', header=header, questions=questions)
 #  Bea
 
@@ -47,8 +50,8 @@ def post_answer(question_id):
             question_title = q['title']
             break
     if request.method == 'POST':
-        image = request.args.get('image')
-        message = request.args.get('message')
+        image = request.form.get('image')
+        message = request.form.get('message')
         data_manager.write_new_answer(question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
@@ -132,8 +135,8 @@ def delete_answer(answer_id):
 @app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
 def add_question_comment(question_id):
     if request.method == "POST":
-        comment = data_manager.add_comment_to_question(question_id, request.form)
-        return redirect(url_for("display_question", question_id=question_id, question=comment))
+        comment = data_manager.add_comment_to_question(question_id, request.form['message'])
+        return redirect(url_for("display_question", question_id=question_id, comment=comment))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('comment_child.html', question=question)
 
