@@ -78,13 +78,15 @@ def delete_answer(cursor, answer_id):
 
 @connection.connection_handler
 def add_comment_to_question(cursor, question_id, message):
+    dt = datetime.datetime.now()
+    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
     INSERT INTO 
-    comment (question_id, message)
-    VALUES (%(val1)s, %(val2)s)
+    comment (submission_time, question_id, message)
+    VALUES (%(val0)s, %(val1)s, %(val2)s)
     RETURNING *
     """
-    cursor.execute(query, {'val1': question_id, 'val2': message})
+    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message})
     return cursor.fetchone()
 
 

@@ -42,10 +42,10 @@
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
                 <td><a href={{ url_for('vote_up', question_id=item.id) }}>
-                    <img src="../static/up.png" width="20" alt="Vote Up">
+                    <img src="../static/newup.png" width="20" alt="Vote Up">
                 </a> </td>
                 <td><a href={{ url_for('vote_down', question_id=item.id) }}>
-                    <img src="../static/down.png" width="20" alt="Vote Down">
+                    <img src="../static/newdown.png" width="20" alt="Vote Down">
                 </a></td>
             </tr>
             {% endfor %}
