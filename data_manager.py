@@ -64,9 +64,6 @@ def delete_answer(cursor, answer_id):
 #  Bea
 
 #  Dia
-def write_new_answer(new_answer, question_id):
-    return connection.write_new_answer(new_answer, question_id)
-
 
 @connection.connection_handler
 def write_new_answer(cursor, question_id, message, image):
