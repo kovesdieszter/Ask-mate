@@ -28,7 +28,7 @@ def get_all_answer(cursor):
     query = """
         SELECT *
         FROM answer
-        ORDER BY submission_time """
+        ORDER BY id """
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -54,7 +54,7 @@ def delete_answer(cursor, answer_id):
     RETURNING *
     """
     cursor.execute(query, {'val': answer_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -130,7 +130,7 @@ def write_edited_q(cursor, question_id, edited_question):
     cursor.execute(query, (edited_question['title'], edited_question['message'], question_id),)
 # def write_edited_q(question_id, edited_question, view=False):
 #     return connection.write_edited_q(question_id, edited_question, view=view)
-#  Eniko
+
 
 
 @connection.connection_handler
@@ -158,7 +158,8 @@ def get_question_data_by_id(cursor, question_id):
     query = """
         SELECT *
         FROM question
-        WHERE id = %s"""
+        WHERE id = %s
+        ORDER BY id"""
     cursor.execute(query, (question_id,))
     return cursor.fetchone()
 
@@ -169,7 +170,7 @@ def get_answer_by_question_id(cursor, question_id):
         SELECT *
         FROM answer
         WHERE question_id = %s
-        ORDER BY submission_time"""
+        ORDER BY id"""
     cursor.execute(query, question_id)
     return cursor.fetchall()
 
@@ -182,4 +183,25 @@ def get_question_id_by_answer(cursor, answer_id):
         WHERE id = %s"""
     cursor.execute(query, (answer_id,))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_answer_data_by_id(cursor, answer_id):
+    query = """
+        SELECT * 
+        FROM answer
+        WHERE id = %s"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def write_edited_a(cursor, answer_id, edited_answer):
+    query = """
+        UPDATE answer
+        SET message = %s
+        WHERE id = %s 
+        returning answer"""
+    cursor.execute(query, (edited_answer['message'], answer_id,))
+
 # Enikő
