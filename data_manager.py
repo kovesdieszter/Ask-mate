@@ -95,11 +95,23 @@ def get_comment_by_question_id(cursor, question_id):
     query = """
         SELECT *
         FROM comment
-        WHERE question_id = %(val1)s
+        WHERE question_id = %(val1)s 
         ORDER BY submission_time """
     cursor.execute(query, {'val1': question_id})
     return cursor.fetchall()
 
+@connection.connection_handler
+def add_comment_to_answer(cursor, question_id, answer_id, message):
+    dt = datetime.datetime.now()
+    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
+    query = """
+    INSERT INTO 
+    comment (submission_time, question_id, answer_id, message)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s)
+    RETURNING *
+    """
+    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message})
+    return cursor.fetchone()
 
 
 #  Eszter

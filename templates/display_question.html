@@ -70,7 +70,7 @@
         {% endif %}
     <h3>Comments</h3>
         <ol>{%  for comment in comments %}
-            {% if comment.question_id == question.id %}
+            {% if comment.question_id == question.id and comment.answer_id == None %}
             <li>{{comment.message }}
                 /Commented at {{ comment.submission_time }}/<br></li>
 
@@ -94,7 +94,17 @@
                 </a>
                     <a href="{{ url_for('vote_answer_down', answer_id=answer['id']) }}">
                     <img src="../static/newdown.png" width="20" alt="Vote Down">
-                    </a>
+                    </a><br>
+                <a href="{{ url_for('add_answer_comment',answer_id=answer.id) }}">Comment</a>
+                    <h5>Answer comments</h5>
+                        <ol>{%  for comment in comments %}
+                            {% if comment.question_id == question.id and comment.answer_id == answer.id %}
+                            <li>{{comment.message }}
+                                /Commented at {{ comment.submission_time }}/<br></li>
+
+                            {% endif %}
+                            {% endfor %}
+                    </ol>
                 </div>
                 {% endif %}
 
