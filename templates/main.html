@@ -10,7 +10,7 @@
         <form action="search">
             <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button type="submit"><img src="../static/search.piko" width="15px"></button></p>
         </form>
-        <a class="new" href="{{ url_for('new_question') }}">New question</a>
+        <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
         <p>
 
 
@@ -51,6 +51,8 @@
             {% endfor %}
             </form>
         </table>
-    <a href="list">See all questions</a>
+    <p>
+    <a class="Add_button" href="list">See all questions</a>
+    </p>
     </body>
 </html>

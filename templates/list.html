@@ -64,8 +64,8 @@
     </head>
     <body>
         <h1>Questions</h1>
-        <a href="{{ url_for('main_page') }}">Main page</a>
-        <a class="new" href="{{ url_for('new_question') }}">New question</a>
+        <a href="{{ url_for('main_page') }}"><img src="../static/house.png" width="30" alt="Main page"></a>
+        <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
         <form action="list">
             <p>Sort</p>
             <select name="order_by">
@@ -113,15 +113,17 @@
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
                 <td><a href="{{ url_for('vote_up', question_id=item.id) }}?to=list">
-                    <img src="../static/up.png" width="20" alt="Vote Up">
+                    <img src="../static/newup.png" width="20" alt="Vote Up">
                 </a> </td>
                 <td><a href="{{ url_for('vote_down', question_id=item.id) }}?to=list">
-                    <img src="../static/down.png" width="20" alt="Vote Down">
+                    <img src="../static/newdown.png" width="20" alt="Vote Down">
                 </a></td>
             </tr>
             {% endfor %}
             </form>
         </table>
-    <a href="list">See all questions</a>
+    <p>
+    <a class="Add_button" href="list">See all questions</a>
+    </p>
     </body>
 </html>
