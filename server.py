@@ -122,7 +122,8 @@ def vote_down(question_id):
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'POST':
-        data_manager.write_edited_q(question_id, request.form)
+        file = request.files['image']
+        data_manager.write_edited_q(question_id, request.form, file)
         return redirect(url_for('display_question', question_id=question_id))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('edit_child.html', question=question)
@@ -186,6 +187,18 @@ def add_question_comment(question_id):
         return redirect(url_for("display_question", question_id=question_id, comment=comment))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('comment_child.html', question=question)
+
+
+@app.route('/answer/<answer_id>/new-comment', methods=["GET", "POST"])
+def add_answer_comment(answer_id):
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    question_id = question_id['question_id']
+    if request.method == "POST":
+        comment = data_manager.add_comment_to_answer(question_id, answer_id, request.form.get('message'))
+        print(comment)
+        return redirect(url_for("display_question", question_id=question_id, answer_id=answer_id, comment=comment))
+    answer = data_manager.get_answer_data_by_id(answer_id)
+    return render_template('ans_comment_child.html', answer=answer)
 
 
 if __name__ == '__main__':
