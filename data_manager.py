@@ -25,11 +25,24 @@ def get_all_user_story(cursor, order_by='submission_time', direction='ASC', limi
 
 
 @connection.connection_handler
+def get_searched_questions(cursor, q):
+    query = f"""
+            SELECT *
+            FROM question
+            WHERE UPPER(title) LIKE UPPER({"'%"}{ q }{"%'"}) 
+            OR UPPER(message) LIKE UPPER({"'%"}{ q }{"%'"})
+            ORDER BY vote_number DESC 
+            """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_all_answer(cursor):
     query = """
         SELECT *
         FROM answer
-        ORDER BY submission_time """
+        ORDER BY id """
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -37,13 +50,18 @@ def get_all_answer(cursor):
 @connection.connection_handler
 def delete_question(cursor, question_id):
     query = """
+        DELETE 
+        FROM answer
+        WHERE question_id = %(val)s"""
+    cursor.execute(query, {'val': question_id})
+    query = """
     DELETE
     FROM question
     WHERE id = %(val)s
     RETURNING *
     """
     cursor.execute(query, {'val': question_id})
-    return cursor.fetchall()
+
 
 
 @connection.connection_handler
@@ -55,19 +73,31 @@ def delete_answer(cursor, answer_id):
     RETURNING *
     """
     cursor.execute(query, {'val': answer_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @connection.connection_handler
 def add_comment_to_question(cursor, question_id, message):
+    dt = datetime.datetime.now()
+    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
     INSERT INTO 
-    comment (message)
-    VALUES %(val2)s
-    WHERE question_id = %(val1)s
+    comment (submission_time, question_id, message)
+    VALUES (%(val0)s, %(val1)s, %(val2)s)
     RETURNING *
     """
-    cursor.execute(query, {'val1': question_id, 'val2': message})
+    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_comment_by_question_id(cursor, question_id):
+    query = """
+        SELECT *
+        FROM comment
+        WHERE question_id = %(val1)s
+        ORDER BY submission_time """
+    cursor.execute(query, {'val1': question_id})
     return cursor.fetchall()
 
 
@@ -164,7 +194,7 @@ def write_edited_q(cursor, question_id, edited_question):
     cursor.execute(query, (edited_question['title'], edited_question['message'], question_id),)
 # def write_edited_q(question_id, edited_question, view=False):
 #     return connection.write_edited_q(question_id, edited_question, view=view)
-#  Eniko
+
 
 
 @connection.connection_handler
@@ -192,7 +222,8 @@ def get_question_data_by_id(cursor, question_id):
     query = """
         SELECT *
         FROM question
-        WHERE id = %s"""
+        WHERE id = %s
+        ORDER BY id"""
     cursor.execute(query, (question_id,))
     return cursor.fetchone()
 
@@ -203,8 +234,8 @@ def get_answer_by_question_id(cursor, question_id):
         SELECT *
         FROM answer
         WHERE question_id = %s
-        ORDER BY submission_time"""
-    cursor.execute(query, question_id)
+        ORDER BY id"""
+    cursor.execute(query, (question_id,))
     return cursor.fetchall()
 
 
@@ -216,4 +247,25 @@ def get_question_id_by_answer(cursor, answer_id):
         WHERE id = %s"""
     cursor.execute(query, (answer_id,))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_answer_data_by_id(cursor, answer_id):
+    query = """
+        SELECT * 
+        FROM answer
+        WHERE id = %s"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def write_edited_a(cursor, answer_id, edited_answer):
+    query = """
+        UPDATE answer
+        SET message = %s
+        WHERE id = %s 
+        returning answer"""
+    cursor.execute(query, (edited_answer['message'], answer_id,))
+
 # Enikő

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+            <meta charset="utf-8">
+            <title>Questions and answers</title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <h1>Main page</h1>
+        <form action="search">
+            <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button type="submit"><img src="../static/search.piko" width="15px"></button></p>
+        </form>
+        <a class="new" href="{{ url_for('new_question') }}">New question</a>
+        <p>
+
+
+        </p>
+
+        <table>
+        <tr>
+
+
+                    <form id="header">
+                {% for item in header %}
+                    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+                {% endfor %}
+                    <th><strong>Vote up</strong></th>
+                    <th><strong>Vote down</strong></th>
+                    </form>
+
+            </tr>
+
+            <form id="questions">
+                {% for item in questions %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.submission_time }}</td>
+                <td>{{ item.view_number}}</td>
+                <td>{{ item.vote_number }}</td>
+                <td>
+                <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
+                <td>{{ item.message }}</td>
+                <td>{{ item.image }}</td>
+                <td><a href={{ url_for('vote_up', question_id=item.id) }}>
+                    <img src="../static/newup.png" width="20" alt="Vote Up">
+                </a> </td>
+                <td><a href={{ url_for('vote_down', question_id=item.id) }}>
+                    <img src="../static/newdown.png" width="20" alt="Vote Down">
+                </a></td>
+            </tr>
+            {% endfor %}
+            </form>
+        </table>
+    <a href="list">See all questions</a>
+    </body>
+</html>
