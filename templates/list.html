@@ -112,10 +112,10 @@
                 <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
-                <td><a href={{ url_for('vote_up', question_id=item.id) }}>
+                <td><a href="{{ url_for('vote_up', question_id=item.id) }}?to=list">
                     <img src="../static/up.png" width="20" alt="Vote Up">
                 </a> </td>
-                <td><a href={{ url_for('vote_down', question_id=item.id) }}>
+                <td><a href="{{ url_for('vote_down', question_id=item.id) }}?to=list">
                     <img src="../static/down.png" width="20" alt="Vote Down">
                 </a></td>
             </tr>

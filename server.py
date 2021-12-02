@@ -45,9 +45,8 @@ def question():
 
 #  Dia
 @app.route('/question/<question_id>')
-def display_question(question_id, view='False'):
-    view = request.args.get('view')
-    if view == 'True':
+def display_question(question_id):
+    if request.args.get('view') == 'True':
         data_manager.increase_view(question_id)
     question = data_manager.get_question_data_by_id(question_id)
     answers = data_manager.get_answer_by_question_id(question_id)
@@ -116,12 +115,16 @@ def vote_answer_down(answer_id):
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
     data_manager.change_vote_q(question_id, 1)
+    if request.args.get('to') == 'list':
+        return redirect('/list')
     return redirect('/')
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down(question_id):
     data_manager.change_vote_q(question_id, -1)
+    if request.args.get('to') == 'list':
+        return redirect('/list')
     return redirect('/')
 
 
