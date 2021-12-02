@@ -122,7 +122,8 @@ def vote_down(question_id):
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'POST':
-        data_manager.write_edited_q(question_id, request.form)
+        file = request.files['image']
+        data_manager.write_edited_q(question_id, request.form, file)
         return redirect(url_for('display_question', question_id=question_id))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('edit_child.html', question=question)

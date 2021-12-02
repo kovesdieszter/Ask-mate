@@ -230,13 +230,14 @@ def get_submission_time():
 
 
 @connection.connection_handler
-def write_edited_q(cursor, question_id, edited_question):
+def write_edited_q(cursor, question_id, edited_question, image):
+    image = str(image).split("'")[1]
     query = """
         UPDATE question
-        SET title = %s, message = %s
+        SET title = %s, message = %s, image = %s
         WHERE id = %s 
         returning question"""
-    cursor.execute(query, (edited_question['title'], edited_question['message'], question_id),)
+    cursor.execute(query, (edited_question['title'], edited_question['message'], image, question_id),)
 # def write_edited_q(question_id, edited_question, view=False):
 #     return connection.write_edited_q(question_id, edited_question, view=view)
 
