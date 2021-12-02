@@ -191,7 +191,7 @@ def update_question_tag_table(cursor, question_id, tag_id):
 @connection.connection_handler
 def get_question_tags(cursor, question_id):
     query = '''
-            SELECT name
+            SELECT id, name
             FROM tag
             INNER JOIN question_tag
             ON tag.id = question_tag.tag_id
@@ -200,6 +200,17 @@ def get_question_tags(cursor, question_id):
     cursor.execute(query, {'q_id': question_id})
     return cursor.fetchall()
 
+
+@connection.connection_handler
+def delete_tag(cursor, question_id, tag_id):
+    query = '''
+            DELETE 
+            FROM question_tag
+            WHERE question_id = %(q_id)s AND tag_id = %(t_id)s
+            RETURNING *
+            '''
+    cursor.execute(query, {'q_id': question_id, 't_id': tag_id})
+    return cursor.fetchall()
 
 #  Dia
 
