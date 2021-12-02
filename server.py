@@ -45,7 +45,10 @@ def question():
 
 #  Dia
 @app.route('/question/<question_id>')
-def display_question(question_id):
+def display_question(question_id, view='False'):
+    view = request.args.get('view')
+    if view == 'True':
+        data_manager.increase_view(question_id)
     question = data_manager.get_question_data_by_id(question_id)
     answers = data_manager.get_answer_by_question_id(question_id)
     tags = data_manager.get_question_tags(question_id)
@@ -70,16 +73,21 @@ def post_answer(question_id):
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def add_tag(question_id):
+    all_tag_names = data_manager.get_all_tag_names()
     if request.method == 'POST':
         tag_names = list(request.form.listvalues())
         tags = sum(tag_names, [])
         print(tags)
-        # tag_ids = data_manager.get_tag_id(tag_names)
+        tag_ids = []
         for tag in tags:
             data_manager.update_tag_table(tag)
-        # data_manager.update_question_tag_table(question_id, tag_ids)
+            tag_id_rdict = data_manager.get_tag_id(tag)
+            for tag_id in tag_id_rdict:
+                tag_ids.append(tag_id['id'])
+        for t_id in tag_ids:
+            data_manager.update_question_tag_table(question_id, t_id)
         return redirect(url_for('display_question', question_id=question_id))
-    return render_template('add_tag.html')
+    return render_template('add_tag.html', all_tag_names=all_tag_names)
 
 
 @app.route('/answer/<answer_id>/vote_up')
@@ -145,6 +153,16 @@ def delete_comment(comment_id):
     question_id = data_manager.get_question_id_by_comment(comment_id)
     data_manager.delete_comment(comment_id)
     return redirect(url_for('display_question', question_id=question_id['question_id']))
+
+
+@app.route('/comment/<comment_id>', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    if request.method == 'POST':
+        data_manager.write_edited_com(comment_id, request.form)
+        question_id = data_manager.get_question_id_by_comment(comment_id)
+        return redirect(url_for('display_question', question_id=question_id['question_id']))
+    comment = data_manager.get_comment_data_by_id(comment_id)
+    return render_template('edit_comment.html', comment=comment)
 #  Eniko
 
 # Eszter

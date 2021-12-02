@@ -82,11 +82,11 @@ def add_comment_to_question(cursor, question_id, message):
     submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
     INSERT INTO 
-    comment (submission_time, question_id, message)
-    VALUES (%(val0)s, %(val1)s, %(val2)s)
+    comment (submission_time, question_id, message, edited_count)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(count)s)
     RETURNING *
     """
-    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message})
+    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message, 'count': 0})
     return cursor.fetchone()
 
 
@@ -96,7 +96,7 @@ def get_comment_by_question_id(cursor, question_id):
         SELECT *
         FROM comment
         WHERE question_id = %(val1)s
-        ORDER BY submission_time """
+        ORDER BY id """
     cursor.execute(query, {'val1': question_id})
     return cursor.fetchall()
 
@@ -127,6 +127,16 @@ def write_new_answer(cursor, question_id, message, image):
 
 
 @connection.connection_handler
+def get_all_tag_names(cursor):
+    query = '''
+            SELECT name
+            FROM tag
+            '''
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def update_tag_table(cursor, tag_name):
     query = '''
             INSERT INTO tag (name)
@@ -134,19 +144,36 @@ def update_tag_table(cursor, tag_name):
             ON CONFLICT DO NOTHING
             RETURNING *
             '''
+    try:
+        cursor.execute(query, {'tag_n': tag_name})
+    finally:
+        return cursor.fetchall()
 
-    cursor.execute(query, {'tag_n': tag_name})
+
+@connection.connection_handler
+def get_tag_id(cursor, tag_name):
+    query = '''
+        SELECT id
+        FROM tag
+        WHERE name = %(t_name)s
+            '''
+    cursor.execute(query, {'t_name': tag_name})
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_all_tags(cursor):
+def update_question_tag_table(cursor, question_id, tag_id):
     query = '''
-            SELECT name
-            FROM tag
+            INSERT INTO question_tag
+            VALUES (%(q_id)s, %(t_id)s)
+            ON CONFLICT
+            DO NOTHING 
+            RETURNING *
             '''
-    cursor.execute(query)
-    return cursor.fetchall()
+    try:
+        cursor.execute(query, {'q_id': question_id, 't_id': tag_id})
+    finally:
+        return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -171,8 +198,7 @@ def get_question_tags(cursor, question_id):
 @connection.connection_handler
 def write_new_question(cursor, new_question, image):
     image = str(image).split("'")[1]
-    dt = datetime.datetime.now()
-    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
+    submission_time = get_submission_time()
     query = """
         INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
         VALUES (%s, %s, %s, %s, %s, %s)
@@ -183,6 +209,12 @@ def write_new_question(cursor, new_question, image):
         FROM question"""
     cursor.execute(query)
     return cursor.fetchone()
+
+
+def get_submission_time():
+    dt = datetime.datetime.now()
+    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
+    return submission_time
 
 
 @connection.connection_handler
@@ -288,4 +320,35 @@ def delete_comment(cursor, comment_id):
         WHERE id = %s
         returning comment"""
     cursor.execute(query, (comment_id,))
+
+
+@connection.connection_handler
+def write_edited_com(cursor, comment_id, edited_comment):
+    submission_time = get_submission_time()
+    query = """
+        UPDATE comment
+        SET message = %s, submission_time = %s, edited_count = edited_count + 1
+        WHERE id = %s 
+        returning comment"""
+    cursor.execute(query, (edited_comment['message'], submission_time, comment_id,))
+
+
+@connection.connection_handler
+def get_comment_data_by_id(cursor, comment_id):
+    query = """
+        SELECT * 
+        FROM comment
+        WHERE id = %s"""
+    cursor.execute(query, (comment_id,))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def increase_view(cursor, question_id):
+    query = """
+        UPDATE question
+        SET view_number = view_number + 1
+        WHERE id = %s
+        returning question"""
+    cursor.execute(query, (question_id,))
 # Enikő
