@@ -120,7 +120,7 @@
 <div>
     <label>Tags for this question:</label>
     {% for tag in tags %}
-        <p>{{ tag['name'] }}</p>
+        <p id="tag">{{ tag['name'] }}<a href="{{ url_for('delete_tag',question_id=question.id, tag_id=tag['id']) }}"> <img src="../static/red-x.png" width="15"> </a></p>
     {% endfor %}
 </div>
 {#Dia #}
