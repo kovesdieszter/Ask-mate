@@ -269,4 +269,22 @@ def write_edited_a(cursor, answer_id, edited_answer):
         returning answer"""
     cursor.execute(query, (edited_answer['message'], answer_id,))
 
+@connection.connection_handler
+def get_question_id_by_comment(cursor, comment_id):
+    query = """
+        SELECT question_id
+        FROM comment
+        WHERE id = %s"""
+    cursor.execute(query, (comment_id,))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def delete_comment(cursor, comment_id):
+    query = """
+        DELETE 
+        FROM comment
+        WHERE id = %s
+        returning comment"""
+    cursor.execute(query, (comment_id,))
 # Enikő

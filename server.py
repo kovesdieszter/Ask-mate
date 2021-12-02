@@ -137,6 +137,13 @@ def edit_answer(answer_id):
         return redirect(url_for('display_question', question_id=question_id['question_id']))
     answer = data_manager.get_answer_data_by_id(answer_id)
     return render_template('edit_answer.html', answer=answer)
+
+
+@app.route('/comments/<comment_id>')
+def delete_comment(comment_id):
+    question_id = data_manager.get_question_id_by_comment(comment_id)
+    data_manager.delete_comment(comment_id)
+    return redirect(url_for('display_question', question_id=question_id['question_id']))
 #  Eniko
 
 # Eszter
