@@ -123,10 +123,8 @@ def edit_question(question_id):
 @app.route('/add-question', methods=['GET', 'POST'])
 def new_question():
     if request.method == 'POST':
-        """file = request.files['image']
-        name = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], name))"""
-        question_id = data_manager.write_new_question(request.form)['max']
+        file = request.files['image']
+        question_id = data_manager.write_new_question(request.form, file)['max']
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 
