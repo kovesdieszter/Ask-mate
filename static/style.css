@@ -92,3 +92,16 @@ table, th, tr, td {
 #tag a{
     text-decoration: none;
 }
+
+.Add_button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    background-color: #c5ff86;
+    border:2px solid black;
+    color: black;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 8px;
+}

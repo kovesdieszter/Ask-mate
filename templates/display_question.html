@@ -78,8 +78,9 @@
             {% endif %}
             {% endfor %}
     </ol>
-
-    <a href="{{ url_for('add_question_comment',question_id=question.id) }}">Add new comment</a>
+    <p>
+    <a href="{{ url_for('add_question_comment',question_id=question.id) }}" class="Add_button">Add new comment</a>
+    </p>
     </div>
     <table>
     <th> Amswer </th>
@@ -115,11 +116,12 @@
                 </tr>
         </table>
 
-
-<a class="post" href="{{ url_for('post_answer',question_id=question.id) }}">Post an answer</a>
+<p>
+<a href="{{ url_for('post_answer',question_id=question.id) }}" class="Add_button">Post an answer</a>
 {#Dia #}
-<a href="{{ url_for('add_tag',question_id=question.id) }}">Add tag</a>
-<div>
+<a href="{{ url_for('add_tag',question_id=question.id) }}" class="Add_button">Add tag</a>
+</p>
+    <div>
     <label>Tags for this question:</label>
     {% for tag in tags %}
         <p id="tag">{{ tag['name'] }}<a href="{{ url_for('delete_tag',question_id=question.id, tag_id=tag['id']) }}"> <img src="../static/red-x.png" width="15"> </a></p>
