@@ -65,8 +65,8 @@
     <h2>{{ question['title'] }}</h2>
     <div class="qu">
         <p>{{ question['message'] }}</p><br>
-        {% if question['image'] %}
-        <p><img src="../static/{{ question['image'] }}" width="200" height="200" ></p>
+        {%  if question.image != None %}
+        <p><img src="../static/images/{{ question['image'] }}" width="200" height="200" ></p>
         {% endif %}
     <h3>Comments</h3>
         <ol>{%  for comment in comments %}
@@ -83,7 +83,8 @@
     </p>
     </div>
     <table>
-    <th> Amswer </th>
+    <th> Answer </th>
+    <th> Image </th>
     <th> Vote </th>
     <th> Actions </th>
     <th> Comment </th>
@@ -91,7 +92,11 @@
                 {% if answer.question_id == question.id %}
                     <tr>
                 <div class="div1">
-                    <td>{{ answer['message'] }}</td> <td>{{ answer['vote_number'] }} <img src="../static/like.png" width="20" alt="VOTE"> </td>
+                    <td>{{ answer['message'] }}</td>
+                    <td>{%  if answer.image != None %}
+                        <p><img src="../static/images/{{ answer['image'] }}" width="200" height="200" ></p>
+                        {% endif %}</td>
+                    <td>{{ answer['vote_number'] }} <img src="../static/like.png" width="20" alt="VOTE"> </td>
                     <td><a href="{{ url_for('edit_answer', answer_id=answer['id']) }}"><img src="../static/write.png" width="20" alt="Edit"></a>
                     <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}"><img src="../static/trashcan.png" width="20" alt="Delete"></a>
                     <a href="{{ url_for('add_answer_comment',answer_id=answer.id) }}"><img src="../static/comment.png" width="20" alt="Comment"></a><br>
