@@ -81,3 +81,14 @@ table, th, tr, td {
 }
 #search_input{
 }
+
+#tag{
+    display: inline;
+    padding: 0 20px 0 20px;
+    color: seagreen;
+    background: cornsilk;
+}
+
+#tag a{
+    text-decoration: none;
+}
