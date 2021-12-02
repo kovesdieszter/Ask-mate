@@ -38,7 +38,7 @@
                 <td>{{ item.view_number}}</td>
                 <td>{{ item.vote_number }}</td>
                 <td>
-                <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
+                <a href="/question/{{ item['id'] }}?view=True">{{ item.title }} </a></td>
                 <td>{{ item.message }}</td>
                 <td>{{ item.image }}</td>
                 <td><a href={{ url_for('vote_up', question_id=item.id) }}>
