@@ -14,9 +14,10 @@
         <p>Message:<br>
             <textarea name="message" rows="20" cols="100" required>{% block question_message %}{% endblock %}</textarea>
         </p>
+        {% block image %}
         <p>Upload an image:<br>
         <input type="file" name="image">
-            {% block question_image %}{% endblock %}
+        {% endblock %}
 {#            <textarea name="image" rows="2" cols="30" src = image  width="200" height="200"> {% block question_image %}{% endblock %}</textarea>#}
         </p>
         <p>
