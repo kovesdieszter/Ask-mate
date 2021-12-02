@@ -169,13 +169,14 @@ def get_question_tags(cursor, question_id):
 
 
 @connection.connection_handler
-def write_new_question(cursor, new_question):
+def write_new_question(cursor, new_question, image):
+    image = str(image).split("'")[1]
     submission_time = get_submission_time()
     query = """
-        INSERT INTO question (submission_time, view_number, vote_number, title, message)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+        VALUES (%s, %s, %s, %s, %s, %s)
         returning question"""
-    cursor.execute(query, (submission_time, 0000, 0000, new_question['title'], new_question['message'],))
+    cursor.execute(query, (submission_time, 0000, 0000, new_question['title'], new_question['message'], image))
     query = """
         SELECT max(id) 
         FROM question"""
