@@ -39,7 +39,8 @@ def sort_list():
 def display_question(question_id):
     question = data_manager.get_question_data_by_id(question_id)
     answers = data_manager.get_answer_by_question_id(question_id)
-    return render_template('display_question.html', question=question, answers=answers)
+    tags = data_manager.get_question_tags(question_id)
+    return render_template('display_question.html', question=question, answers=answers, tags=tags)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -55,6 +56,20 @@ def post_answer(question_id):
         data_manager.write_new_answer(question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
+
+
+@app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
+def add_tag(question_id):
+    if request.method == 'POST':
+        tag_names = list(request.form.listvalues())
+        tags = sum(tag_names, [])
+        print(tags)
+        # tag_ids = data_manager.get_tag_id(tag_names)
+        for tag in tags:
+            data_manager.update_tag_table(tag)
+        # data_manager.update_question_tag_table(question_id, tag_ids)
+        return redirect(url_for('display_question', question_id=question_id))
+    return render_template('add_tag.html')
 
 
 @app.route('/answer/<answer_id>/vote_up')

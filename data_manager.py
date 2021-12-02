@@ -96,6 +96,42 @@ def write_new_answer(cursor, question_id, message, image):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def update_tag_table(cursor, tag_name):
+    query = '''
+            INSERT INTO tag (name)
+            VALUES (%(tag_n)s)
+            ON CONFLICT DO NOTHING
+            RETURNING *
+            '''
+
+    cursor.execute(query, {'tag_n': tag_name})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_tags(cursor):
+    query = '''
+            SELECT name
+            FROM tag
+            '''
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_tags(cursor, question_id):
+    query = '''
+            SELECT name
+            FROM tag
+            INNER JOIN question_tag
+            ON tag.id = question_tag.tag_id
+            WHERE question_id = %(q_id)s
+            '''
+    cursor.execute(query, {'q_id': question_id})
+    return cursor.fetchall()
+
+
 #  Dia
 
 #  Eniko
