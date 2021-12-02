@@ -69,3 +69,10 @@ table, th, tr, td {
 }
 #search_input{
 }
+
+#tag{
+    display: inline;
+    padding: 0 15px 0 15px;
+    color: seagreen;
+    background: cornsilk;
+}
