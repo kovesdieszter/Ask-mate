@@ -70,16 +70,21 @@ def post_answer(question_id):
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def add_tag(question_id):
+    all_tag_names = data_manager.get_all_tag_names()
     if request.method == 'POST':
         tag_names = list(request.form.listvalues())
         tags = sum(tag_names, [])
         print(tags)
-        # tag_ids = data_manager.get_tag_id(tag_names)
+        tag_ids = []
         for tag in tags:
             data_manager.update_tag_table(tag)
-        # data_manager.update_question_tag_table(question_id, tag_ids)
+            tag_id_rdict = data_manager.get_tag_id(tag)
+            for tag_id in tag_id_rdict:
+                tag_ids.append(tag_id['id'])
+        for t_id in tag_ids:
+            data_manager.update_question_tag_table(question_id, t_id)
         return redirect(url_for('display_question', question_id=question_id))
-    return render_template('add_tag.html')
+    return render_template('add_tag.html', all_tag_names=all_tag_names)
 
 
 @app.route('/answer/<answer_id>/vote_up')

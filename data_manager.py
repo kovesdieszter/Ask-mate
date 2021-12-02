@@ -127,6 +127,16 @@ def write_new_answer(cursor, question_id, message, image):
 
 
 @connection.connection_handler
+def get_all_tag_names(cursor):
+    query = '''
+            SELECT name
+            FROM tag
+            '''
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def update_tag_table(cursor, tag_name):
     query = '''
             INSERT INTO tag (name)
@@ -134,19 +144,36 @@ def update_tag_table(cursor, tag_name):
             ON CONFLICT DO NOTHING
             RETURNING *
             '''
+    try:
+        cursor.execute(query, {'tag_n': tag_name})
+    finally:
+        return cursor.fetchall()
 
-    cursor.execute(query, {'tag_n': tag_name})
+
+@connection.connection_handler
+def get_tag_id(cursor, tag_name):
+    query = '''
+        SELECT id
+        FROM tag
+        WHERE name = %(t_name)s
+            '''
+    cursor.execute(query, {'t_name': tag_name})
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_all_tags(cursor):
+def update_question_tag_table(cursor, question_id, tag_id):
     query = '''
-            SELECT name
-            FROM tag
+            INSERT INTO question_tag
+            VALUES (%(q_id)s, %(t_id)s)
+            ON CONFLICT
+            DO NOTHING 
+            RETURNING *
             '''
-    cursor.execute(query)
-    return cursor.fetchall()
+    try:
+        cursor.execute(query, {'q_id': question_id, 't_id': tag_id})
+    finally:
+        return cursor.fetchall()
 
 
 @connection.connection_handler

@@ -8,18 +8,11 @@
 <body>
 <h1>Add tag</h1>
 <form method="post">
-    <div>
-        <input id="python" value="python" type="checkbox" name="tag">
-        <label for="python">python</label>
-    </div>
-    <div>
-        <input id="sql" value="sql" type="checkbox" name="tag">
-        <label for="sql">sql</label>
-    </div>
-    <div>
-        <input id="css" value="css" type="checkbox" name="tag">
-        <label for="css">css</label>
-    </div>
+    <div>{% for name in all_tag_names %}
+        <input id={{ name['name'] }} value={{ name['name'] }} type="checkbox" name="tag">
+        <label for={{ name['name'] }}>{{ name['name'] }}</label>
+        {% endfor %}
+    </div>{#
     <div>
         <label for="other">other, please specify:</label>
         <input id="other" type="text" name="tag">
