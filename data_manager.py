@@ -118,8 +118,7 @@ def add_comment_to_answer(cursor, question_id, answer_id, message):
 
 @connection.connection_handler
 def write_new_answer(cursor, question_id, message, image):
-    dt = datetime.datetime.now()
-    submission_time = dt.date()
+    submission_time = get_submission_time()
     vote_number = 0  # initial vote number
 
     query = '''
@@ -214,7 +213,6 @@ def delete_tag(cursor, question_id, tag_id):
 
 @connection.connection_handler
 def write_new_question(cursor, new_question, image):
-    image = str(image).split("'")[1]
     submission_time = get_submission_time()
     query = """
         INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
@@ -236,7 +234,6 @@ def get_submission_time():
 
 @connection.connection_handler
 def write_edited_q(cursor, question_id, edited_question, image):
-    image = str(image).split("'")[1]
     query = """
         UPDATE question
         SET title = %s, message = %s, image = %s
@@ -311,13 +308,13 @@ def get_answer_data_by_id(cursor, answer_id):
 
 
 @connection.connection_handler
-def write_edited_a(cursor, answer_id, edited_answer):
+def write_edited_a(cursor, answer_id, edited_answer, image):
     query = """
         UPDATE answer
-        SET message = %s
+        SET message = %s, image= %s
         WHERE id = %s 
         returning answer"""
-    cursor.execute(query, (edited_answer['message'], answer_id,))
+    cursor.execute(query, (edited_answer['message'], image, answer_id,))
 
 @connection.connection_handler
 def get_question_id_by_comment(cursor, comment_id):

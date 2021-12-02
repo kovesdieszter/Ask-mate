@@ -6,7 +6,9 @@ from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "./static"
+UPLOAD_FOLDER = 'static/images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 
 #Eszter
@@ -63,9 +65,15 @@ def post_answer(question_id):
             question_title = q['title']
             break
     if request.method == 'POST':
-        image = request.form.get('image')
+        file = request.files['image']
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(image_path)
+        else:
+            filename = None
         message = request.form.get('message')
-        data_manager.write_new_answer(question_id, message, image)
+        data_manager.write_new_answer(question_id, message, filename)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
 
@@ -132,7 +140,13 @@ def vote_down(question_id):
 def edit_question(question_id):
     if request.method == 'POST':
         file = request.files['image']
-        data_manager.write_edited_q(question_id, request.form, file)
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(image_path)
+        else:
+            filename = None
+        data_manager.write_edited_q(question_id, request.form, filename)
         return redirect(url_for('display_question', question_id=question_id))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('edit_child.html', question=question)
@@ -142,7 +156,13 @@ def edit_question(question_id):
 def new_question():
     if request.method == 'POST':
         file = request.files['image']
-        question_id = data_manager.write_new_question(request.form, file)['max']
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(image_path)
+        else:
+            filename = None
+        question_id = data_manager.write_new_question(request.form, filename)['max']
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 
@@ -150,7 +170,14 @@ def new_question():
 @app.route('/answer/<answer_id>', methods=['GET', 'POST'])
 def edit_answer(answer_id):
     if request.method == 'POST':
-        data_manager.write_edited_a(answer_id, request.form)
+        file = request.files['image']
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(image_path)
+        else:
+            filename = None
+        data_manager.write_edited_a(answer_id, request.form, filename)
         question_id = data_manager.get_question_id_by_answer(answer_id)
         return redirect(url_for('display_question', question_id=question_id['question_id']))
     answer = data_manager.get_answer_data_by_id(answer_id)
