@@ -50,11 +50,6 @@ def get_all_answer(cursor):
 @connection.connection_handler
 def delete_question(cursor, question_id):
     query = """
-        DELETE 
-        FROM answer
-        WHERE question_id = %(val)s"""
-    cursor.execute(query, {'val': question_id})
-    query = """
     DELETE
     FROM question
     WHERE id = %(val)s
@@ -102,15 +97,14 @@ def get_comment_by_question_id(cursor, question_id):
 
 @connection.connection_handler
 def add_comment_to_answer(cursor, question_id, answer_id, message):
-    dt = datetime.datetime.now()
-    submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
+    submission_time = get_submission_time()
     query = """
     INSERT INTO 
-    comment (submission_time, question_id, answer_id, message)
-    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s)
+    comment (submission_time, question_id, answer_id, message, edited_count)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s, %(count)s)
     RETURNING *
     """
-    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message})
+    cursor.execute(query, {'count': 0, 'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message})
     return cursor.fetchone()
 
 
