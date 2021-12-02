@@ -72,8 +72,11 @@ table, th, tr, td {
 
 #tag{
     display: inline;
-    padding: 0 15px 0 15px;
+    padding: 0 20px 0 20px;
     color: seagreen;
     background: cornsilk;
+}
 
+#tag a{
+    text-decoration: none;
 }
