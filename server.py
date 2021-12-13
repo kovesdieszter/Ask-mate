@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-
+from bonus_questions import SAMPLE_QUESTIONS
 from operator import itemgetter
 import data_manager
 from werkzeug.utils import secure_filename
@@ -12,6 +12,11 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 
 #Eszter
+
+
+@app.route("/bonus-questions")
+def main():
+    return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
 
 @app.route('/')
