@@ -55,12 +55,12 @@ CREATE TABLE question_tag (
     tag_id integer NOT NULL
 );
 
-DROP TABLE IF EXISTS public.user;
-CREATE TABLE user (
+DROP TABLE IF EXISTS public.users;
+CREATE TABLE users (
     id serial NOT NULL,
     username text,
     email text,
-    password CHAR(60),
+    password char(60),
     asked_questions integer,
     answers integer,
     comments integer,
