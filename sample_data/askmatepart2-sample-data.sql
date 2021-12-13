@@ -55,12 +55,23 @@ CREATE TABLE question_tag (
     tag_id integer NOT NULL
 );
 
+DROP TABLE IF EXISTS public.user;
+CREATE TABLE user (
+    id serial NOT NULL,
+    username text,
+    email text,
+    password CHAR(60),
+    asked_questions integer,
+    answers integer,
+    comments integer,
+    reputation integer 
+);
+
 DROP TABLE IF EXISTS public.tag;
 CREATE TABLE tag (
     id serial NOT NULL,
     name text UNIQUE
 );
-
 
 ALTER TABLE ONLY answer
     ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
