@@ -1,12 +1,11 @@
-#  Eszter
-from typing import List, Dict
 
+from typing import List, Dict
 from psycopg2 import sql
-from psycopg2.extras import RealDictCursor
+
 import datetime
 import connection
-import sys
-#Eszter
+
+
 
 
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -210,19 +209,23 @@ def delete_tag(cursor, question_id, tag_id):
 #  Eniko
 
 
-
 @connection.connection_handler
 def write_new_question(cursor, new_question, image):
     submission_time = get_submission_time()
-    query = """
+    cursor.execute(sql.SQL("""
         INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        VALUES ({time}, {view}, {vote}, {title}, {message}, {image})
         returning question"""
-    cursor.execute(query, (submission_time, 0000, 0000, new_question['title'], new_question['message'], image))
-    query = """
+    ).format(time=sql.Literal(submission_time),
+             view=sql.Literal(0000),
+             vote=sql.Literal(0000),
+             title=sql.Literal(new_question['title']),
+             message=sql.Literal(new_question['message']),
+             image=sql.Literal(image)))
+    cursor.execute(sql.SQL("""
         SELECT max(id) 
-        FROM question"""
-    cursor.execute(query)
+        FROM question"""))
+
     return cursor.fetchone()
 
 
@@ -234,35 +237,37 @@ def get_submission_time():
 
 @connection.connection_handler
 def write_edited_q(cursor, question_id, edited_question, image):
-    query = """
+    cursor.execute(sql.SQL("""
         UPDATE question
-        SET title = %s, message = %s, image = %s
-        WHERE id = %s 
+        SET title = {title}, message = {message}, image = {image}
+        WHERE id = {q_id} 
         returning question"""
-    cursor.execute(query, (edited_question['title'], edited_question['message'], image, question_id),)
-# def write_edited_q(question_id, edited_question, view=False):
-#     return connection.write_edited_q(question_id, edited_question, view=view)
-
+    ).format(title=sql.Literal(edited_question['title']),
+             message=sql.Literal(edited_question['message']),
+             image=sql.Literal(image),
+             q_id=sql.Literal(question_id)))
 
 
 @connection.connection_handler
 def change_vote_q(cursor, question_id, changer):
-    query = """
+    cursor.execute(sql.SQL("""
         UPDATE question
-        SET vote_number = vote_number + %s
-        WHERE id = %s
+        SET vote_number = vote_number + {changer}
+        WHERE id = {q_id}
         returning question"""
-    cursor.execute(query, (changer, question_id,))
+    ).format(changer=sql.Literal(changer),
+             q_id=sql.Literal(question_id)))
 
 
 @connection.connection_handler
 def change_vote_a(cursor, answer_id, changer):
-    query = """
+    cursor.execute(sql.SQL("""
         UPDATE answer
-        SET vote_number = vote_number + %s
-        WHERE id = %s
-        returning answer"""
-    cursor.execute(query, (changer, answer_id,))
+        SET vote_number = vote_number + {changer}
+        WHERE id = {a_id}
+        returning answer""")
+    .format(changer=sql.Literal(changer),
+            a_id=sql.Literal(answer_id)))
 
 
 @connection.connection_handler
@@ -309,12 +314,15 @@ def get_answer_data_by_id(cursor, answer_id):
 
 @connection.connection_handler
 def write_edited_a(cursor, answer_id, edited_answer, image):
-    query = """
+    cursor.execute(sql.SQL("""
         UPDATE answer
-        SET message = %s, image= %s
-        WHERE id = %s 
+        SET message = {message}, image= {image}
+        WHERE id = {a_id} 
         returning answer"""
-    cursor.execute(query, (edited_answer['message'], image, answer_id,))
+    ).format(message=sql.Literal(edited_answer['message']),
+             image=sql.Literal(image),
+             a_id=sql.Literal(answer_id)))
+
 
 @connection.connection_handler
 def get_question_id_by_comment(cursor, comment_id):
@@ -339,12 +347,14 @@ def delete_comment(cursor, comment_id):
 @connection.connection_handler
 def write_edited_com(cursor, comment_id, edited_comment):
     submission_time = get_submission_time()
-    query = """
+    cursor.execute(sql.SQL("""
         UPDATE comment
-        SET message = %s, submission_time = %s, edited_count = edited_count + 1
-        WHERE id = %s 
+        SET message = {message}, submission_time = {time}, edited_count = edited_count + 1
+        WHERE id = {c_id} 
         returning comment"""
-    cursor.execute(query, (edited_comment['message'], submission_time, comment_id,))
+    ).format(message=sql.Literal(edited_comment['message']),
+             time=sql.Literal(submission_time),
+             c_id=sql.Literal(comment_id)))
 
 
 @connection.connection_handler
