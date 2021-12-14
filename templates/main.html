@@ -4,13 +4,19 @@
             <meta charset="utf-8">
             <title>Questions and answers</title>
         <link rel="stylesheet" href="/static/style.css">
+        <script type="text/javascript" src="/static/script.js"></script>
     </head>
     <body>
         <h1>Main page</h1>
         <form action="search">
             <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button type="submit"><img src="../static/search.piko" width="15px"></button></p>
         </form>
+        {% if 'username' not in session %}
+        <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()" >New question</a>
+        {% else %}
         <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
+        {% endif %}
+
         <a class="Add_button" href="{{ url_for('login') }}">Login</a>
         <p>
 
