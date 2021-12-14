@@ -22,6 +22,17 @@ def get_user_by_(cursor, what, user):
 
 
 @connection.connection_handler
+def get_users(cursor):
+    query = """
+    SELECT username, date, asked_questions, answers, comments, reputation
+    FROM users
+    ORDER BY username
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def add_new_user(cursor, username, email, password):
     date = get_submission_time()
     query = """
@@ -95,16 +106,16 @@ def delete_answer(cursor, answer_id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, question_id, message):
+def add_comment_to_question(cursor, question_id, message, user_id):
     dt = datetime.datetime.now()
     submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
     INSERT INTO 
-    comment (submission_time, question_id, message, edited_count)
-    VALUES (%(val0)s, %(val1)s, %(val2)s, %(count)s)
+    comment (submission_time, question_id, message, edited_count, user_id)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(count)s, %(user_id)s)
     RETURNING *
     """
-    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message, 'count': 0})
+    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message, 'count': 0, 'user_id': user_id})
     return cursor.fetchone()
 
 
@@ -119,15 +130,15 @@ def get_comment_by_question_id(cursor, question_id):
     return cursor.fetchall()
 
 @connection.connection_handler
-def add_comment_to_answer(cursor, question_id, answer_id, message):
+def add_comment_to_answer(cursor, question_id, answer_id, message, user_id):
     submission_time = get_submission_time()
     query = """
     INSERT INTO 
-    comment (submission_time, question_id, answer_id, message, edited_count)
-    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s, %(count)s)
+    comment (submission_time, question_id, answer_id, message, edited_count, user_id)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s, %(count)s, %(user_id)s)
     RETURNING *
     """
-    cursor.execute(query, {'count': 0, 'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message})
+    cursor.execute(query, {'count': 0, 'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message, 'user_id': user_id})
     return cursor.fetchone()
 
 
@@ -146,17 +157,17 @@ def verify_password(plain_text_password, hashed_password):
 #  Dia
 
 @connection.connection_handler
-def write_new_answer(cursor, question_id, message, image):
+def write_new_answer(cursor, question_id, message, image, user_id):
     submission_time = get_submission_time()
     vote_number = 0  # initial vote number
 
     query = '''
-                INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-                VALUES (%(s_time)s, %(vt_nr)s, %(q_id)s, %(m_sage)s, %(im_g)s)
+                INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
+                VALUES (%(s_time)s, %(vt_nr)s, %(q_id)s, %(m_sage)s, %(im_g)s, %(user_id)s )
                 RETURNING *
                 '''
 
-    cursor.execute(query, {'s_time': submission_time, 'vt_nr': vote_number, 'q_id': question_id, 'm_sage': message, 'im_g': image})
+    cursor.execute(query, {'s_time': submission_time, 'vt_nr': vote_number, 'q_id': question_id, 'm_sage': message, 'im_g': image, 'user_id':user_id})
     return cursor.fetchall()
 
 
@@ -237,21 +248,30 @@ def delete_tag(cursor, question_id, tag_id):
 #  Dia
 
 #  Eniko
+@connection.connection_handler
+def get_user_id(cursor, username):
+    cursor.execute(sql.SQL("""
+    SELECT id
+    FROM users
+    WHERE username = {username}""")
+    .format(username=sql.Literal(username)))
+    return cursor.fetchone()
 
 
 @connection.connection_handler
-def write_new_question(cursor, new_question, image):
+def write_new_question(cursor, new_question, image, user_id):
     submission_time = get_submission_time()
     cursor.execute(sql.SQL("""
-        INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-        VALUES ({time}, {view}, {vote}, {title}, {message}, {image})
+        INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
+        VALUES ({time}, {view}, {vote}, {title}, {message}, {image}, {user_id})
         returning question"""
     ).format(time=sql.Literal(submission_time),
              view=sql.Literal(0000),
              vote=sql.Literal(0000),
              title=sql.Literal(new_question['title']),
              message=sql.Literal(new_question['message']),
-             image=sql.Literal(image)))
+             image=sql.Literal(image),
+             user_id=sql.Literal(user_id)))
     cursor.execute(sql.SQL("""
         SELECT max(id) 
         FROM question"""))

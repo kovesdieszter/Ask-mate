@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>USERS</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+    <body>
+    <h1>Users</h1>
+    <center><a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a></center>
+    <form>
+        <table>
+            <th> Username </th>
+            <th> Date </th>
+            <th> Num_of_asked_questions </th>
+            <th> Answers </th>
+            <th> Comments </th>
+            <th> Reputation </th>
+               {% for d in data %}
+                    <tr>
+                        <td>{{ d['username'] }}</td>
+                        <td>{{ d['date'] }}</td>
+                        <td>{{ d['asked_questions'] }}</td>
+                        <td>{{ d['answers'] }}</td>
+                        <td>{{ d['comments'] }}</td>
+                        <td>{{ d['reputation'] }}</td>
+                   </tr>
+
+               {%  endfor %}
+    </table>
+    </form>
+
+
+
+
+
+    </body>
+</html>
