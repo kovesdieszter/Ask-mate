@@ -16,8 +16,12 @@
         {% else %}
         <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
         {% endif %}
-
+        {% if 'username' not in session %}
         <a class="Add_button" href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <p>You are logged in as {{ session['username'] }}</p>
+        <a class="Add_button" href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
         <p>
 
 
