@@ -84,16 +84,16 @@ def delete_answer(cursor, answer_id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, question_id, message):
+def add_comment_to_question(cursor, question_id, message, user_id):
     dt = datetime.datetime.now()
     submission_time = f'{dt.date()} {str(dt.time()).split(".")[0]}'
     query = """
     INSERT INTO 
-    comment (submission_time, question_id, message, edited_count)
-    VALUES (%(val0)s, %(val1)s, %(val2)s, %(count)s)
+    comment (submission_time, question_id, message, edited_count, user_id)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(count)s, %(user_id)s)
     RETURNING *
     """
-    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message, 'count': 0})
+    cursor.execute(query, {'val0': submission_time, 'val1': question_id, 'val2': message, 'count': 0, 'user_id': user_id})
     return cursor.fetchone()
 
 
@@ -108,15 +108,15 @@ def get_comment_by_question_id(cursor, question_id):
     return cursor.fetchall()
 
 @connection.connection_handler
-def add_comment_to_answer(cursor, question_id, answer_id, message):
+def add_comment_to_answer(cursor, question_id, answer_id, message, user_id):
     submission_time = get_submission_time()
     query = """
     INSERT INTO 
-    comment (submission_time, question_id, answer_id, message, edited_count)
-    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s, %(count)s)
+    comment (submission_time, question_id, answer_id, message, edited_count, user_id)
+    VALUES (%(val0)s, %(val1)s, %(val2)s, %(val3)s, %(count)s, %(user_id)s)
     RETURNING *
     """
-    cursor.execute(query, {'count': 0, 'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message})
+    cursor.execute(query, {'count': 0, 'val0': submission_time, 'val1': question_id, 'val2': answer_id, 'val3': message, 'user_id': user_id})
     return cursor.fetchone()
 
 

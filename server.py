@@ -256,7 +256,8 @@ def delete_answer(answer_id):
 @app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
 def add_question_comment(question_id):
     if request.method == "POST":
-        comment = data_manager.add_comment_to_question(question_id, request.form['message'])
+        user_id = data_manager.get_user_id(session['username'])['id']
+        comment = data_manager.add_comment_to_question(question_id, request.form['message'], user_id)
         return redirect(url_for("display_question", question_id=question_id, comment=comment))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('comment_child.html', question=question)
@@ -267,7 +268,8 @@ def add_answer_comment(answer_id):
     question_id = data_manager.get_question_id_by_answer(answer_id)
     question_id = question_id['question_id']
     if request.method == "POST":
-        comment = data_manager.add_comment_to_answer(question_id, answer_id, request.form.get('message'))
+        user_id = data_manager.get_user_id(session['username'])['id']
+        comment = data_manager.add_comment_to_answer(question_id, answer_id, request.form.get('message'), user_id)
         print(comment)
         return redirect(url_for("display_question", question_id=question_id, answer_id=answer_id, comment=comment))
     answer = data_manager.get_answer_data_by_id(answer_id)
