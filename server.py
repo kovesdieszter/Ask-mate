@@ -36,6 +36,14 @@ def register_user():
         return redirect(url_for('main_page', username=username,email=email, password=password))
     return render_template('registration.html')
 
+
+@app.route('/users', methods=["GET", "POST"])
+def list_users():
+    if 'username' in session:
+        table_data = data_manager.get_users()
+        return render_template('users.html', data=table_data)
+    return "You are not logged in, please login!"
+
 # Eszter
 
 #  Bea
