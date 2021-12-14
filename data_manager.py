@@ -12,14 +12,18 @@ QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 @connection.connection_handler
-def add_new_user(cursor, username, email, pw):
-    password = hash_password(pw)
-    date = datetime.datetime.now()
-    query = f"""
+def add_new_user(cursor, username, email, password):
+    date = get_submission_time()
+    query = """
     INSERT INTO 
-    users (username, email, password, asked_questions, answers, comments, reputation, registration)
-    VALUES ({username}, {email}, {password}, 0, 0, 0, 0, {date})"""
+    users (username, email, password, asked_questions, answers, comments, reputation, date)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+    cursor.execute(query, (username, email, password, 00, 00, 00, 00, date))
+    query = """
+                SELECT max(id) 
+                FROM question"""
     cursor.execute(query)
+    return cursor.fetchone()
 
 
 @connection.connection_handler

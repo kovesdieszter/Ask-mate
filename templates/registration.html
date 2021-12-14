@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
     <body>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form method="post">
             Choose a username: <br>
             <input type="name" name="username"><br>
             <p>
@@ -22,7 +22,7 @@
 
             </p>
 
-            <a class="Add_button" href="{{ url_for('main_page') }}">Register</a>
+            <button type="submit">Register</button>
 
 
         </form>
