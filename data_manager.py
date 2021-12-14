@@ -4,6 +4,7 @@ from psycopg2 import sql
 
 import datetime
 import connection
+import bcrypt
 
 
 
@@ -375,4 +376,28 @@ def increase_view(cursor, question_id):
         WHERE id = %s
         returning question"""
     cursor.execute(query, (question_id,))
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+@connection.connection_handler
+def get_user_name(cursor):
+    cursor.execute(sql.SQL("""
+    SELECT username
+    FROM users"""
+    ))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_password(cursor, email):
+    cursor.execute(sql.SQL("""
+    SELECT password
+    FROM users
+    WHERE email={email}""")
+    .format(email=sql.Literal(email)))
+    return cursor.fetchone()
 # Enikő
