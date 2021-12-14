@@ -4,12 +4,26 @@ from psycopg2 import sql
 
 import datetime
 import connection
-
-
+import bcrypt
 
 
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
+
+@connection.connection_handler
+def add_new_user(cursor, username, email, pw):
+    cursor.execute(sql.SQL("""
+            SELECT max(id) 
+            FROM users"""))
+    user_id = cursor.fetchone()['max']
+    password = hash_password(pw)
+    date = datetime.datetime.now()
+    query = f"""
+    INSERT INTO 
+    users (id, username, email, password, asked_questions, answers, comments, reputation, registration)
+    VALUES ({user_id}, {username}, {email}, {password}, 0, 0, 0, 0, {date})"""
+    cursor.execute(query)
 
 
 @connection.connection_handler
@@ -108,11 +122,6 @@ def add_comment_to_answer(cursor, question_id, answer_id, message):
 
 
 #  Eszter
-
-
-#  Bea
-#  Bea
-
 #  Dia
 
 @connection.connection_handler
