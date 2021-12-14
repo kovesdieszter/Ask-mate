@@ -226,8 +226,8 @@ def login():
                     session['username'] = request.form['user_name']
                     return redirect(url_for('main_page'))
                 else:
-                    return '''Invalid login attempt
-                                <a href="/">Main<a/>'''
+                    return render_template('login.html', message='Invalid login attempt')
+        return render_template('login.html', message='Invalid login attempt')
     return render_template('login.html')
 
 

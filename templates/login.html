@@ -23,6 +23,11 @@
     <div>
         <button type="submit">Login</button>
     </div>
+    {% if message %}
+    <script>
+        alert('Invalid login attempt');
+    </script>
+    {% endif %}
 </form>
 
 </body>
