@@ -26,6 +26,16 @@ def main_page():
     return render_template('main.html', header=header, questions=questions)
 
 
+@app.route('/registration', methods=["GET", "POST"])
+def register_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = data_manager.hash_password(request.form['password'])
+        data_manager.add_new_user(username, email, password)
+        return redirect(url_for('main_page', username=username,email=email, password=password))
+    return render_template('registration.html')
+
 # Eszter
 
 #  Bea

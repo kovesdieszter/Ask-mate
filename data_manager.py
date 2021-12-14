@@ -1,16 +1,28 @@
 
 from typing import List, Dict
 from psycopg2 import sql
-
+from psycopg2.extras import RealDictCursor
 import datetime
 import connection
 import bcrypt
 
 
-
-
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
+@connection.connection_handler
+def add_new_user(cursor, username, email, password):
+    date = get_submission_time()
+    query = """
+    INSERT INTO 
+    users (username, email, password, asked_questions, answers, comments, reputation, date)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+    cursor.execute(query, (username, email, password, 00, 00, 00, 00, date))
+    query = """
+                SELECT max(id) 
+                FROM question"""
+    cursor.execute(query)
+    return cursor.fetchone()
 
 
 @connection.connection_handler
@@ -108,12 +120,18 @@ def add_comment_to_answer(cursor, question_id, answer_id, message):
     return cursor.fetchone()
 
 
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'),hashed_bytes_password)
+
+
 #  Eszter
-
-
-#  Bea
-#  Bea
-
 #  Dia
 
 @connection.connection_handler
@@ -376,30 +394,4 @@ def increase_view(cursor, question_id):
         WHERE id = %s
         returning question"""
     cursor.execute(query, (question_id,))
-
-
-def verify_password(plain_text_password, hashed_password):
-    hashed_bytes_password = hashed_password.encode('utf-8')
-    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
-
-
-@connection.connection_handler
-def get_user_name(cursor):
-    cursor.execute(sql.SQL("""
-    SELECT username
-    FROM users"""
-    ))
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_password(cursor, email):
-    cursor.execute(sql.SQL("""
-    SELECT password
-    FROM users
-    WHERE email={email}""")
-    .format(email=sql.Literal(email)))
-    return cursor.fetchone()
-
-
 # Enikő
