@@ -394,4 +394,23 @@ def increase_view(cursor, question_id):
         WHERE id = %s
         returning question"""
     cursor.execute(query, (question_id,))
+
+
+@connection.connection_handler
+def get_user_name(cursor):
+    cursor.execute(sql.SQL("""
+    SELECT username
+    FROM users"""
+    ))
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_password(cursor, email):
+    cursor.execute(sql.SQL("""
+    SELECT password
+    FROM users
+    WHERE email={email}""")
+    .format(email=sql.Literal(email)))
+    return cursor.fetchone()
 # Enikő
