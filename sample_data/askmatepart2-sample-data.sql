@@ -26,7 +26,7 @@ CREATE TABLE question (
     title text,
     message text,
     image text,
-    user_id integer
+    user_id integer references users (id) on delete cascade
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -37,7 +37,7 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text,
-    user_id integer
+    user_id integer references users (id) on delete cascade
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -48,7 +48,7 @@ CREATE TABLE comment (
     message text,
     submission_time timestamp without time zone,
     edited_count integer,
-    user_id integer
+    user_id integer references users (id) on delete cascade
 );
 
 
@@ -58,9 +58,9 @@ CREATE TABLE question_tag (
     tag_id integer NOT NULL
 );
 
-DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.users CASCADE ;
 CREATE TABLE users (
-    id serial NOT NULL,
+    id serial NOT NULL unique,
     username text,
     email text,
     password char(60),
