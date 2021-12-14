@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from bonus_questions import SAMPLE_QUESTIONS
 from operator import itemgetter
 import data_manager
@@ -9,7 +9,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
+app.secret_key = b'_fkm_%asdd=54?.12"<dkhifa-w\n\xec]/'
 
 #Eszter
 
@@ -204,6 +204,27 @@ def edit_comment(comment_id):
         return redirect(url_for('display_question', question_id=question_id['question_id']))
     comment = data_manager.get_comment_data_by_id(comment_id)
     return render_template('edit_comment.html', comment=comment)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user_names = data_manager.get_user_name()
+        for username in user_names:
+            if request.form['user_name'] in username['username']:
+                if data_manager.verify_password(request.form['password'], data_manager.get_password(request.form['email'])['password']):
+                    session['username'] = request.form['user_name']
+                    return redirect(url_for('main_page'))
+                else:
+                    return '''Invalid login attempt
+                                <a href="/">Main<a/>'''
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('main_page'))
 #  Eniko
 
 # Eszter
