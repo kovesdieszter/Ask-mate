@@ -237,18 +237,19 @@ def get_user_id(cursor, username):
 
 
 @connection.connection_handler
-def write_new_question(cursor, new_question, image):
+def write_new_question(cursor, new_question, image, user_id):
     submission_time = get_submission_time()
     cursor.execute(sql.SQL("""
-        INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-        VALUES ({time}, {view}, {vote}, {title}, {message}, {image})
+        INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
+        VALUES ({time}, {view}, {vote}, {title}, {message}, {image}, {user_id})
         returning question"""
     ).format(time=sql.Literal(submission_time),
              view=sql.Literal(0000),
              vote=sql.Literal(0000),
              title=sql.Literal(new_question['title']),
              message=sql.Literal(new_question['message']),
-             image=sql.Literal(image)))
+             image=sql.Literal(image),
+             user_id=sql.Literal(user_id)))
     cursor.execute(sql.SQL("""
         SELECT max(id) 
         FROM question"""))

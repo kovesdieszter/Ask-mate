@@ -178,7 +178,8 @@ def new_question():
             file.save(image_path)
         else:
             filename = None
-        question_id = data_manager.write_new_question(request.form, filename)['max']
+        user_id = data_manager.get_user_id(session['username'])['id']
+        question_id = data_manager.write_new_question(request.form, filename, user_id)['max']
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 
