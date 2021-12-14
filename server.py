@@ -14,6 +14,12 @@ app.secret_key = b'_fkm_%asdd=54?.12"<dkhifa-w\n\xec]/'
 #Eszter
 
 
+@app.route('/user/<user_id>')
+def user_page(user_id):
+    user = data_manager.get_user_by_('id', user_id)
+    return render_template('user.html', user=user)
+
+
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
@@ -23,6 +29,9 @@ def main():
 def main_page():
     header = data_manager.QUESTION_HEADER
     questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
+    if 'username' in session:
+        user_id = data_manager.get_user_by_('username', session['username'])['id']
+        return render_template('main.html', header=header, questions=questions, id=user_id)
     return render_template('main.html', header=header, questions=questions)
 
 
