@@ -11,6 +11,16 @@ import bcrypt
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
+@connection.connection_handler
+def add_new_user(cursor, username, email, pw):
+    password = hash_password(pw)
+    date = datetime.datetime.now()
+    query = f"""
+    INSERT INTO 
+    users (username, email, password, asked_questions, answers, comments, reputation, registration)
+    VALUES ({username}, {email}, {password}, 0, 0, 0, 0, {date})"""
+    cursor.execute(query)
+
 
 @connection.connection_handler
 def get_all_user_story(cursor, order_by='submission_time', direction='ASC', limit=''):
