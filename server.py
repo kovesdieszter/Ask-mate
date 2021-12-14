@@ -26,6 +26,16 @@ def main_page():
     return render_template('main.html', header=header, questions=questions)
 
 
+@app.route('/registration', methods=["GET", "POST"])
+def register_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = data_manager.hash_password(request.form['password'])
+        data_manager.add_new_user(username, email, password)
+        return redirect(url_for('main_page', username=username,email=email, password=password))
+    return render_template('registration.html')
+
 # Eszter
 
 #  Bea
@@ -240,6 +250,7 @@ def add_answer_comment(answer_id):
         return redirect(url_for("display_question", question_id=question_id, answer_id=answer_id, comment=comment))
     answer = data_manager.get_answer_data_by_id(answer_id)
     return render_template('ans_comment_child.html', answer=answer)
+
 
 
 if __name__ == '__main__':
