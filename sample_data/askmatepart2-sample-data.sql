@@ -68,7 +68,7 @@ CREATE TABLE users (
     answers integer,
     comments integer,
     reputation integer,
-    registration date
+    date timestamp without time zone
 );
 
 DROP TABLE IF EXISTS public.tag;
