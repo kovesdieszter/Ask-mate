@@ -88,7 +88,8 @@ def post_answer(question_id):
         else:
             filename = None
         message = request.form.get('message')
-        data_manager.write_new_answer(question_id, message, filename)
+        user_id = data_manager.get_user_id(session['username'])['id']
+        data_manager.write_new_answer(question_id, message, filename, user_id)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
 

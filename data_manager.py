@@ -135,17 +135,17 @@ def verify_password(plain_text_password, hashed_password):
 #  Dia
 
 @connection.connection_handler
-def write_new_answer(cursor, question_id, message, image):
+def write_new_answer(cursor, question_id, message, image, user_id):
     submission_time = get_submission_time()
     vote_number = 0  # initial vote number
 
     query = '''
-                INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-                VALUES (%(s_time)s, %(vt_nr)s, %(q_id)s, %(m_sage)s, %(im_g)s)
+                INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
+                VALUES (%(s_time)s, %(vt_nr)s, %(q_id)s, %(m_sage)s, %(im_g)s, %(user_id)s )
                 RETURNING *
                 '''
 
-    cursor.execute(query, {'s_time': submission_time, 'vt_nr': vote_number, 'q_id': question_id, 'm_sage': message, 'im_g': image})
+    cursor.execute(query, {'s_time': submission_time, 'vt_nr': vote_number, 'q_id': question_id, 'm_sage': message, 'im_g': image, 'user_id':user_id})
     return cursor.fetchall()
 
 
@@ -226,6 +226,14 @@ def delete_tag(cursor, question_id, tag_id):
 #  Dia
 
 #  Eniko
+@connection.connection_handler
+def get_user_id(cursor, username):
+    cursor.execute(sql.SQL("""
+    SELECT id
+    FROM users
+    WHERE username = {username}""")
+    .format(username=sql.Literal(username)))
+    return cursor.fetchone()
 
 
 @connection.connection_handler
