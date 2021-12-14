@@ -9,7 +9,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
+app.secret_key = b'_fkm_%asdd=54?.12"<dkhifa-w\n\xec]/'
 
 #Eszter
 
@@ -209,16 +209,15 @@ def edit_comment(comment_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form['username'] in data_manager.get_user_name():
-            if data_manager.verify_password(request.form['password'], data_manager.get_password(request.form['email'])):
-                session['username'] = request.form['username']
-                return redirect(url_for('index'))
-            else:
-                return '''Invalid login attempt
-                            <a href="/">Main<a/>'''
-        else:
-            return '''Invalid login attempt
-                        <a href="/">Main<a/>'''
+        user_names = data_manager.get_user_name()
+        for username in user_names:
+            if request.form['user_name'] in username['username']:
+                if data_manager.verify_password(request.form['password'], data_manager.get_password(request.form['email'])['password']):
+                    session['username'] = request.form['user_name']
+                    return redirect(url_for('main_page'))
+                else:
+                    return '''Invalid login attempt
+                                <a href="/">Main<a/>'''
     return render_template('login.html')
 
 #  Eniko

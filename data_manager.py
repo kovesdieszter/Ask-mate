@@ -389,7 +389,7 @@ def get_user_name(cursor):
     SELECT username
     FROM users"""
     ))
-    return cursor.fetchone()
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -400,4 +400,13 @@ def get_password(cursor, email):
     WHERE email={email}""")
     .format(email=sql.Literal(email)))
     return cursor.fetchone()
+
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+print(hash_password('123'))
+
 # Enikő
