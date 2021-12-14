@@ -90,6 +90,7 @@ def post_answer(question_id):
         message = request.form.get('message')
         user_id = data_manager.get_user_id(session['username'])['id']
         data_manager.write_new_answer(question_id, message, filename, user_id)
+        data_manager.write_user_actions(user_id, 'answers')
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('post_answer.html', question_title=question_title)
 
@@ -180,6 +181,7 @@ def new_question():
             filename = None
         user_id = data_manager.get_user_id(session['username'])['id']
         question_id = data_manager.write_new_question(request.form, filename, user_id)['max']
+        data_manager.write_user_actions(user_id, 'asked_questions')
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_question_child.html')
 
@@ -259,6 +261,7 @@ def add_question_comment(question_id):
     if request.method == "POST":
         user_id = data_manager.get_user_id(session['username'])['id']
         comment = data_manager.add_comment_to_question(question_id, request.form['message'], user_id)
+        data_manager.write_user_actions(user_id, 'comments')
         return redirect(url_for("display_question", question_id=question_id, comment=comment))
     question = data_manager.get_question_data_by_id(question_id)
     return render_template('comment_child.html', question=question)
@@ -271,7 +274,7 @@ def add_answer_comment(answer_id):
     if request.method == "POST":
         user_id = data_manager.get_user_id(session['username'])['id']
         comment = data_manager.add_comment_to_answer(question_id, answer_id, request.form.get('message'), user_id)
-        print(comment)
+        data_manager.write_user_actions(user_id, 'comments')
         return redirect(url_for("display_question", question_id=question_id, answer_id=answer_id, comment=comment))
     answer = data_manager.get_answer_data_by_id(answer_id)
     return render_template('ans_comment_child.html', answer=answer)
