@@ -55,8 +55,8 @@ CREATE TABLE question_tag (
     tag_id integer NOT NULL
 );
 
-DROP TABLE IF EXISTS public.user;
-CREATE TABLE user (
+DROP TABLE IF EXISTS public.users;
+CREATE TABLE users (
     id serial NOT NULL,
     username text,
     email text,
