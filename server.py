@@ -14,6 +14,19 @@ app.secret_key = b'_fkm_%asdd=54?.12"<dkhifa-w\n\xec]/'
 #Eszter
 
 
+@app.route('/user/<user_id>')
+def user_page(user_id):
+    header = data_manager.QUESTION_HEADER
+    aheader = data_manager.ANSWER_HEADER
+    cheader = data_manager.COMMENT_HEADER
+    user = data_manager.get_user_by_('id', user_id)
+    questions = data_manager.get_questions_for_user(user_id)
+    answers = data_manager.get_answers_for_user(user_id)
+    comments, count = data_manager.get_comments_for_user(user_id)
+    id_list = data_manager.page_id(comments)
+    return render_template('user.html', user=user, questions=questions, header=header, aheader=aheader, answers=answers, comments=comments, cheader=cheader, id_list=id_list, count=count)
+
+
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
@@ -23,6 +36,9 @@ def main():
 def main_page():
     header = data_manager.QUESTION_HEADER
     questions = data_manager.get_all_user_story("submission_time", "DESC", "LIMIT 5")
+    if 'username' in session:
+        user_id = data_manager.get_user_by_('username', session['username'])['id']
+        return render_template('main.html', header=header, questions=questions, id=user_id)
     return render_template('main.html', header=header, questions=questions)
 
 
@@ -176,7 +192,7 @@ def vote_up(question_id):
     if 'username' in session:
         data_manager.change_vote_q(question_id, 1)
         print(session['username'])
-        data_manager.change_reputation(question_id,  5)
+        data_manager.change_reputation(question_id,  5  )
         if request.args.get('to') == 'list':
             return redirect('/list')
         return redirect('/')

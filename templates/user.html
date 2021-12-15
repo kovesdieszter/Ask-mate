@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div>
+    <strong> username:{{user.username}} </strong><br><br>
+    <strong> user id:{{user.id}} </strong><br>
+    <strong> email:{{user.email}} </strong><br>
+    <strong> registration date:{{user.date}} </strong><br>
+    <strong> asked questions:{{user.asked_questions}} </strong><br>
+    <strong> number of answers:{{user.answers}} </strong><br>
+    <strong> commented:{{user.comments}} </strong><br>
+    <strong> reputation:{{user.reputation}} </strong><br>
+</div>
+
+<div>
+<h3>questions:</h3>
+{% if questions %}
+<table>
+{% for item in header %}
+    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+{% endfor %}
+{% for item in questions %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.submission_time }}</td>
+            <td>{{ item.view_number}}</td>
+            <td>{{ item.vote_number }}</td>
+            <td>
+            <a href="/question/{{ item['id'] }}?view=True">{{ item.title }} </a></td>
+            <td>{{ item.message }}</td>
+            <td>{{ item.image }}</td>
+        </tr>
+{% endfor %}
+</table>
+    {% else %}
+    <h5>No questions yet</h5>
+{% endif %}
+</div>
+<h3>Answers:</h3>
+{% if answers %}
+<table>
+{% for item in aheader %}
+    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+{% endfor %}
+{% for i in answers %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.submission_time }}</td>
+            <td>{{ i.vote_number}}</td>
+            <td>
+            <a href="/question/{{ i['question_id'] }}?view=True">{{ i.question_id }} </a></td>
+            <td>{{ i.message }}</td>
+            <td>{{ i.image }}</td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<h5>No answers yet</h5>
+{% endif %}
+<h3>Comments:</h3>
+{% if comments %}
+<table>
+{% for item in cheader %}
+    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+{% endfor %}
+{% for i in range(count) %}
+        <tr>
+            <td>{{ comments[i].id }}</td>
+        {% if comments[i].question_id == None %}
+            <td><a href="/question/{{ id_list[i] }}?view=True">{{ comments[i].message }} </a></td>
+        {% else %}
+            <td><a href="/question/{{ comments[i]['question_id'] }}?view=True">{{ comments[i].message }} </a></td>
+        {% endif %}
+            <td>{{ comments[i].submission_time }}</td>
+            {% if comments[i].edited == Null %}
+                <td>0 times</td>
+            {% else %}
+                <td>{{ comments[i].edited }} times</td>0
+            {% endif %}
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<h5>No comments yet</h5>
+{% endif %}
+</body>
+</html>
