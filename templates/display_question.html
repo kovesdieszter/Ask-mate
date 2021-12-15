@@ -65,10 +65,8 @@
             <tr>
             <div class="div1">
                 <td>{{ answer['message'] }}</td>
-                <td>{% if answer.image != None %}
-                    <p><img src="../static/images/{{ answer['image'] }}" width="200" height="200"></p>
-                {% endif %}</td>
-                <td>{% if 'username' in session and question['user_id'] == current_user_id %}
+
+                {% if 'username' in session and question['user_id'] == current_user_id %}
                         {% if answer['accept'] == False or answer['accept'] == None %}
                             <td><a href="{{ url_for('accept_answer', accept=True, answer_id=answer['id']) }}">Accept this answer</a></td>
                         {% elif answer['accept'] == True %}
@@ -87,7 +85,9 @@
                              <td><a href="javascript:void(0)" onclick="notRightUserMessage()">Unaccept this answer</a></td>
                         {% endif %}
                     {% endif %}
-                </td>
+                <td>{% if answer.image != None %}
+                    <p><img src="../static/images/{{ answer['image'] }}" width="200" height="200"></p>
+                {% endif %}</td>
                 <td>{{ answer['vote_number'] }} <img src="../static/like.png" width="20" alt="VOTE"></td>
                 <td>
                     {% if 'username' not in session %}
