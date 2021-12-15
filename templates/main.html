@@ -24,7 +24,7 @@
 {% if 'username' not in session %}
     <a class="Add_button" href="{{ url_for('login') }}">Login</a>
 {% else %}
-    <p>You are logged in as {{ session['username'] }}</p>
+    <p>You are logged in as <a href={{ url_for('user_page', user_id=id) }}>{{ session['username'] }}</a></p>
     <a class="Add_button" href="{{ url_for('logout') }}">Logout</a>
     <a class="Add_button" href="{{ url_for('list_users') }}">List Users </a>
 
