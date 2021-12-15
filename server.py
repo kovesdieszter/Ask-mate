@@ -329,6 +329,11 @@ def add_answer_comment(answer_id):
     return render_template('ans_comment_child.html', answer=answer)
 
 
+@app.route('/bonus_questions')
+def bonus_questions():
+    return render_template('bonus_questions.html')
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
