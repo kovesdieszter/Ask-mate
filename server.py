@@ -169,7 +169,7 @@ def vote_up(question_id):
     if 'username' in session:
         data_manager.change_vote_q(question_id, 1)
         print(session['username'])
-        data_manager.change_reputation(question_id,  5)
+        data_manager.change_reputation(question_id,  5  )
         if request.args.get('to') == 'list':
             return redirect('/list')
         return redirect('/')
