@@ -4,132 +4,169 @@
     <meta charset="UTF-8">
     <title>Display Question</title>
     <link rel="stylesheet" href="/static/style.css">
-{#        body {#}
-{#                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');#}
-{#                background-repeat: repeat-y;#}
-{#                background-size: cover;#}
-{#                }#}
-{#        h3{#}
-{#                text-align: center;#}
-{#                background-color: rgba(55, 147, 255, 0.8);#}
-{#                border-style: groove;#}
-{#                border-color: #322fe5;#}
-{#                border-width: medium;#}
-{#            }#}
-{#        h2{#}
-{#                background-color: rgba(205, 118, 255, 0.8);#}
-{#                border-style: solid;#}
-{#                border-color: #d92fe5;#}
-{#                border-width: medium;#}
-{#                text-align: center;#}
-{#            }#}
-{#        .me{#}
-{#                background-color: #f862c3;#}
-{#                border-color: #f36ec0;#}
-{#                border-width: 10px;#}
-{#                border-style: solid;#}
-{#            }#}
-{#        ol{#}
-{#            float: left;#}
-{#            background-color: #f165ff;#}
-{#            border-style: solid;#}
-{#            border-color: transparent;#}
-{#            border-width: 20px;#}
-{#        }#}
-{#        .div1{#}
-{#            background-color: #f165ff;#}
-{#            border-style: solid;#}
-{#            border-color: transparent;#}
-{#            border-width: 10px;#}
-{#        }#}
-{#        .post {#}
-{#            float: right;#}
-{#            background-color: cyan;#}
-{#            border-style: solid;#}
-{#            border-width: 10px;#}
-{#            border-color: transparent;#}
-{#        }#}
-{#        .qu{#}
-{#            background-color: rgba(0, 255, 255, 0.5);#}
-{#            border-style: solid;#}
-{#            border-color: #d92fe5;#}
-{#            border-width: medium;#}
-{#            font-weight: bold;#}
-{#        }#}
-{#    </style>#}
+    <script type="text/javascript" src="/static/script.js"></script>
+
 </head>
 <body>
+
+{% if 'username' not in session %}
     <a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a>
-    <a class="me" href="{{ url_for('edit_question',question_id=question.id) }}"><img src="../static/write.png" width="30" alt="Edit"></a>
-    <a href="{{ url_for('delete_question',question_id=question.id) }}"><img src="../static/trashcan.png" width="30" alt="Delete"></a>
-    <h2>{{ question['title'] }}</h2>
-    <div class="qu">
-        <p>{{ question['message'] }}</p><br>
-        {%  if question.image != None %}
-        <p><img src="../static/images/{{ question['image'] }}" width="200" height="200" ></p>
-        {% endif %}
+{% else %}
+    <a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a>
+    <a class="me" href="{{ url_for('edit_question',question_id=question.id) }}"><img src="../static/write.png" width="30"
+                                                                                 alt="Edit"></a>
+    <a href="{{ url_for('delete_question',question_id=question.id) }}"><img src="../static/trashcan.png" width="30"
+                                                                        alt="Delete"></a>
+{% endif %}
+<h2>{{ question['title'] }}</h2>
+<div class="qu">
+    <p>{{ question['message'] }}</p><br>
+    {% if question.image != None %}
+        <p><img src="../static/images/{{ question['image'] }}" width="200" height="200"></p>
+    {% endif %}
     <h3>Comments</h3>
-        <ol>{%  for comment in comments %}
-            {% if comment.question_id == question.id and comment.answer_id == None %}
-            <li>{{comment.message }}
-                /Commented at {{ comment.submission_time }}/  /Edited {{ comment.edited_count }} times
-                <a href="{{ url_for('edit_comment',comment_id=comment.id) }}"><img src="../static/write.png" width="30" alt="Edit"></a>
-                <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" title="delete" class="delete" onclick="return confirm('Are you sure you want to delete this item')"><img src="../static/trashcan.png" width="20" alt="Delete"></a>
-            {% endif %}
-            {% endfor %}
+    <ol>{% for comment in comments %}
+        {% if comment.question_id == question.id and comment.answer_id == None %}
+            <li>{{ comment.message }}
+            /Commented at {{ comment.submission_time }}/  /Edited {{ comment.edited_count }} times
+            {% if 'username' not in session %}
+                <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/write.png" width="30"
+                                                                               alt="Edit"></a>
+                <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/trashcan.png"
+                                                                                          width="20" alt="Delete"></a>
+                {% else %}
+                <a href="{{ url_for('edit_comment',comment_id=comment.id) }}"><img src="../static/write.png" width="30"
+                                                                               alt="Edit"></a>
+                 <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" title="delete" class="delete"
+               onclick="return confirm('Are you sure you want to delete this item')"><img src="../static/trashcan.png"
+                                                                                          width="20" alt="Delete"></a>
+                {% endif %}
+        {% endif %}
+    {% endfor %}
     </ol>
     <p>
-    <a href="{{ url_for('add_question_comment',question_id=question.id) }}" class="Add_button">Add new comment</a>
+        {% if 'username' not in session %}
+            <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()">Add new comment</a>
+        {% else %}
+            <a class="Add_button" href="{{ url_for('add_question_comment',question_id=question.id) }}">Add new
+                comment</a>
+        {% endif %}
     </p>
+</div>
+<table>
+    <th> Answer</th>
+    <th> Acception </th>
+    <th> Image</th>
+    <th> Vote</th>
+    <th> Actions</th>
+    <th> Comment</th>
+    {% for answer in answers %}
+        {% if answer.question_id == question.id %}
+            <tr>
+            <div class="div1">
+                <td>{{ answer['message'] }}</td>
+                <td>{% if answer.image != None %}
+                    <p><img src="../static/images/{{ answer['image'] }}" width="200" height="200"></p>
+                {% endif %}</td>
+                <td>{% if 'username' in session and question['user_id'] == current_user_id %}
+                        {% if answer['accept'] == False or answer['accept'] == None %}
+                            <td><a href="{{ url_for('accept_answer', accept=True, answer_id=answer['id']) }}">Accept this answer</a></td>
+                        {% elif answer['accept'] == True %}
+                             <td><a href="{{ url_for('accept_answer', accept=False, answer_id=answer['id']) }}">Unaccept this answer</a></td>
+                        {% endif %}
+                    {% elif 'username' not in session %}
+                        {% if answer['accept'] == False or answer['accept'] == None %}
+                            <td><a href="javascript:void(0)" onclick="notLoggedInMessage()">Accept this answer</a></td>
+                        {% elif answer['accept'] == True %}
+                             <td><a href="javascript:void(0)" onclick="notLoggedInMessage()">Unaccept this answer</a></td>
+                        {% endif %}
+                    {% elif current_user_id != question['user_id'] %}
+                        {% if answer['accept'] == False or answer['accept'] == None %}
+                            <td><a href="javascript:void(0)" onclick="notRightUserMessage()">Accept this answer</a></td>
+                        {% elif answer['accept'] == True %}
+                             <td><a href="javascript:void(0)" onclick="notRightUserMessage()">Unaccept this answer</a></td>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>{{ answer['vote_number'] }} <img src="../static/like.png" width="20" alt="VOTE"></td>
+                <td>
+                    {% if 'username' not in session %}
+                        <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/write.png"
+                                                                                         width="20" alt="Edit"></a>
+                        <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/trashcan.png"
+                                                                                         width="20" alt="Delete"></a>
+                        <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/comment.png"
+                                                                                         width="20" alt="Comment"></a>
+                        <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/newup.png"
+                                                                                         width="20"
+                                                                                         alt="Vote Up"></a>
+                        <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/newdown.png"
+                                                                                         width="20" alt="Vote Down"></a>
+                    {% else %}
+                        <a href="{{ url_for('edit_answer', answer_id=answer['id']) }}"><img src="../static/write.png"
+                                                                                            width="20" alt="Edit"></a>
+                        <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}"><img
+                                src="../static/trashcan.png"
+                                width="20" alt="Delete"></a>
+                        <a href="{{ url_for('add_answer_comment',answer_id=answer.id) }}"><img
+                                src="../static/comment.png"
+                                width="20" alt="Comment"></a><br>
+                        <a href="{{ url_for('vote_answer_up', answer_id=answer['id']) }}"> <img
+                                src="../static/newup.png"
+                                width="20"
+                                alt="Vote Up"></a>
+                        <a href="{{ url_for('vote_answer_down', answer_id=answer['id']) }}"><img
+                                src="../static/newdown.png"
+                                width="20" alt="Vote Down"></a>
+                    {% endif %}
+                </td>
+                <td>{% for comment in comments %}
+                    {% if comment.question_id == question.id and comment.answer_id == answer.id %}
+                        {{ comment.message }}
+                        /Commented at {{ comment.submission_time }}/ /Edited {{ comment.edited_count }} times
+                        {% if 'username' not in session %}
+                            <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/write.png"
+                                                                                           width="20" alt="Edit"></a>
+                            <a href="javascript:void(0)" onclick="notLoggedInMessage()"><img src="../static/trashcan.png"
+                                                                                             width="20" alt="Delete"></a>
+                        {% else %}
+                            <a href="{{ url_for('edit_comment',comment_id=comment.id) }}"><img src="../static/write.png"
+                                                                                           width="20" alt="Edit"></a>
+                            <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" title="delete" class="delete"
+                                onclick="return confirm('Are you sure you want to delete this item')"><img
+                                src="../static/trashcan.png" width="20" alt="Delete"></a>
+                        {% endif %}
+
+                        <br>
+                    {% endif %}
+                {% endfor %}
+                </td>
+            </div>
+        {% endif %}
     </div>
-    <table>
-    <th> Answer </th>
-    <th> Image </th>
-    <th> Vote </th>
-    <th> Actions </th>
-    <th> Comment </th>
-                {% for answer in answers %}
-                {% if answer.question_id == question.id %}
-                    <tr>
-                <div class="div1">
-                    <td>{{ answer['message'] }}</td>
-                    <td>{%  if answer.image != None %}
-                        <p><img src="../static/images/{{ answer['image'] }}" width="200" height="200" ></p>
-                        {% endif %}</td>
-                    <td>{{ answer['vote_number'] }} <img src="../static/like.png" width="20" alt="VOTE"> </td>
-                    <td><a href="{{ url_for('edit_answer', answer_id=answer['id']) }}"><img src="../static/write.png" width="20" alt="Edit"></a>
-                    <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}"><img src="../static/trashcan.png" width="20" alt="Delete"></a>
-                    <a href="{{ url_for('add_answer_comment',answer_id=answer.id) }}"><img src="../static/comment.png" width="20" alt="Comment"></a><br>
-                    <a href="{{ url_for('vote_answer_up', answer_id=answer['id']) }}"> <img src="../static/newup.png" width="20" alt="Vote Up"></a>
-                    <a href="{{ url_for('vote_answer_down', answer_id=answer['id']) }}"><img src="../static/newdown.png" width="20" alt="Vote Down"></a></td>
-                        <td>{%  for comment in comments %}
-                            {% if comment.question_id == question.id and comment.answer_id == answer.id %}
-                            {{comment.message }}
-                                /Commented at {{ comment.submission_time }}/ /Edited {{ comment.edited_count }} times
-                                <a href="{{ url_for('edit_comment',comment_id=comment.id) }}"><img src="../static/write.png" width="20" alt="Edit"></a>
-                                <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" title="delete" class="delete" onclick="return confirm('Are you sure you want to delete this item')"><img src="../static/trashcan.png" width="20" alt="Delete"></a>
-                                <br>
-                            {% endif %}
-                            {% endfor %}
-                    </td>
-                </div>
-                {% endif %}
 
+    {% endfor %}
+    </tr>
 
-
-            {% endfor %}
-                </tr>
-        </table>
 
 <p>
-<a href="{{ url_for('post_answer',question_id=question.id) }}" class="Add_button">Post an answer</a>
-{#Dia #}
-<a href="{{ url_for('add_tag',question_id=question.id) }}" class="Add_button">Add tag</a>
+    {% if 'username' not in session %}
+        <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()">Post an answer</a>
+    {% else %}
+        <a class="Add_button" href="{{ url_for('post_answer',question_id=question.id) }}">Post an answer</a>
+    {% endif %}
+    {#Dia #}
+    {% if 'username' not in session %}
+        <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()">Add tag</a>
+    {% else %}
+        <a class="Add_button" href="{{ url_for('add_tag',question_id=question.id) }}">Add tag</a>
+    {% endif %}
 </p>
-    <div>
+<div>
     <label>Tags for this question:</label>
     {% for tag in tags %}
-        <p id="tag">{{ tag['name'] }}<a href="{{ url_for('delete_tag',question_id=question.id, tag_id=tag['id']) }}"> <img src="../static/red-x.png" width="15"> </a></p>
+        <p id="tag">{{ tag['name'] }}<a href="{{ url_for('delete_tag',question_id=question.id, tag_id=tag['id']) }}">
+            <img src="../static/red-x.png" width="15"> </a></p>
     {% endfor %}
 </div>
 {#Dia #}

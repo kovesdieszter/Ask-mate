@@ -212,6 +212,35 @@ def verify_password(plain_text_password, hashed_password):
     return bcrypt.checkpw(plain_text_password.encode('utf-8'),hashed_bytes_password)
 
 
+@connection.connection_handler
+def change_reputation(cursor, id, changer):
+    query = """
+    SELECT user_id 
+    FROM question
+    WHERE id = %(id)s"""
+    cursor.execute(query, {'id': id})
+    userID = cursor.fetchone()
+    userID = userID['user_id']
+    cursor.execute(sql.SQL("""
+        UPDATE users
+        SET reputation = reputation + {changer}
+        WHERE id = {userID} 
+        
+        returning users"""
+    ).format(changer=sql.Literal(changer),
+             userID=sql.Literal(userID)))
+
+
+# @connection.connection_handler
+# def change_vote_a(cursor, answer_id, changer):
+#     cursor.execute(sql.SQL("""
+#         UPDATE answer
+#         SET vote_number = vote_number + {changer}
+#         WHERE id = {a_id}
+#         returning answer""")
+#     .format(changer=sql.Literal(changer),
+#             a_id=sql.Literal(answer_id)))
+
 #  Eszter
 #  Dia
 
@@ -304,6 +333,16 @@ def delete_tag(cursor, question_id, tag_id):
     cursor.execute(query, {'q_id': question_id, 't_id': tag_id})
     return cursor.fetchall()
 
+
+@connection.connection_handler
+def count_of_questions_to_tags(cursor):
+    cursor.execute(sql.SQL("""
+    SELECT tag.name, COUNT(question_tag.question_id)
+    FROM question_tag
+    RIGHT JOIN tag
+        ON question_tag.tag_id = tag.id
+    GROUP BY tag.name"""))
+    return cursor.fetchall()
 #  Dia
 
 #  Eniko
@@ -514,4 +553,35 @@ def write_user_actions(cursor, user_id, action):
     returning users""")
     .format(column=sql.Identifier(action),
             user_id=sql.Literal(user_id)))
+
+
+@connection.connection_handler
+def change_acception(cursor, accept, answer_id):
+    cursor.execute(sql.SQL("""
+    UPDATE answer
+    SET accept = {accept}
+    WHERE id = {a_id}
+    returning answer""")
+    .format(accept=sql.Literal(accept),
+            a_id=sql.Literal(answer_id)))
+
+
+@connection.connection_handler
+def get_acception_by_question_id(cursor, question_id):
+    cursor.execute(sql.SQL("""
+    SELECT accept
+    FROM answer
+    WHERE question_id = {question_id}""")
+    .format(question_id=sql.Literal(question_id)))
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_current_user_id(cursor, username):
+    cursor.execute(sql.SQL("""
+    SELECT id
+    FROM users
+    WHERE username = {username}""")
+    .format(username=sql.Literal(username)))
+    return cursor.fetchone()
 # Enikő

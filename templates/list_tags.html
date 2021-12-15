@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Tags</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<h1>All tags</h1>
+<table>
+    <tr>
+        <th>
+            Tags
+        </th>
+        <th>
+            Number of questions
+        </th>
+
+    </tr>
+    {% for tag_and_questions in tags_with_question_count %}
+    <tr>
+
+        <td>
+            {{ tag_and_questions['name'] }}
+        </td>
+        <td>
+            {{ tag_and_questions['count'] }}
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+</body>
+</html>
