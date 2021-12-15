@@ -9,13 +9,18 @@
     {% block content %}
         <h1>AskMate</h1>
         <h2>All Questions:</h2>
-        <button id="theme-button">Change Theme to Dark</button>
+        <button id="theme-button" onclick="toggleTheme()">Change Theme to Dark</button>
+        <script> function toggleTheme() {
+                var element = document.body;
+                    element.classList.toggle("dark-mode");}</script>
+        <link rel="stylesheet" href="/static/blackstyle.css">
         <button id="increase-font-button">Increase page font</button>
         <button id="decrease-font-button">Decrease page font</button>
         <input
                 data-table-body="doNotModifyThisId_QuestionsTableBody"
                 style="width: 500px" id="doNotModifyThisId_QuestionsFilter"
                 type="text"
+                onkeyup="getFilteredItems()"
                 placeholder="filter questions by keywords">
         <table>
             <thead id="doNotModifyThisId_QuestionsTableHeader">
@@ -27,7 +32,7 @@
                 </tr>
             </thead>
             <tbody id="doNotModifyThisId_QuestionsTableBody">
-                {% for question in bonus %}
+                {% for question in questions %}
                     <tr>
                         <td>{{ question['title'] }}</td>
                         <td>{{ question['description'] }}</td>

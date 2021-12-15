@@ -334,7 +334,7 @@ def add_answer_comment(answer_id):
 @app.route('/bonus_questions')
 def bonus_ques():
     BONUS = bonus_questions.SAMPLE_QUESTIONS
-    return render_template('bonus_questions.html', bonus=BONUS)
+    return render_template('bonus_questions.html', questions=BONUS)
 
 
 if __name__ == '__main__':

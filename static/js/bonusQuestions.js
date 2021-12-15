@@ -1,5 +1,7 @@
-import bonus_questions
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
+
+
+
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
     console.log(sortField)
@@ -25,6 +27,7 @@ function getSortedItems(items, sortField, sortDirection) {
 }
 
 // you receive an array of objects which you must filter by all it's keys to have a value matching "filterValue"
+var items = document.getElementById('bonus_questions')
 function getFilteredItems(items, filterValue) {
     console.log(items)
     console.log(filterValue)
@@ -42,6 +45,8 @@ function getFilteredItems(items, filterValue) {
 
 function toggleTheme() {
     console.log("toggle theme")
+    var element = document.body;
+    element.classList.toggle("dark-mode");
 }
 
 function increaseFont() {
