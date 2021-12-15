@@ -1,3 +1,4 @@
+import bonus_questions
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
