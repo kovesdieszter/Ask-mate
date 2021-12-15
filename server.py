@@ -16,8 +16,15 @@ app.secret_key = b'_fkm_%asdd=54?.12"<dkhifa-w\n\xec]/'
 
 @app.route('/user/<user_id>')
 def user_page(user_id):
+    header = data_manager.QUESTION_HEADER
+    aheader = data_manager.ANSWER_HEADER
+    cheader = data_manager.COMMENT_HEADER
     user = data_manager.get_user_by_('id', user_id)
-    return render_template('user.html', user=user)
+    questions = data_manager.get_questions_for_user(user_id)
+    answers = data_manager.get_answers_for_user(user_id)
+    comments, count = data_manager.get_comments_for_user(user_id)
+    id_list = data_manager.page_id(comments)
+    return render_template('user.html', user=user, questions=questions, header=header, aheader=aheader, answers=answers, comments=comments, cheader=cheader, id_list=id_list, count=count)
 
 
 @app.route("/bonus-questions")

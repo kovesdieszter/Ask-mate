@@ -9,6 +9,7 @@ import bcrypt
 
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+COMMENT_HEADER = ['id', 'message', 'submission_time', 'edited']
 
 
 @connection.connection_handler
@@ -19,6 +20,64 @@ def get_user_by_(cursor, what, user):
         WHERE {what} = {"'"}{user}{"'"}"""
     cursor.execute(query)
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_questions_for_user(cursor, user):
+    query = f"""
+            SELECT *
+            FROM question
+            WHERE user_id = {"'"}{user}{"'"}"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_answers_for_user(cursor, user):
+    query = f"""
+            SELECT *
+            FROM answer
+            WHERE user_id = {"'"}{user}{"'"}"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comments_for_user(cursor, user):
+    query = f"""
+            SELECT *
+            FROM comment
+            WHERE user_id = {"'"}{user}{"'"}"""
+    cursor.execute(query)
+    comments = cursor.fetchall()
+    query = f"""
+            SELECT COUNT(id)
+            FROM comment
+            WHERE user_id = {"'"}{user}{"'"}"""
+    cursor.execute(query)
+    count = cursor.fetchone()['count']
+    return comments, count
+
+
+@connection.connection_handler
+def get_question_id_from_answer_id(cursor, answer_id):
+    query = f"""
+                SELECT *
+                FROM answer
+                WHERE id = {"'"}{answer_id}{"'"}"""
+    cursor.execute(query)
+
+    return cursor.fetchone()['question_id']
+
+
+def page_id(dic):
+    id_list = []
+    for item in dic:
+        if item['question_id'] != None:
+            id_list.append(item['question_id'])
+        else:
+            id_list.append(get_question_id_from_answer_id(item['answer_id']))
+    return id_list
 
 
 @connection.connection_handler
