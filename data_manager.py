@@ -444,4 +444,15 @@ def get_password(cursor, email):
     WHERE email={email}""")
     .format(email=sql.Literal(email)))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def write_user_actions(cursor, user_id, action):
+    cursor.execute(sql.SQL("""
+    UPDATE users
+    SET {column} = {column} + 1
+    WHERE id = {user_id}
+    returning users""")
+    .format(column=sql.Identifier(action),
+            user_id=sql.Literal(user_id)))
 # Enikő
