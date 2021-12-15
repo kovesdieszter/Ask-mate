@@ -143,14 +143,22 @@ def verify_password(plain_text_password, hashed_password):
 
 
 @connection.connection_handler
-def change_reputation(cursor, username, changer):
+def change_reputation(cursor, id, changer):
+    query = """
+    SELECT user_id 
+    FROM question
+    WHERE id = %(id)s"""
+    cursor.execute(query, {'id': id})
+    userID = cursor.fetchone()
+    userID = userID['user_id']
     cursor.execute(sql.SQL("""
         UPDATE users
         SET reputation = reputation + {changer}
-        WHERE username = {username}
+        WHERE id = {userID} 
+        
         returning users"""
     ).format(changer=sql.Literal(changer),
-             username=sql.Literal(username)))
+             userID=sql.Literal(userID)))
 
 
 # @connection.connection_handler
