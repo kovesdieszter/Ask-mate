@@ -263,6 +263,16 @@ def delete_tag(cursor, question_id, tag_id):
     cursor.execute(query, {'q_id': question_id, 't_id': tag_id})
     return cursor.fetchall()
 
+
+@connection.connection_handler
+def count_of_questions_to_tags(cursor):
+    cursor.execute(sql.SQL("""
+    SELECT tag.name, COUNT(question_tag.question_id)
+    FROM question_tag
+    RIGHT JOIN tag
+        ON question_tag.tag_id = tag.id
+    GROUP BY tag.name"""))
+    return cursor.fetchall()
 #  Dia
 
 #  Eniko
