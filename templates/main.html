@@ -10,9 +10,9 @@
     {%  include 'navbar.html' %}
     {%  block content %}
         <h1>Main page</h1>
-        <form action="search">
-            <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button type="submit"><img src="../static/search.piko" width="15px"></button></p>
-        </form>
+{#        <form action="search">#}
+{#            <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button type="submit"><img src="../static/search.piko" width="15px"></button></p>#}
+{#        </form>#}
         <a class="Add_button" href="{{ url_for('register_user') }}">Register</a>
         {% if 'username' not in session %}
         <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()" >New question</a>
