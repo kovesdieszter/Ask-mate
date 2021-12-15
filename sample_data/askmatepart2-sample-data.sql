@@ -37,6 +37,7 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text,
+    accept boolean,
     user_id integer references users (id) on delete cascade
 );
 
