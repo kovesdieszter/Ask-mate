@@ -44,6 +44,12 @@ def list_users():
         return render_template('users.html', data=table_data)
     return "You are not logged in, please login!"
 
+
+# @app.route('/reputation', methods=["GET", "POST"])
+# def gain_reputation():
+#     if 'username' in session:
+
+
 # Eszter
 
 #  Bea
@@ -130,35 +136,47 @@ def delete_tag(question_id, tag_id):
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_answer_up(answer_id):
-    data_manager.change_vote_a(answer_id, 1)
-    question_id = data_manager.get_question_id_by_answer(answer_id)
-    return redirect(url_for("display_question", question_id=question_id['question_id']))
+    if 'username' in session:
+        data_manager.change_vote_a(answer_id, 1)
+        data_manager.change_reputation(session['username'], 10)
+        question_id = data_manager.get_question_id_by_answer(answer_id)
+        return redirect(url_for("display_question", question_id=question_id['question_id']))
+    return "You are not logged in, please login!"
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_answer_down(answer_id):
-    data_manager.change_vote_a(answer_id, -1)
-    question_id = data_manager.get_question_id_by_answer(answer_id)
-    return redirect(url_for("display_question", question_id=question_id['question_id']))
-
+    if 'username' in session:
+        data_manager.change_vote_a(answer_id, -1)
+        data_manager.change_reputation(session['username'], -2)
+        question_id = data_manager.get_question_id_by_answer(answer_id)
+        return redirect(url_for("display_question", question_id=question_id['question_id']))
+    return "You are not logged in, please login!"
 
 #  Dia
 
 #  Eniko
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
-    data_manager.change_vote_q(question_id, 1)
-    if request.args.get('to') == 'list':
-        return redirect('/list')
-    return redirect('/')
+    if 'username' in session:
+        data_manager.change_vote_q(question_id, 1)
+        print(session['username'])
+        data_manager.change_reputation(session['username'], 5)
+        if request.args.get('to') == 'list':
+            return redirect('/list')
+        return redirect('/')
+    return "You are not logged in, please login!"
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down(question_id):
-    data_manager.change_vote_q(question_id, -1)
-    if request.args.get('to') == 'list':
-        return redirect('/list')
-    return redirect('/')
+    if 'username' in session:
+        data_manager.change_vote_q(question_id, -1)
+        data_manager.change_reputation(session['username'], -2)
+        if request.args.get('to') == 'list':
+            return redirect('/list')
+        return redirect('/')
+    return "You are not logged in, please login!"
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])

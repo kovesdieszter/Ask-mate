@@ -142,6 +142,27 @@ def verify_password(plain_text_password, hashed_password):
     return bcrypt.checkpw(plain_text_password.encode('utf-8'),hashed_bytes_password)
 
 
+@connection.connection_handler
+def change_reputation(cursor, username, changer):
+    cursor.execute(sql.SQL("""
+        UPDATE users
+        SET reputation = reputation + {changer}
+        WHERE username = {username}
+        returning users"""
+    ).format(changer=sql.Literal(changer),
+             username=sql.Literal(username)))
+
+
+# @connection.connection_handler
+# def change_vote_a(cursor, answer_id, changer):
+#     cursor.execute(sql.SQL("""
+#         UPDATE answer
+#         SET vote_number = vote_number + {changer}
+#         WHERE id = {a_id}
+#         returning answer""")
+#     .format(changer=sql.Literal(changer),
+#             a_id=sql.Literal(answer_id)))
+
 #  Eszter
 #  Dia
 

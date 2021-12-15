@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base_content.html' %}
+
     <head>
             <meta charset="utf-8">
             <title>Questions and answers</title>
@@ -7,6 +7,8 @@
         <script type="text/javascript" src="/static/script.js"></script>
     </head>
     <body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
         <h1>Main page</h1>
         <form action="search">
             <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button type="submit"><img src="../static/search.piko" width="15px"></button></p>
@@ -69,4 +71,4 @@
     <a class="Add_button" href="list">See all questions</a>
     </p>
     </body>
-</html>
+{% endblock %}
