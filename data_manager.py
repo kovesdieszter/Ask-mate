@@ -475,4 +475,35 @@ def write_user_actions(cursor, user_id, action):
     returning users""")
     .format(column=sql.Identifier(action),
             user_id=sql.Literal(user_id)))
+
+
+@connection.connection_handler
+def change_acception(cursor, accept, answer_id):
+    cursor.execute(sql.SQL("""
+    UPDATE answer
+    SET accept = {accept}
+    WHERE id = {a_id}
+    returning answer""")
+    .format(accept=sql.Literal(accept),
+            a_id=sql.Literal(answer_id)))
+
+
+@connection.connection_handler
+def get_acception_by_question_id(cursor, question_id):
+    cursor.execute(sql.SQL("""
+    SELECT accept
+    FROM answer
+    WHERE question_id = {question_id}""")
+    .format(question_id=sql.Literal(question_id)))
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_current_user_id(cursor, username):
+    cursor.execute(sql.SQL("""
+    SELECT id
+    FROM users
+    WHERE username = {username}""")
+    .format(username=sql.Literal(username)))
+    return cursor.fetchone()
 # Enikő
