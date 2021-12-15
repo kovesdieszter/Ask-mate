@@ -69,6 +69,8 @@ def question():
 #  Bea
 
 #  Dia
+
+
 @app.route('/question/<question_id>')
 def display_question(question_id):
     if request.args.get('view') == 'True':
@@ -77,7 +79,12 @@ def display_question(question_id):
     answers = data_manager.get_answer_by_question_id(question_id)
     tags = data_manager.get_question_tags(question_id)
     comments = data_manager.get_comment_by_question_id(question_id)
-    return render_template('display_question.html', question=question, answers=answers, comments=comments, tags=tags)
+    accept = data_manager.get_acception_by_question_id(question_id)
+    if 'username' in session:
+        current_user = data_manager.get_current_user_id(session['username'])['id']
+    else:
+        current_user = 0
+    return render_template('display_question.html', question=question, answers=answers, comments=comments, tags=tags, accept=accept, current_user_id=current_user)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -247,6 +254,14 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('main_page'))
+
+
+@app.route('/accept_answer/<accept>/<answer_id>')
+def accept_answer(accept, answer_id):
+    data_manager.change_acception(accept, answer_id)
+    question_id = data_manager.get_question_id_by_answer(answer_id)
+    return redirect(url_for('display_question', question_id=question_id['question_id']))
+
 #  Eniko
 
 # Eszter

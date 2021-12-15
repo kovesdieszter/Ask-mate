@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Display Question</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script type="text/javascript" src="/static/script.js"></script>
 {#        body {#}
 {#                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');#}
 {#                background-repeat: repeat-y;#}
@@ -84,6 +85,7 @@
     </div>
     <table>
     <th> Answer </th>
+    <th> Acception </th>
     <th> Image </th>
     <th> Vote </th>
     <th> Actions </th>
@@ -93,6 +95,25 @@
                     <tr>
                 <div class="div1">
                     <td>{{ answer['message'] }}</td>
+                    {% if 'username' in session and question['user_id'] == current_user_id %}
+                        {% if answer['accept'] == False or answer['accept'] == None %}
+                            <td><a href="{{ url_for('accept_answer', accept=True, answer_id=answer['id']) }}">Accept this answer</a></td>
+                        {% elif answer['accept'] == True %}
+                             <td><a href="{{ url_for('accept_answer', accept=False, answer_id=answer['id']) }}">Unaccept this answer</a></td>
+                        {% endif %}
+                    {% elif 'username' not in session %}
+                        {% if answer['accept'] == False or answer['accept'] == None %}
+                            <td><a href="javascript:void(0)" onclick="notLoggedInMessage()">Accept this answer</a></td>
+                        {% elif answer['accept'] == True %}
+                             <td><a href="javascript:void(0)" onclick="notLoggedInMessage()">Unaccept this answer</a></td>
+                        {% endif %}
+                    {% elif current_user_id != question['user_id'] %}
+                        {% if answer['accept'] == False or answer['accept'] == None %}
+                            <td><a href="javascript:void(0)" onclick="notRightUserMessage()">Accept this answer</a></td>
+                        {% elif answer['accept'] == True %}
+                             <td><a href="javascript:void(0)" onclick="notRightUserMessage()">Unaccept this answer</a></td>
+                        {% endif %}
+                    {% endif %}
                     <td>{%  if answer.image != None %}
                         <p><img src="../static/images/{{ answer['image'] }}" width="200" height="200" ></p>
                         {% endif %}</td>
