@@ -241,12 +241,13 @@ def verify_password(plain_text_password, hashed_password):
 
 
 @connection.connection_handler
-def change_reputation(cursor, id, changer):
-    query = """
+def change_reputation(cursor, table, id, changer):
+    cursor.execute(sql.SQL("""
     SELECT user_id 
-    FROM question
-    WHERE id = %(id)s"""
-    cursor.execute(query, {'id': id})
+    FROM {table}
+    WHERE id = {id}""")
+    .format(id=sql.Literal(id),
+            table=sql.Identifier(table)))
     userID = cursor.fetchone()
     userID = userID['user_id']
     cursor.execute(sql.SQL("""
