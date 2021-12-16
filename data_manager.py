@@ -83,7 +83,7 @@ def page_id(dic):
 @connection.connection_handler
 def get_users(cursor):
     query = """
-    SELECT username, date, asked_questions, answers, comments, reputation
+    SELECT *
     FROM users
     ORDER BY username
     """
@@ -142,11 +142,25 @@ def get_all_answer(cursor):
 
 @connection.connection_handler
 def delete_question(cursor, question_id):
+    query = f"""
+        SELECT users.id
+        FROM users
+        INNER JOIN question
+        ON users.id = question.user_id
+        WHERE question.id = {"'"}{question_id}{"'"}"""
+    cursor.execute(query)
+    user_id = cursor.fetchone()['id']
+    query = f"""
+        UPDATE users
+        SET asked_questions = asked_questions-1
+        WHERE id = {user_id} 
+        """
+    cursor.execute(query)
     query = """
-    DELETE
-    FROM question
-    WHERE id = %(val)s
-    RETURNING *
+        DELETE
+        FROM question
+        WHERE id = %(val)s
+        RETURNING *
     """
     cursor.execute(query, {'val': question_id})
 
@@ -154,6 +168,20 @@ def delete_question(cursor, question_id):
 
 @connection.connection_handler
 def delete_answer(cursor, answer_id):
+    query = f"""
+            SELECT users.id
+            FROM users
+            INNER JOIN answer
+            ON users.id = answer.user_id
+            WHERE answer.id = {"'"}{answer_id}{"'"}"""
+    cursor.execute(query)
+    user_id = cursor.fetchone()['id']
+    query = f"""
+            UPDATE users
+            SET answers = answers-1
+            WHERE id = {user_id} 
+            """
+    cursor.execute(query)
     query = """
     DELETE
     FROM answer
@@ -484,6 +512,20 @@ def get_question_id_by_comment(cursor, comment_id):
 
 @connection.connection_handler
 def delete_comment(cursor, comment_id):
+    query = f"""
+            SELECT users.id
+            FROM users
+            INNER JOIN comment
+            ON users.id = comment.user_id
+            WHERE comment.id = {"'"}{comment_id}{"'"}"""
+    cursor.execute(query)
+    user_id = cursor.fetchone()['id']
+    query = f"""
+            UPDATE users
+            SET comments = comments-1
+            WHERE id = {user_id} 
+            """
+    cursor.execute(query)
     query = """
         DELETE 
         FROM comment
