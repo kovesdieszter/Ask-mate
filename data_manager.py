@@ -372,6 +372,16 @@ def count_of_questions_to_tags(cursor):
         ON question_tag.tag_id = tag.id
     GROUP BY tag.name"""))
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_current_user_name(cursor, user_id):
+    cursor.execute(sql.SQL("""
+    SELECT username
+    FROM users
+    WHERE id = {user_id}""")
+    .format(user_id=sql.Literal(user_id)))
+    return cursor.fetchone()
 #  Dia
 
 #  Eniko
@@ -628,3 +638,5 @@ def get_current_user_id(cursor, username):
     .format(username=sql.Literal(username)))
     return cursor.fetchone()
 # Enikő
+
+

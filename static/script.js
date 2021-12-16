@@ -3,5 +3,5 @@ function notLoggedInMessage() {
 }
 
 function notRightUserMessage() {
-  alert( 'This is not your question!');
+  alert( 'This is not your item!');
 }
