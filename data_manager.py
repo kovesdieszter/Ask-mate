@@ -83,7 +83,7 @@ def page_id(dic):
 @connection.connection_handler
 def get_users(cursor):
     query = """
-    SELECT username, date, asked_questions, answers, comments, reputation
+    SELECT *
     FROM users
     ORDER BY username
     """

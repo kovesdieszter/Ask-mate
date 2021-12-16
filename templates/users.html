@@ -18,7 +18,7 @@
             <th> Reputation </th>
                {% for d in data %}
                     <tr>
-                        <td>{{ d['username'] }}</td>
+                        <td><a href="user/{{ d['id'] }}">{{ d['username'] }}</a></td>
                         <td>{{ d['date'] }}</td>
                         <td>{{ d['asked_questions'] }}</td>
                         <td>{{ d['answers'] }}</td>
