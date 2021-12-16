@@ -163,8 +163,15 @@ def delete_tag(question_id, tag_id):
 @app.route('/answer/<answer_id>/vote_up')
 def vote_answer_up(answer_id):
     if 'username' in session:
-        data_manager.change_vote_a(answer_id, 1)
-        data_manager.change_reputation('answer', answer_id, 10)
+        check = data_manager.check_pre_vote(answer_id, session['username'], 'vote_up', 'answer_id')
+        if check is None:
+            data_manager.write_user_vote(session['username'], answer_id, 'vote_up', 'answer_id')
+            data_manager.change_vote_a(answer_id, 1)
+            data_manager.change_reputation('answer', answer_id, 5)
+        elif not check['vote_up']:
+            data_manager.change_user_vote(answer_id, session['username'], 'vote_up', 'answer_id')
+            data_manager.change_vote_a(answer_id, 1)
+            data_manager.change_reputation('answer', answer_id, 5)
         question_id = data_manager.get_question_id_by_answer(answer_id)
         return redirect(url_for("display_question", question_id=question_id['question_id']))
     return "You are not logged in, please login!"
@@ -173,8 +180,15 @@ def vote_answer_up(answer_id):
 @app.route('/answer/<answer_id>/vote_down')
 def vote_answer_down(answer_id):
     if 'username' in session:
-        data_manager.change_vote_a(answer_id, -1)
-        data_manager.change_reputation('answer', answer_id, -2)
+        check = data_manager.check_pre_vote(answer_id, session['username'], 'vote_down', 'answer_id')
+        if check is None:
+            data_manager.change_vote_a(answer_id, -1)
+            data_manager.write_user_vote(session['username'], answer_id, 'vote_down', 'answer_id')
+            data_manager.change_reputation('answer', answer_id, -2)
+        elif not check['vote_down']:
+            data_manager.change_vote_a(answer_id, -1)
+            data_manager.change_user_vote(answer_id, session['username'], 'vote_down', 'answer_id')
+            data_manager.change_reputation('answer', answer_id, -2)
         question_id = data_manager.get_question_id_by_answer(answer_id)
         return redirect(url_for("display_question", question_id=question_id['question_id']))
     return "You are not logged in, please login!"
@@ -182,12 +196,20 @@ def vote_answer_down(answer_id):
 #  Dia
 
 #  Eniko
+
+
 @app.route('/question/<question_id>/vote_up')
 def vote_up(question_id):
     if 'username' in session:
-        data_manager.change_vote_q(question_id, 1)
-        print(session['username'])
-        data_manager.change_reputation('question', question_id,  5  )
+        check = data_manager.check_pre_vote(question_id, session['username'], 'vote_up', 'question_id')
+        if check is None:
+            data_manager.write_user_vote(session['username'], question_id, 'vote_up', 'question_id')
+            data_manager.change_vote_q(question_id, 1)
+            data_manager.change_reputation('question', question_id, 5)
+        elif not check['vote_up']:
+            data_manager.change_user_vote(question_id, session['username'], 'vote_up', 'question_id')
+            data_manager.change_vote_q(question_id, 1)
+            data_manager.change_reputation('question', question_id, 5)
         if request.args.get('to') == 'list':
             return redirect('/list')
         return redirect('/')
@@ -197,8 +219,15 @@ def vote_up(question_id):
 @app.route('/question/<question_id>/vote_down')
 def vote_down(question_id):
     if 'username' in session:
-        data_manager.change_vote_q(question_id, -1)
-        data_manager.change_reputation('question', question_id, -2)
+        check = data_manager.check_pre_vote(question_id, session['username'], 'vote_down', 'question_id')
+        if check is None:
+            data_manager.change_vote_q(question_id, -1)
+            data_manager.write_user_vote(session['username'], question_id, 'vote_down', 'question_id')
+            data_manager.change_reputation('question', question_id, -2)
+        elif not check['vote_down']:
+            data_manager.change_vote_q(question_id, -1)
+            data_manager.change_user_vote(question_id, session['username'], 'vote_down', 'question_id')
+            data_manager.change_reputation('question', question_id, -2)
         if request.args.get('to') == 'list':
             return redirect('/list')
         return redirect('/')

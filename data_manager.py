@@ -385,6 +385,8 @@ def get_current_user_name(cursor, user_id):
 #  Dia
 
 #  Eniko
+
+
 @connection.connection_handler
 def get_user_id(cursor, username):
     cursor.execute(sql.SQL("""
@@ -637,6 +639,57 @@ def get_current_user_id(cursor, username):
     WHERE username = {username}""")
     .format(username=sql.Literal(username)))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def write_user_vote(cursor, username, item_id, vote_column, id_column):
+    current_user_id = get_user_id(username)['id']
+    if vote_column == 'vote_up':
+        unvote = 'vote_down'
+    else:
+        unvote = 'vote_up'
+    cursor.execute(sql.SQL("""
+    INSERT INTO vote ({vote_column}, {unvote_column}, {id_column}, user_id)
+    VALUES (TRUE, FALSE, {item_id}, {current_user_id} )
+    returning vote""")
+    .format(vote_column=sql.Identifier(vote_column),
+            unvote_column=sql.Identifier(unvote),
+            id_column=sql.Identifier(id_column),
+            item_id=sql.Literal(item_id),
+            current_user_id=sql.Literal(current_user_id)))
+
+
+@connection.connection_handler
+def check_pre_vote(cursor, item_id, username, column, id_column):
+    current_user = get_user_id(username)['id']
+    cursor.execute(sql.SQL(f"""
+    SELECT {column}
+    FROM vote 
+    WHERE {id_column} = {item_id} and user_id = {current_user}""")
+    .format(column=sql.Identifier(column),
+            id_column=sql.Literal(id_column),
+            item_id=sql.Literal(item_id),
+            current_user=sql.Literal(current_user)))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def change_user_vote(cursor, item_id, username, vote_column, id_column):
+    current_user = get_current_user_id(username)['id']
+    if vote_column == 'vote_up':
+        unvote = 'vote_down'
+    else:
+        unvote = 'vote_up'
+    cursor.execute(sql.SQL("""
+    UPDATE vote
+    SET {vote_column} = TRUE, {unvote} = FALSE 
+    WHERE {id_column} = {item_id} and user_id = {current_user}
+    returning vote""")
+    .format(vote_column=sql.Identifier(vote_column),
+            unvote=sql.Identifier(unvote),
+            id_column=sql.Identifier(id_column),
+            item_id=sql.Literal(item_id),
+            current_user=sql.Literal(current_user)))
 # Enikő
 
 

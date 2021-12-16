@@ -19,7 +19,7 @@ ALTER TABLE IF EXISTS ONLY public.question DROP CONSTRAINT IF EXISTS pk_question
 
 DROP TABLE IF EXISTS public.question CASCADE ;
 CREATE TABLE question (
-    id serial NOT NULL,
+    id serial NOT NULL unique ,
     submission_time timestamp without time zone,
     view_number integer,
     vote_number integer,
@@ -31,7 +31,7 @@ CREATE TABLE question (
 
 DROP TABLE IF EXISTS public.answer;
 CREATE TABLE answer (
-    id serial NOT NULL,
+    id serial NOT NULL unique,
     submission_time timestamp without time zone,
     vote_number integer,
     question_id integer,
@@ -76,6 +76,15 @@ DROP TABLE IF EXISTS public.tag;
 CREATE TABLE tag (
     id serial NOT NULL,
     name text UNIQUE
+);
+
+DROP TABLE IF EXISTS public.vote CASCADE;
+CREATE TABLE vote (
+    question_id integer references question (id) on delete cascade,
+    answer_id integer references answer (id) on delete cascade,
+    user_id integer references users (id) on delete cascade,
+    vote_up boolean,
+    vote_down boolean
 );
 
 ALTER TABLE ONLY answer

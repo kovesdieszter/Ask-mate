@@ -5,3 +5,7 @@ function notLoggedInMessage() {
 function notRightUserMessage() {
   alert( 'This is not your item!');
 }
+
+function OwnMessage() {
+  alert('This is your message!');
+}

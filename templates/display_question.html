@@ -133,11 +133,11 @@
                         <a href="{{ url_for('add_answer_comment',answer_id=answer.id) }}"><img
                                 src="../static/comment.png"
                                 width="20" alt="Comment"></a><br>
-                        <a href="{{ url_for('vote_answer_up', answer_id=answer['id']) }}"> <img
+                        <a href="javascript:void(0)" onclick="OwnMessage()"> <img
                                 src="../static/newup.png"
                                 width="20"
                                 alt="Vote Up"></a>
-                        <a href="{{ url_for('vote_answer_down', answer_id=answer['id']) }}"><img
+                        <a href="javascript:void(0)" onclick="OwnMessage()"><img
                                 src="../static/newdown.png"
                                 width="20" alt="Vote Down"></a>
                     {% endif %}
