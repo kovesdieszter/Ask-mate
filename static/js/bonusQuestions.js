@@ -12,15 +12,29 @@ function getSortedItems(items, sortField, sortDirection) {
     // effect this function has on the table
     //
     if (sortDirection === "asc") {
-        const firstItem = items.shift()
-        if (firstItem) {
-            items.push(firstItem)
-        }
+        items.sort(function(a, b) {
+          var desA = a.Description.toUpperCase()
+          var desB = b.Description.toUpperCase()
+          if (desA < desB) {
+            return -1;
+          }
+          if (desA > desB) {
+            return 1;
+          }
+          return 0;
+        })
     } else {
-        const lastItem = items.pop()
-        if (lastItem) {
-            items.push(lastItem)
-        }
+        items.sort(function(a, b) {
+          var desA = a.Description.toUpperCase()
+          var desB = b.Description.toUpperCase()
+          if (desA < desB) {
+            return 1;
+          }
+          if (desA > desB) {
+            return -1;
+          }
+          return 0;
+        })
     }
 
     return items

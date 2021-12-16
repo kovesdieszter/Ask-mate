@@ -1,12 +1,9 @@
-{% extends 'base_content.html' %}
 <html>
     <head>
         <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
     </head>
     <body>
-    {% include 'navbar.html' %}
-    {% block content %}
         <h1>AskMate</h1>
         <h2>All Questions:</h2>
         <button type="button" id="theme-button" onclick="toggleTheme();">Change Theme to Dark</button>
@@ -63,4 +60,3 @@
     </body>
 {#        <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>#}
 {#        <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>#}
-    {% endblock %}
