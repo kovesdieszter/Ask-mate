@@ -10,27 +10,26 @@
 {%  include 'navbar.html' %}
     {%  block content %}
 <h1>Main page</h1>
-<form action="search">
-    <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q">
-        <button type="submit"><img src="../static/search.piko" width="15px"></button>
-    </p>
-</form>
-<a class="Add_button" href="{{ url_for('register_user') }}">Register</a>
-{% if 'username' not in session %}
-    <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()">New question</a>
-{% else %}
-    <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
-{% endif %}
-{% if 'username' not in session %}
-    <a class="Add_button" href="{{ url_for('login') }}">Login</a>
-{% else %}
-    <p>You are logged in as {{ session['username'] }}</p>
-    <a class="Add_button" href="{{ url_for('logout') }}">Logout</a>
-    <a class="Add_button" href="{{ url_for('list_users') }}">List Users </a>
-
-{% endif %}
+{#<form action="search">#}
+{#    <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q">#}
+{#        <button type="submit"><img src="../static/search.piko" width="15px"></button>#}
+{#    </p>#}
+{#</form>#}
+{#<a class="Add_button" href="{{ url_for('register_user') }}">Register</a>#}
+{#{% if 'username' not in session %}#}
+{#    <a class="Add_button" href="javascript:void(0)" onclick="notLoggedInMessage()">New question</a>#}
+{#{% else %}#}
+{#    <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>#}
+{#{% endif %}#}
+{#{% if 'username' not in session %}#}
+{#    <a class="Add_button" href="{{ url_for('login') }}">Login</a>#}
+{#{% else %}#}
+{#    <p>You are logged in as {{ session['username'] }}</p>#}
+{#    <a class="Add_button" href="{{ url_for('logout') }}">Logout</a>#}
+{#    <a class="Add_button" href="{{ url_for('list_users') }}">List Users </a>#}
+{##}
+{#{% endif %}#}
 <p>
-<a href="{{ url_for('list_tags') }}">All tags</a>
 
 </p>
 
@@ -78,7 +77,7 @@
     </form>
 </table>
 <p>
-    <a class="Add_button" href="list">See all questions</a>
+
 </p>
 </body>
 {% endblock %}

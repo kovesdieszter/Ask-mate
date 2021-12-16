@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -8,6 +10,8 @@
 
 </head>
 <body>
+{%  include 'navbar.html' %}
+    {%  block content %}
 
 {% if 'username' not in session %}
     <a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a>
@@ -169,3 +173,4 @@
 {#Dia #}
 </body>
 </html>
+{% endblock %}

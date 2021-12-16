@@ -47,6 +47,8 @@ function toggleTheme() {
     console.log("toggle theme")
     var element = document.body;
     element.classList.toggle("dark-mode");
+    // element.style.backgroundColor = "black";
+    // element.style.color ="white";
 }
 
 function increaseFont() {

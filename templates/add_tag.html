@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,8 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+{%  include 'navbar.html' %}
+    {%  block content %}
 <h1>Add tag</h1>
 <form method="post">
     <div>{% for name in all_tag_names %}
@@ -22,3 +26,4 @@
 
 </body>
 </html>
+{%  endblock %}
