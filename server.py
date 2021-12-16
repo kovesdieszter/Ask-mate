@@ -148,7 +148,6 @@ def add_tag(question_id):
 
 @app.route('/tags')
 def list_tags():
-    tag_names = data_manager.get_all_tag_names()
     tags_with_question_count = data_manager.count_of_questions_to_tags()
     print(tags_with_question_count)
     return render_template('list_tags.html', tags_with_question_count=tags_with_question_count)
