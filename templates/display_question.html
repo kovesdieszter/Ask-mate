@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -8,17 +10,16 @@
 
 </head>
 <body>
+{%  include 'navbar.html' %}
+    {%  block content %}
 
 {% if 'username' not in session %}
-    <a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a>
 {% elif question.user_id == current_user_id %}
-    <a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a>
     <a class="me" href="{{ url_for('edit_question',question_id=question.id) }}"><img src="../static/write.png" width="30"
                                                                                  alt="Edit"></a>
     <a href="{{ url_for('delete_question',question_id=question.id) }}"><img src="../static/trashcan.png" width="30"
                                                                         alt="Delete"></a>
 {% else %}
-    <a class="me" href="/"><img src="../static/house.png" width="30" alt="Main page"></a>
     <a href="javascript:void(0)" onclick="notRightUserMessage()"><img src="../static/write.png" width="30"
                                                                                  alt="Edit"></a>
     <a href="javascript:void(0)" onclick="notRightUserMessage()"><img src="../static/trashcan.png" width="30"
@@ -65,7 +66,7 @@
         {% endif %}
     </p>
 </div>
-<table>
+<table class="table table-light table-hover">
     <th> Answer</th>
     <th> Acception </th>
     <th> Image</th>
@@ -132,7 +133,7 @@
                                 width="20" alt="Delete"></a>
                         <a href="{{ url_for('add_answer_comment',answer_id=answer.id) }}"><img
                                 src="../static/comment.png"
-                                width="20" alt="Comment"></a><br>
+                                width="20" alt="Comment"></a>
                         <a href="javascript:void(0)" onclick="OwnMessage()"> <img
                                 src="../static/newup.png"
                                 width="20"
@@ -170,8 +171,6 @@
                 </td>
             </div>
         {% endif %}
-    </div>
-
     {% endfor %}
     </tr>
 

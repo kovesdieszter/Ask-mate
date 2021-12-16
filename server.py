@@ -4,6 +4,8 @@ from operator import itemgetter
 import data_manager
 from werkzeug.utils import secure_filename
 import os
+import js2py
+import bonus_questions
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/images'
@@ -370,6 +372,12 @@ def add_answer_comment(answer_id):
         return redirect(url_for("display_question", question_id=question_id, answer_id=answer_id, comment=comment))
     answer = data_manager.get_answer_data_by_id(answer_id)
     return render_template('ans_comment_child.html', answer=answer)
+
+
+@app.route('/bonus_questions')
+def bonus_ques():
+    BONUS = bonus_questions.SAMPLE_QUESTIONS
+    return render_template('bonus_questions.html', questions=BONUS)
 
 
 if __name__ == '__main__':

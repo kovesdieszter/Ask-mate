@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -63,6 +65,8 @@
 {#        </style>#}
     </head>
     <body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
         <h1>Questions</h1>
         <a href="{{ url_for('main_page') }}"><img src="../static/house.png" width="30" alt="Main page"></a>
         <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
@@ -87,7 +91,7 @@
 
         </p>
 
-        <table>
+        <table class="table table-light table-hover">
         <tr>
 
 
@@ -127,3 +131,4 @@
     </p>
     </body>
 </html>
+{% endblock %}

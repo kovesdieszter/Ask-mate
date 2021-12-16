@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,10 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
     <body>
-        <form method="post">
+    {%  include 'navbar.html' %}
+    {%  block content %}
+        <center><form method="post">
+            <h1>Registration</h1><br/>
             Choose a username: <br>
             <input type="name" name="username"><br>
             <p>
@@ -25,6 +30,7 @@
             <button type="submit">Register</button>
 
 
-        </form>
+        </form></center>
     </body>
 </html>
+{% endblock %}
