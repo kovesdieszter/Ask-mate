@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base_content.html' %}
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+{%  include 'navbar.html' %}
+    {%  block content %}
     <h1>{% block headline %}{% endblock %}</h1>
     <form action="" method="post" enctype="multipart/form-data">
         <h2>{% block question_title %}{% endblock %}</h2>
@@ -17,4 +19,4 @@
         </p>
     </form>
 </body>
-</html>
+{%  endblock %}

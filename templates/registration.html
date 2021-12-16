@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,8 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
     <body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
         <form method="post">
             Choose a username: <br>
             <input type="name" name="username"><br>
@@ -28,3 +32,4 @@
         </form>
     </body>
 </html>
+{% endblock %}

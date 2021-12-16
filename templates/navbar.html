@@ -1,3 +1,5 @@
+<script type="text/javascript" src="/static/script.js"></script>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
       AskGirls
@@ -9,27 +11,69 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href={{ url_for('new_question') }}>Add new question</a>
+        {% if 'username' not in session %}
+             <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" onclick="notLoggedInMessage()">New question</a>
+             </li>
+            <li>
+                <a class="nav-link" href="javascript:void(0)" onclick="notLoggedInMessage()">Users </a>
+              </li>
+
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href={{ url_for('new_question') }}>Add new question</a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{ url_for('list_users') }}">Users </a>
+              </li>
+          {% endif %}
+          <li>
+             <a class="nav-link" href={{ url_for('list_tags') }}>Tags</a>
+          <li class="nav-item">
+          <a class="nav-link" href={{ url_for('bonus_ques') }}>Bonus question</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
-        </li>
-      </ul>
-        <form class="d-flex" action="search">
-            <p id="search"><label for="search_input">Search:</label><input id="search_input" name="q"><button class="btn btn-outline-success" type="submit">Search</button>#</p>
+            <li class="nav-item">
+              <a class="nav-link" href="list">Questions</a>
+            </li>
+{#          <li class="nav-item dropdown">#}
+{#              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                  Dropdown#}
+{#              </a>#}
+{#              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                  <li><a class="dropdown-item" href="#">Action</a></li>#}
+{#                  <li><a class="dropdown-item" href="#">Another action</a></li>#}
+{#                  <li><hr class="dropdown-divider"></li>#}
+{#                  <li><a class="dropdown-item" href="#">Something else here</a></li>#}
+{#              </ul>#}
+{#          </li>#}
+{#          <li class="nav-item">#}
+{#          <a class="nav-link disabled">Disabled</a>#}
+{#        </li>#}
+          <li>
+            <form class="d-flex" action="search">
+            <p id="search"><label for="search_input">
+                <p>
+
+                </p>
+            </label><input id="search_input" name="q"><button class="btn btn-outline-success" type="submit">Search</button></p>
         </form>
+          </li>
+        <li>
+            <a class="nav-link" href="{{ url_for('register_user') }}">Register</a>
+        </li>
+          {% if 'username' not in session %}
+          <li>
+            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
+          {% else %}
+              <li>
+              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+              </li>
+              <li>
+              <a class="nav-link">{{ session['username'] }}</a>
+              </li>
+          {% endif %}
+      </ul>
 {#      <form class="d-flex">#}
 {#        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
 {#        <button class="btn btn-outline-success" type="submit">Search</button>#}
