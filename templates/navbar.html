@@ -35,25 +35,26 @@
             <li class="nav-item">
               <a class="nav-link" href={{ url_for('sort_list') }}>Questions</a>
             </li>
-          {%  %}
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Current question
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="#">Edit</a></li>
-                  <li><a class="dropdown-item" href="#">Delete</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-          </li>
+{#          {% if question_id %}#}
+{#          <li class="nav-item dropdown">#}
+{#              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                  Current question#}
+{#              </a>#}
+{#              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                  <li><a class="dropdown-item" href="#">Edit</a></li>#}
+{#                  <li><a class="dropdown-item" href="#">Delete</a></li>#}
+{#                  <li><hr class="dropdown-divider"></li>#}
+{#                  <li><a class="dropdown-item" href="#">Something else here</a></li>#}
+{#              </ul>#}
+{#          </li>#}
+{#          {% endif %}#}
 {#          <li class="nav-item">#}
 {#          <a class="nav-link disabled">Disabled</a>#}
 {#        </li>#}
           <li>
             <form class="d-flex" action="search">
             <p id="search"><label for="search_input">
-                <p>
+
 
                 </p>
             </label><input id="search_input" name="q"><button class="btn btn-outline-success" type="submit">Search</button></p>
