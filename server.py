@@ -61,11 +61,6 @@ def list_users():
     return "You are not logged in, please login!"
 
 
-# @app.route('/reputation', methods=["GET", "POST"])
-# def gain_reputation():
-#     if 'username' in session:
-
-
 # Eszter
 
 #  Bea
@@ -301,6 +296,10 @@ def logout():
 @app.route('/accept_answer/<accept>/<answer_id>')
 def accept_answer(accept, answer_id):
     data_manager.change_acception(accept, answer_id)
+    if accept == 'True':
+        data_manager.change_reputation(answer_id, 15)
+    else:
+        data_manager.change_reputation(answer_id, -15)
     question_id = data_manager.get_question_id_by_answer(answer_id)
     return redirect(url_for('display_question', question_id=question_id['question_id']))
 
