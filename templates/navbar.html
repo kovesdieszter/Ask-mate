@@ -1,8 +1,8 @@
 <script type="text/javascript" src="/static/script.js"></script>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: cadetblue">
+
   <div class="container-fluid">
-      AskGirls
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -58,10 +58,10 @@
             </label><input id="search_input" name="q"><button class="btn btn-outline-success" type="submit">Search</button></p>
         </form>
           </li>
-        <li>
-            <a class="nav-link" href="{{ url_for('register_user') }}">Register</a>
-        </li>
           {% if 'username' not in session %}
+          <li>
+            <a class="nav-link" href="{{ url_for('register_user') }}">Register</a>
+          </li>
           <li>
             <a class="nav-link" href="{{ url_for('login') }}">Login</a>
           </li>

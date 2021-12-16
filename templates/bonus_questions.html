@@ -25,6 +25,7 @@
                 type="text"
                 onkeyup="getFilteredItems()"
                 placeholder="filter questions by keywords">
+        <script>getFilteredItems();</script>
 {#        <script> function getFilteredItems({{questions}}, filterValue) {#}
 {#                    console.log(items)#}
 {#                    console.log(filterValue)#}
@@ -40,7 +41,7 @@
 {#                    return items#}
 {#            }#}
 {#        </script>#}
-        <table>
+        <table class="table table-light table-hover">
             <thead id="doNotModifyThisId_QuestionsTableHeader">
                 <tr>
                     <td>Title</td>

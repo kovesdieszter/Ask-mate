@@ -1,3 +1,5 @@
+{% extends 'base_content.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,21 +8,30 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div>
-    <strong> username:{{user.username}} </strong><br><br>
-    <strong> user id:{{user.id}} </strong><br>
-    <strong> email:{{user.email}} </strong><br>
-    <strong> registration date:{{user.date}} </strong><br>
-    <strong> asked questions:{{user.asked_questions}} </strong><br>
-    <strong> number of answers:{{user.answers}} </strong><br>
-    <strong> commented:{{user.comments}} </strong><br>
-    <strong> reputation:{{user.reputation}} </strong><br>
-</div>
+    {%  include 'navbar.html' %}
+    {%  block content %}
+        <center><h1> <strong> {{user.username}} </strong><br><br></h1></center>
+
+
+<center>
+<h1>Personal data</h1>
+<table class="table table-light table-hover">
+    <tr><td><strong> User id</strong></td><td><strong> {{user.id}} </strong></td></tr>
+    <tr><td><strong> Email</strong></td><td><strong> {{user.email}} </strong></td></tr>
+    <tr><td><strong> Registration date</strong></td><td><strong> {{user.date}} </strong></td></tr>
+    <tr><td><strong> Asked questions</strong></td><td><strong> {{user.asked_questions}}</strong></td></tr>
+    <tr><td><strong> Number of asked questions</strong></td>    <td><strong> {{user.answers}} </strong></td></tr>
+    <tr><td><strong> Comments</strong></td><td><strong> {{user.comments}} </strong></td></tr>
+    <tr><td><strong> Reputation</strong></td><td><strong> {{user.reputation}} </strong></td></tr>
+    </tr>
+
+</table></center>
+
 
 <div>
-<h3>questions:</h3>
+<center><h3>Questions</h3></center>
 {% if questions %}
-<table>
+<table class="table table-light table-hover">
 {% for item in header %}
     <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
 {% endfor %}
@@ -41,9 +52,9 @@
     <h5>No questions yet</h5>
 {% endif %}
 </div>
-<h3>Answers:</h3>
+<center><h3>Answers</h3></center>
 {% if answers %}
-<table>
+<table class="table table-light table-hover">
 {% for item in aheader %}
     <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
 {% endfor %}
@@ -62,9 +73,9 @@
 {% else %}
 <h5>No answers yet</h5>
 {% endif %}
-<h3>Comments:</h3>
+<center><h3>Comments</h3></center>
 {% if comments %}
-<table>
+<table class="table table-light table-hover">
 {% for item in cheader %}
     <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
 {% endfor %}
@@ -90,3 +101,4 @@
 {% endif %}
 </body>
 </html>
+{% endblock %}
