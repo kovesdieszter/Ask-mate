@@ -82,26 +82,26 @@ body {
 /*#search_input{*/
 /*}*/
 
-/*#tag{*/
-/*    display: inline;*/
-/*    padding: 0 20px 0 20px;*/
-/*    color: seagreen;*/
-/*    background: cornsilk;*/
-/*}*/
+#tag{
+    display: inline;
+    padding: 0 20px 0 20px;
+    color: black;
+    background: #ffe2b0;
+}
 
 /*#tag a{*/
 /*    text-decoration: none;*/
 /*}*/
 
-/*.Add_button {*/
-/*    -webkit-appearance: button;*/
-/*    -moz-appearance: button;*/
-/*    background-color: #c5ff86;*/
-/*    border:2px solid black;*/
-/*    color: black;*/
-/*    padding: 10px 15px;*/
-/*    text-align: center;*/
-/*    text-decoration: none;*/
-/*    display: inline-block;*/
-/*    border-radius: 8px;*/
-/*}*/
+.Add_button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    background-color: #ffe2b0;
+    border:2px solid black;
+    color: black;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 8px;
+}

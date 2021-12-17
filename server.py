@@ -326,7 +326,7 @@ def logout():
 def accept_answer(accept, answer_id):
     data_manager.change_acception(accept, answer_id)
     if accept == 'True':
-        data_manager.change_reputation('amswer', answer_id, 15)
+        data_manager.change_reputation('answer', answer_id, 15)
     else:
         data_manager.change_reputation('answer', answer_id, -15)
     question_id = data_manager.get_question_id_by_answer(answer_id)

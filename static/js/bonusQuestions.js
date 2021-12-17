@@ -1,6 +1,6 @@
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 
-
+console.log('HALO')
 
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
@@ -80,8 +80,8 @@ function toggleTheme() {
     console.log("toggle theme")
     var element = document.body;
     element.classList.toggle("dark-mode");
-    // element.style.backgroundColor = "black";
-    // element.style.color ="white";
+    element.style.backgroundColor = "black";
+    element.style.color ="white";
 }
 
 function increaseFont() {
