@@ -1,0 +1,134 @@
+{% extends 'base_content.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+            <meta charset="utf-8">
+            <title>Questions and answers</title>
+        <link rel="stylesheet" href="/static/style.css">
+{#        <style>#}
+{#            #}
+{#            body {#}
+{#                background-image: url('https://image.freepik.com/free-vector/gradient-technology-futuristic-background_23-2149131656.jpg');#}
+{#                background-repeat: repeat-y;#}
+{#                background-size: cover;#}
+{#                }#}
+{#            tr td{#}
+{#                background-color: #a1c5fa;#}
+{#                border-style: solid;#}
+{#                border-color: #070007;#}
+{#            }#}
+{#            table{#}
+{#                background-color: #92bcff;#}
+{#                margin-right: 200px;#}
+{#                float: left;#}
+{#                position: relative;#}
+{#            }#}
+{#            form{#}
+{#                position: absolute;#}
+{#                right: 10px;#}
+{#                top: 118px;#}
+{#                font-size: large;#}
+{#                background-color: rgba(55, 147, 255, 0.50);#}
+{#                border-style: solid;#}
+{#                border-width: thick;#}
+{#                border-color: #3793ff;#}
+{#                text-align: center;#}
+{#            }#}
+{#            select{#}
+{#                width: 180px;#}
+{#                appearance: none;#}
+{#                background: lavender;#}
+{#                border-style: none;#}
+{#            }#}
+{#            button{#}
+{#                width: 180px;#}
+{#                appearance: none;#}
+{#                border: none;#}
+{#            }#}
+{#            p{#}
+{#                font-weight: bolder;#}
+{#            }#}
+{#            h1{#}
+{#                text-align: center;#}
+{#                background-color: rgba(55, 147, 255, 0.8);#}
+{#                border-style: groove;#}
+{#                border-color: #322fe5;#}
+{#                border-width: medium;#}
+{#            }#}
+{#            .new{#}
+{#                background-color: #8ab7f8;#}
+{#                border-color: #8ab7f8;#}
+{#                border-width: 10px;#}
+{#                border-style: solid;#}
+{#            }#}
+{#        </style>#}
+    </head>
+    <body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
+        <h1>Questions</h1>
+        <a href="{{ url_for('main_page') }}"><img src="../static/house.png" width="30" alt="Main page"></a>
+        <a class="Add_button" href="{{ url_for('new_question') }}">New question</a>
+        <form action="list">
+            <p>Sort</p>
+            <select name="order_by">
+                <option value="submission_time">by most recent</option>
+                <option value="title">by title</option>
+                <option value="message">by message</option>
+                <option value="view_number">by views</option>
+                <option value="vote_number">by votes</option>
+            </select><br>
+            <select name="order_direction">
+                <option value="DESC">descending</option>
+                <option value="ASC">ascending</option>
+            </select>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <p>
+
+
+        </p>
+
+        <table class="table table-light table-hover">
+        <tr>
+
+
+                    <form id="header">
+                {% for item in header %}
+                    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+                {% endfor %}
+                    <th><strong>Vote up</strong></th>
+                    <th><strong>Vote down</strong></th>
+                    </form>
+
+            </tr>
+
+            <form id="questions">
+                {% for item in questions %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.submission_time }}</td>
+                <td>{{ item.view_number}}</td>
+                <td>{{ item.vote_number }}</td>
+                <td>
+                <a href="/question/{{ item['id'] }}">{{ item.title }} </a></td>
+                <td>{{ item.message }}</td>
+                <td>{{ item.image }}</td>
+                <td><a href="{{ url_for('vote_up', question_id=item.id) }}?to=list">
+                    <img src="../static/newup.png" width="20" alt="Vote Up">
+                </a> </td>
+                <td><a href="{{ url_for('vote_down', question_id=item.id) }}?to=list">
+                    <img src="../static/newdown.png" width="20" alt="Vote Down">
+                </a></td>
+            </tr>
+            {% endfor %}
+            </form>
+        </table>
+    <p>
+    <a class="Add_button" href="list">See all questions</a>
+    </p>
+    </body>
+</html>
+{% endblock %}

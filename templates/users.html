@@ -1,0 +1,42 @@
+{% extends 'base_content.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>USERS</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+    <body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
+    <h1>Users</h1>
+    <form>
+        <table class="table table-light table-hover">
+            <th> Username </th>
+            <th> Date </th>
+            <th> Num_of_asked_questions </th>
+            <th> Answers </th>
+            <th> Comments </th>
+            <th> Reputation </th>
+               {% for d in data %}
+                    <tr>
+                        <td><a href="user/{{ d['id'] }}">{{ d['username'] }}</a></td>
+                        <td>{{ d['date'] }}</td>
+                        <td>{{ d['asked_questions'] }}</td>
+                        <td>{{ d['answers'] }}</td>
+                        <td>{{ d['comments'] }}</td>
+                        <td>{{ d['reputation'] }}</td>
+                   </tr>
+
+               {%  endfor %}
+    </table>
+    </form>
+
+
+
+
+
+    </body>
+</html>
+{% endblock %}

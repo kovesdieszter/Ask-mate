@@ -1,0 +1,36 @@
+{% extends 'base_content.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+    <body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
+        <center><form method="post">
+            <h1>Registration</h1><br/>
+            Choose a username: <br>
+            <input type="name" name="username"><br>
+            <p>
+
+            </p>
+            Type your email:<br>
+            <input type="email" name="email"><br>
+            <p>
+
+            </p>
+            Choose a password:<br> <input type="password" name="password"><br>
+            <p>
+
+            </p>
+
+            <button type="submit">Register</button>
+
+
+        </form></center>
+    </body>
+</html>
+{% endblock %}

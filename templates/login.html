@@ -1,0 +1,44 @@
+{% extends 'base_content.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+{%  include 'navbar.html' %}
+    {%  block content %}
+        <center>
+<h1>Login</h1><br/>
+<form method="post">
+     <div>
+        <label for="user_name">User name:</label><br/>
+        <input id="user_name" type="text" name="user_name">
+    </div>
+    <div>
+        <label for="email">Email address:</label><br>
+        <input id="email" type="email" name="email">
+    </div>
+    <div>
+        <label for="password">Password:</label><br>
+        <input id="password" type="password" name="password"><br>
+    </div>
+    <div>
+        <p>
+
+        </p>
+        <button type="submit">Login</button>
+    </div>
+    {% if message %}
+    <script>
+        alert('Invalid login attempt');
+    </script>
+    {% endif %}
+</form>
+
+</body>
+</html>
+        </center>
+{% endblock %}

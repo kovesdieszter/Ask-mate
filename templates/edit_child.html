@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block title %}Edit question{% endblock %}
+{% block headline %}Question editing{% endblock %}
+{% block question_title %}
+    <p>Title:<br>
+            <textarea name="title" rows="2" cols="100">{{ question.title }}</textarea>{% endblock %}
+{% block question_message %}{{ question.message }}{% endblock %}
+{% block question_submit %}Edit{% endblock %}

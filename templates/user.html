@@ -1,0 +1,104 @@
+{% extends 'base_content.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    {%  include 'navbar.html' %}
+    {%  block content %}
+        <center><h1> <strong> {{user.username}} </strong><br><br></h1></center>
+
+
+<center>
+<h1>Personal data</h1>
+<table class="table table-light table-hover">
+    <tr><td><strong> User id</strong></td><td><strong> {{user.id}} </strong></td></tr>
+    <tr><td><strong> Email</strong></td><td><strong> {{user.email}} </strong></td></tr>
+    <tr><td><strong> Registration date</strong></td><td><strong> {{user.date}} </strong></td></tr>
+    <tr><td><strong> Asked questions</strong></td><td><strong> {{user.asked_questions}}</strong></td></tr>
+    <tr><td><strong> Number of asked questions</strong></td>    <td><strong> {{user.answers}} </strong></td></tr>
+    <tr><td><strong> Comments</strong></td><td><strong> {{user.comments}} </strong></td></tr>
+    <tr><td><strong> Reputation</strong></td><td><strong> {{user.reputation}} </strong></td></tr>
+    </tr>
+
+</table></center>
+
+
+<div>
+<center><h3>Questions</h3></center>
+{% if questions %}
+<table class="table table-light table-hover">
+{% for item in header %}
+    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+{% endfor %}
+{% for item in questions %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.submission_time }}</td>
+            <td>{{ item.view_number}}</td>
+            <td>{{ item.vote_number }}</td>
+            <td>
+            <a href="/question/{{ item['id'] }}?view=True">{{ item.title }} </a></td>
+            <td>{{ item.message }}</td>
+            <td>{{ item.image }}</td>
+        </tr>
+{% endfor %}
+</table>
+    {% else %}
+    <h5>No questions yet</h5>
+{% endif %}
+</div>
+<center><h3>Answers</h3></center>
+{% if answers %}
+<table class="table table-light table-hover">
+{% for item in aheader %}
+    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+{% endfor %}
+{% for i in answers %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.submission_time }}</td>
+            <td>{{ i.vote_number}}</td>
+            <td>
+            <a href="/question/{{ i['question_id'] }}?view=True">{{ i.question_id }} </a></td>
+            <td>{{ i.message }}</td>
+            <td>{{ i.image }}</td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<h5>No answers yet</h5>
+{% endif %}
+<center><h3>Comments</h3></center>
+{% if comments %}
+<table class="table table-light table-hover">
+{% for item in cheader %}
+    <th><strong> {{ item.replace('_', ' ').capitalize() }} </strong></th>
+{% endfor %}
+{% for i in range(count) %}
+        <tr>
+            <td>{{ comments[i].id }}</td>
+        {% if comments[i].question_id == None %}
+            <td><a href="/question/{{ id_list[i] }}?view=True">{{ comments[i].message }} </a></td>
+        {% else %}
+            <td><a href="/question/{{ comments[i]['question_id'] }}?view=True">{{ comments[i].message }} </a></td>
+        {% endif %}
+            <td>{{ comments[i].submission_time }}</td>
+            {% if comments[i].edited == Null %}
+                <td>0 times</td>
+            {% else %}
+                <td>{{ comments[i].edited }} times</td>0
+            {% endif %}
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<h5>No comments yet</h5>
+{% endif %}
+</body>
+</html>
+{% endblock %}
